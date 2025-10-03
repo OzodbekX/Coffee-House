@@ -1,0 +1,34 @@
+.footer {
+    background: #f8f5f2;
+    padding: 2rem 1rem;
+    text-align: center;
+    color: #333;
+  
+    .slogan {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+  
+      span {
+        color: #b5651d; // coffee accent
+        font-weight: bold;
+      }
+    }
+  
+    .contacts {
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+  
+    .socials {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+  
+      a img {
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
+  
