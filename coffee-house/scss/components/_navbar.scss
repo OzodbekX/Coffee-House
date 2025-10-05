@@ -1,37 +1,57 @@
+@use "../variables" as *;
+
 .navbar {
-    background: #E1D4C9; 
-    padding: 1rem 2rem;
-    border-bottom: 1px solid #eee;
-  
-    .container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-  
-    .logo {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #b5651d; // coffee color
-    }
-  
-    .nav-links {
-      display: flex;
-      gap: 1.5rem;
-  
-      li a {
-        color: #333;
+  padding: 0 40px;
+  margin: 20px 0;
+
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo img {
+    aspect-ratio: 100/60;
+    max-width: 100px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+
+
+    li {
+      height: 26.6px;
+
+      a {
+        color: $color-text-dark;
         text-decoration: none;
-        font-weight: 500;
-  
-        &:hover {
-          color: #b5651d;
-        }
+
+      }
+
+      &:hover {
+        border-bottom: 2px solid $color-text-dark;
+
       }
     }
-  
-    .menu-toggle {
-      display: none; // hidden on desktop
+  }
+
+  .menu-toggle {
+    // hidden on desktop
+    background-color: transparent;
+    border: none;
+    align-items: center;
+    display: flex;
+    gap: 8px;
+    &:hover {
+      border-bottom: 2px solid $color-text-dark;
+
+    }
+
+    img {
+      height: 20px;
+      width: 20px;
     }
   }
-  
+}

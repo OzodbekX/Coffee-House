@@ -1,0 +1,62 @@
+@use "../variables" as *;
+@use "../typography" as *;
+
+.hero {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 100px;
+    width: calc(100% - 80px);
+    margin: 0 40px 100px;
+    color: $color-text-light;
+    border-radius: 40px;
+    height: 644px;
+    overflow: hidden;
+
+    // Background image
+    background-image: url("../../assets/images/img-hero.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    // Overlay for better text visibility
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.35); // dark overlay
+    }
+
+    // Content on top of background
+    &__content {
+        position: relative;
+        max-width: 530px;
+        z-index: 1;
+
+        .heading-1 {
+            color: $color-text-light;
+            margin-bottom: 40px;
+
+            span {
+                color: $color-text-accent
+            }
+        }
+
+        .text-medium {
+            color: $color-text-light;
+            margin-bottom: 40px;
+        }
+
+    }
+
+    @media (max-width: 768px) {
+        padding: 60px 5%;
+        text-align: center;
+        justify-content: center;
+
+        &__content {
+            max-width: 100%;
+        }
+    }
+}
