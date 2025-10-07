@@ -24,6 +24,13 @@ fetch("partials/hero.html")
     document.querySelector("#hero-placeholder").innerHTML = data;
   });
 
+// Load Hero
+fetch("partials/coffee-slider.html")
+  .then(res => res.text())
+  .then(data => {
+    document.querySelector("#coffee-slider").innerHTML = data;
+  });
+
 // Load footer
 fetch("partials/footer.html")
   .then(res => res.text())

@@ -1,0 +1,76 @@
+@use "../_variables" as *;
+@use "../typography" as *;
+
+.coffee-slider {
+    padding: 100px 0;
+    text-align: center;
+    width: calc(100% - 80px);
+    margin: 0 40px 100px;
+
+    h2 {
+      margin-bottom: 40px;
+        span {
+            color: $color-text-accent;
+            font-style: italic;
+      }
+
+    }
+
+    .swiper-wrapper{
+        display: flex;
+        width: 100%;
+        overflow-x: scroll;
+    }
+  
+    .coffee-card {
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+      width: 100%;
+      min-width: 100%;
+      aspect-ratio: 1360/684;
+  
+      &:hover {
+        transform: translateY(-8px);
+      }
+  
+      &__img {
+        width: 100%;
+        height: auto;
+        border-bottom: 2px solid $color-border-dark;
+      }
+  
+      &__info {
+        padding: 20px;
+      }
+  
+      h3 {
+        margin-bottom: 8px;
+      }
+  
+      p {
+        margin-bottom: 12px;
+        color: $color-text-light;
+      }
+  
+      &__price {
+        font-weight: 600;
+        color: $color-text-dark;
+      }
+    }
+  
+    .swiper-pagination-bullet {
+      opacity: 0.5;
+    }
+  
+    .swiper-pagination-bullet-active {
+      opacity: 1;
+    }
+  
+    .swiper-button-prev,
+    .swiper-button-next {
+      color: $color-border-dark;
+    }
+  }
+  

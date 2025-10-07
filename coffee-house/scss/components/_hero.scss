@@ -37,15 +37,33 @@
         .heading-1 {
             color: $color-text-light;
             margin-bottom: 40px;
-
             span {
-                color: $color-text-accent
+                color: $color-text-accent;
+                font-style: italic;
             }
         }
 
         .text-medium {
             color: $color-text-light;
             margin-bottom: 40px;
+        }
+
+        .button {
+            display: flex;
+            gap: 8px;
+            width: 200px;
+
+            img {
+                display: none;
+                height: 20px;
+                width: 20px;
+            }
+
+            &:hover {
+                img {
+                    display: flex;
+                }
+            }
         }
 
     }
