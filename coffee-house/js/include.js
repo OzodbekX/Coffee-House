@@ -24,7 +24,7 @@ fetch("partials/hero.html")
         document.querySelector("#hero-placeholder").innerHTML = data;
     });
 
-// Load Hero
+// Load Cofee slider
 fetch("partials/coffee-slider.html")
     .then(res => res.text())
     .then(async data => {
@@ -32,7 +32,12 @@ fetch("partials/coffee-slider.html")
         await loadCoffeeSlider();
 
     });
-
+// Load About
+fetch("partials/about.html")
+    .then(res => res.text())
+    .then(async data => {
+        document.querySelector("#about").innerHTML = data;
+    });
 // Load footer
 fetch("partials/footer.html")
     .then(res => res.text())
