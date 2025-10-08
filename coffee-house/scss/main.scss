@@ -1,9 +1,10 @@
 @use "variables" as *; // makes all variables available globally
 @use "typography" as *; // makes all variables available globally
-@use "components/_navbar";
+@use "components/navbar";
 @use "components/hero";
-@use "components/about";
 @use "components/_footer";
+@use "components/about";
+@use "components/contacts";
 @use "components/coffee-slider";
 @use "components/_button";
 

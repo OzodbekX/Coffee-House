@@ -192,6 +192,148 @@
   height: 24px;
 }
 
+.about .about-flex {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 40px;
+  max-width: 1360px;
+  margin: 40px auto 100px;
+}
+.about .about-flex .column {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  flex: 1;
+}
+.about .about-flex .grid-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+}
+.about .about-flex .grid-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+.about .about-flex .grid-item img:hover {
+  transform: scale(1.05);
+}
+.about .about-flex {
+  /* Column 1 heights */
+}
+.about .about-flex .column:nth-child(1) .grid-item:nth-child(1) {
+  aspect-ratio: 660/590;
+}
+.about .about-flex .column:nth-child(1) .grid-item:nth-child(2) {
+  aspect-ratio: 660/430;
+}
+.about .about-flex {
+  /* Column 2 heights */
+}
+.about .about-flex .column:nth-child(2) .grid-item:nth-child(1) {
+  aspect-ratio: 660/430;
+}
+.about .about-flex .column:nth-child(2) .grid-item:nth-child(2) {
+  aspect-ratio: 660/590;
+}
+
+.contacts {
+  width: 100%;
+  margin-bottom: 100px;
+}
+.contacts .contacts-container {
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+.contacts .contacts-content {
+  flex: 1;
+  max-width: 630px;
+}
+.contacts .contacts-content p {
+  margin: 40px 0;
+}
+.contacts .contacts-content .app-buttons {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.contacts .contacts-content .app-buttons .app-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  text-decoration: none;
+  color: #403F3D;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+  font-size: 14px;
+  line-height: 1.2;
+  cursor: pointer;
+  font-family: inherit;
+  width: 200px;
+  height: 64px;
+  border: 1px solid #665F55;
+  border-radius: 32px;
+}
+.contacts .contacts-content .app-buttons .app-btn img {
+  width: 36px;
+  height: 36px;
+}
+.contacts .contacts-content .app-buttons .app-btn img.light {
+  display: none;
+}
+.contacts .contacts-content .app-buttons .app-btn span {
+  display: flex;
+  flex-direction: column;
+}
+.contacts .contacts-content .app-buttons .app-btn:hover {
+  background-color: #665F55;
+}
+.contacts .contacts-content .app-buttons .app-btn:hover span, .contacts .contacts-content .app-buttons .app-btn:hover strong {
+  color: #E1D4C9;
+}
+.contacts .contacts-content .app-buttons .app-btn:hover img.light {
+  display: flex;
+}
+.contacts .contacts-content .app-buttons .app-btn:hover img.dark {
+  display: none;
+}
+.contacts .contacts-images {
+  flex: 1;
+  max-width: 630px;
+  aspect-ratio: 1;
+  position: relative;
+}
+.contacts .contacts-images .phone {
+  width: 100%;
+  object-fit: cover;
+}
+.contacts {
+  /* Responsive */
+}
+@media (max-width: 900px) {
+  .contacts .contacts-container {
+    flex-direction: column;
+    text-align: center;
+  }
+  .contacts .contacts-images {
+    margin-top: 40px;
+  }
+  .contacts .contacts-images .phone-1,
+  .contacts .contacts-images .phone-2 {
+    transform: none;
+    margin: 0 10px;
+  }
+}
+
 .coffee-slider-container {
   width: 100%;
   margin-bottom: 100px;

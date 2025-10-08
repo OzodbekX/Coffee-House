@@ -1,11 +1,19 @@
-.about{
-  .about-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, auto);
-    gap: 20px; // space between items
+.about {
+  .about-flex {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 40px;
     max-width: 1360px;
-    margin: 0 auto;
+    margin: 40px auto 100px;
+
+
+    .column {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      flex: 1; // makes both columns equal width
+    }
 
     .grid-item {
       position: relative;
@@ -24,6 +32,22 @@
         }
       }
     }
-  }
 
+    /* Column 1 heights */
+    .column:nth-child(1) .grid-item:nth-child(1) {
+      aspect-ratio: 660/590;
+    }
+    .column:nth-child(1) .grid-item:nth-child(2) {
+      aspect-ratio: 660/430;
+    }
+
+    /* Column 2 heights */
+    .column:nth-child(2) .grid-item:nth-child(1) {
+      aspect-ratio: 660/430;
+      
+    }
+    .column:nth-child(2) .grid-item:nth-child(2) {
+      aspect-ratio: 660/590;
+    }
+  }
 }

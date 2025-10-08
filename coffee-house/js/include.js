@@ -38,6 +38,14 @@ fetch("partials/about.html")
     .then(async data => {
         document.querySelector("#about").innerHTML = data;
     });
+
+// Load Contacts
+fetch("partials/contacts.html")
+    .then(res => res.text())
+    .then(async data => {
+        document.querySelector("#contacts").innerHTML = data;
+        await appDownloadButton()
+    });
 // Load footer
 fetch("partials/footer.html")
     .then(res => res.text())
