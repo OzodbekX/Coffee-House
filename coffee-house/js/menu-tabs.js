@@ -23,8 +23,13 @@ async function menuProducts() {
             renderProducts(category);
 
             // Smooth scroll to product grid
-            document.querySelector(".menu-grid").scrollIntoView({ behavior: "smooth" });
-        });
+            productsContainer.querySelector(".menu-grid").scrollIntoView({
+                behavior: "smooth",
+                inline: "center", // makes it scroll horizontally to center the element
+                block: "nearest", // prevents vertical scroll
+              });
+
+            });
     });
 
     // Render product cards
@@ -46,9 +51,9 @@ async function menuProducts() {
         card.innerHTML = `
       <img src="${product.image_url}" alt="${product.name}">
       <div class="card-body">
-        <h3>${product.name}</h3>
-        <p>${product.description}</p>
-        <div class="price">$${parseFloat(product.price).toFixed(2)}</div>
+        <h3 class="heading-3">${product.name}</h3>
+        <p class="text-medium">${product.description}</p>
+        <h3 class="price heading-3">$${parseFloat(product.price).toFixed(2)}</div>
       </div>
     `;
 
