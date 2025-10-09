@@ -94,6 +94,7 @@
   align-items: center;
   display: flex;
   gap: 8px;
+  text-decoration: none;
 }
 .navbar .menu-toggle:hover {
   border-bottom: 2px solid #403F3D;
@@ -163,88 +164,6 @@
   }
 }
 
-.footer {
-  background-color: #665F55;
-  color: #E1D4C9;
-  padding: 100px;
-  border-radius: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.footer .footer-content {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  flex-wrap: wrap;
-  overflow: visible;
-}
-.footer .footer-left {
-  flex: 1;
-  min-width: 250px;
-  max-width: 530px;
-}
-.footer .footer-left h2 {
-  margin-bottom: 40px;
-  color: #E1D4C9;
-}
-.footer .footer-left .social-icons {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  align-items: center;
-}
-.footer .footer-left .social-icons .social-icon {
-  border: 1px solid #C1B6AD;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-}
-.footer .footer-left .social-icons .social-icon svg {
-  width: 24px;
-  height: 24px;
-}
-.footer .footer-left .social-icons .social-icon svg path {
-  stroke: #E1D4C9;
-  transition: stroke 0.3s ease;
-}
-.footer .footer-left .social-icons .social-icon:hover {
-  background-color: #E1D4C9;
-  border: none;
-}
-.footer .footer-left .social-icons .social-icon:hover svg path {
-  stroke: #403F3D;
-}
-.footer .footer-right {
-  flex: 1;
-  min-width: 250px;
-  max-width: 530px;
-}
-.footer .footer-right h3 {
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-  color: #f4e3d0;
-}
-.footer .footer-right ul {
-  list-style: none;
-  padding: 0;
-}
-.footer .footer-right ul li {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-  font-size: 0.95rem;
-}
-.footer .footer-right ul li i {
-  color: #d4b295;
-}
-
 .about .about-flex {
   display: flex;
   justify-content: center;
@@ -293,11 +212,11 @@
   aspect-ratio: 660/590;
 }
 
-.contacts {
+.download-app {
   width: 100%;
   margin-bottom: 100px;
 }
-.contacts .contacts-container {
+.download-app .download-app-container {
   width: 100%;
   margin: 0 auto;
   display: flex;
@@ -306,19 +225,19 @@
   gap: 40px;
   flex-wrap: wrap;
 }
-.contacts .contacts-content {
+.download-app .download-app-content {
   flex: 1;
   max-width: 630px;
 }
-.contacts .contacts-content p {
+.download-app .download-app-content p {
   margin: 40px 0;
 }
-.contacts .contacts-content .app-buttons {
+.download-app .download-app-content .app-buttons {
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
 }
-.contacts .contacts-content .app-buttons .app-btn {
+.download-app .download-app-content .app-buttons .app-btn {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -336,52 +255,52 @@
   border: 1px solid #665F55;
   border-radius: 32px;
 }
-.contacts .contacts-content .app-buttons .app-btn img {
+.download-app .download-app-content .app-buttons .app-btn img {
   width: 36px;
   height: 36px;
 }
-.contacts .contacts-content .app-buttons .app-btn img.light {
+.download-app .download-app-content .app-buttons .app-btn img.light {
   display: none;
 }
-.contacts .contacts-content .app-buttons .app-btn span {
+.download-app .download-app-content .app-buttons .app-btn span {
   display: flex;
   flex-direction: column;
 }
-.contacts .contacts-content .app-buttons .app-btn:hover {
+.download-app .download-app-content .app-buttons .app-btn:hover {
   background-color: #665F55;
 }
-.contacts .contacts-content .app-buttons .app-btn:hover span, .contacts .contacts-content .app-buttons .app-btn:hover strong {
+.download-app .download-app-content .app-buttons .app-btn:hover span, .download-app .download-app-content .app-buttons .app-btn:hover strong {
   color: #E1D4C9;
 }
-.contacts .contacts-content .app-buttons .app-btn:hover img.light {
+.download-app .download-app-content .app-buttons .app-btn:hover img.light {
   display: flex;
 }
-.contacts .contacts-content .app-buttons .app-btn:hover img.dark {
+.download-app .download-app-content .app-buttons .app-btn:hover img.dark {
   display: none;
 }
-.contacts .contacts-images {
+.download-app .download-app-images {
   flex: 1;
   max-width: 630px;
   aspect-ratio: 1;
   position: relative;
 }
-.contacts .contacts-images .phone {
+.download-app .download-app-images .phone {
   width: 100%;
   object-fit: cover;
 }
-.contacts {
+.download-app {
   /* Responsive */
 }
 @media (max-width: 900px) {
-  .contacts .contacts-container {
+  .download-app .download-app-container {
     flex-direction: column;
     text-align: center;
   }
-  .contacts .contacts-images {
+  .download-app .download-app-images {
     margin-top: 40px;
   }
-  .contacts .contacts-images .phone-1,
-  .contacts .contacts-images .phone-2 {
+  .download-app .download-app-images .phone-1,
+  .download-app .download-app-images .phone-2 {
     transform: none;
     margin: 0 10px;
   }
@@ -519,6 +438,172 @@
   color: #E1D4C9;
 }
 
+.footer {
+  background-color: #665F55;
+  color: #E1D4C9;
+  padding: 100px;
+  border-radius: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 40px;
+}
+.footer .footer-content {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  flex-wrap: wrap;
+  overflow: visible;
+}
+.footer .footer-left {
+  flex: 1;
+  min-width: 250px;
+  max-width: 530px;
+}
+.footer .footer-left h2 {
+  margin-bottom: 40px;
+  color: #E1D4C9;
+}
+.footer .footer-left .social-icons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+.footer .footer-left .social-icons .social-icon {
+  border: 1px solid #C1B6AD;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+.footer .footer-left .social-icons .social-icon svg {
+  width: 24px;
+  height: 24px;
+}
+.footer .footer-left .social-icons .social-icon svg path {
+  stroke: #E1D4C9;
+  transition: stroke 0.3s ease;
+}
+.footer .footer-left .social-icons .social-icon:hover {
+  background-color: #E1D4C9;
+  border: none;
+}
+.footer .footer-left .social-icons .social-icon:hover svg path {
+  stroke: #403F3D;
+}
+.footer .footer-right {
+  flex: 1;
+  min-width: 250px;
+  max-width: 530px;
+}
+.footer .footer-right h3 {
+  margin: 32px 0 40px;
+  color: #E1D4C9;
+}
+.footer .footer-right ul {
+  list-style: none;
+  padding: 0;
+}
+.footer .footer-right ul li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  color: #E1D4C9;
+}
+
+.menu {
+  margin-bottom: 100px;
+}
+.menu .heading-2 {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 40px;
+}
+.menu .menu-section .menu-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.menu .menu-section .menu-header h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #3b2f2f;
+}
+.menu .menu-section .menu-header .menu-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+.menu .menu-section .menu-header .menu-tabs .tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #d7c2b1;
+  border: none;
+  border-radius: 24px;
+  padding: 10px 18px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+.menu .menu-section .menu-header .menu-tabs .tab img {
+  width: 20px;
+  height: 20px;
+}
+.menu .menu-section .menu-header .menu-tabs .tab:hover {
+  background: #bfa693;
+}
+.menu .menu-section .menu-header .menu-tabs .tab.active {
+  background: #5c4033;
+  color: #fff;
+}
+.menu .menu-section .menu-header .menu-tabs .tab.active img {
+  filter: brightness(0) invert(1);
+}
+.menu .menu-section .menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+  gap: 40px;
+  transition: all 0.4s ease;
+}
+.menu .product-card {
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.menu .product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+.menu .product-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+.menu .product-card .card-body {
+  padding: 16px;
+}
+.menu .product-card .card-body h3 {
+  font-size: 1.1rem;
+  margin-bottom: 6px;
+  color: #3b2f2f;
+}
+.menu .product-card .card-body p {
+  font-size: 0.9rem;
+  color: #5f5f5f;
+  margin-bottom: 10px;
+}
+.menu .product-card .card-body .price {
+  font-weight: 600;
+  color: #3b2f2f;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -550,6 +635,7 @@ body {
   scrollbar-width: none;
   -ms-overflow-style: none;
   scrollbar-width: none;
+  scroll-behavior: smooth;
   /* Hides the scrollbar */
 }
 .main-container::-webkit-scrollbar {

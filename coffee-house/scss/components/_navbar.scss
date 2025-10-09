@@ -44,6 +44,8 @@
     align-items: center;
     display: flex;
     gap: 8px;
+    text-decoration: none;
+    
     &:hover {
       border-bottom: 2px solid $color-text-dark;
 

@@ -1,118 +1,97 @@
 @use "../_variables" as *;
 @use "../typography" as *;
 
-.contacts {
+.footer {
+  background-color: $color-bg-container;
+  color: $color-text-light;
+  padding: 100px;
+  border-radius: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 40px;
+  
+  .footer-content {
+    display: flex;
+    justify-content: space-between;
     width: 100%;
-    margin-bottom: 100px;
+    flex-wrap: wrap;
+    overflow: visible; // prevent clipping last icon
 
-    .contacts-container {
-        width: 100%;
-        margin: 0 auto;
+  }
+
+  .footer-left {
+    flex: 1;
+    min-width: 250px;
+    max-width: 530px;
+
+    h2 {
+      margin-bottom: 40px;
+      color: $color-text-light;
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap; // ensures icons don't overlap or hide if container is small
+      justify-content: flex-start;
+      align-items: center;
+
+      .social-icon {
+        border: 1px solid $color-border-light;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        gap: 40px;
-        flex-wrap: wrap; // responsive
+        justify-content: center;
+        box-sizing: border-box;
+
+        svg {
+          width: 24px;
+          height: 24px;
+
+          path {
+            stroke: $color-text-light;
+            transition: stroke 0.3s ease;
+          }
+        }
+
+        &:hover {
+          background-color: $color-bg-body;
+          border: none;
+
+          svg path {
+            stroke: $color-text-dark;
+          }
+        }
+      }
+    }
+  }
+
+  .footer-right {
+    flex: 1;
+    min-width: 250px;
+    max-width: 530px;
+
+
+    h3 {
+      margin:32px 0 40px;
+      color:$color-text-light;
     }
 
-    .contacts-content {
-        flex: 1;
-        max-width: 630px;
-
-
-        p {
-            margin: 40px 0;
-
-        }
-
-        .app-buttons {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-
-            .app-btn {
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                padding: 12px 20px;
-                text-decoration: none;
-                color: $color-text-dark;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-                transition: transform 0.2s ease;
-                font-size: 14px;
-                line-height: 1.2;
-                cursor: pointer;
-                font-family: inherit;
-                width: 200px;
-                height: 64px;
-                border: 1px solid $color-border-dark;
-                border-radius: 32px;
-
-
-
-                img {
-                    width: 36px;
-                    height: 36px;
-
-                    &.light {
-                        display: none;
-                    }
-                }
-
-                span {
-                    display: flex;
-                    flex-direction: column;
-                }
-
-                &:hover {
-                    background-color: $color-bg-container;
-                    span, strong {
-                        color: $color-text-light;
-                    }
-
-                    img {
-                        &.light {
-                            display: flex;
-                        }
-
-                        &.dark {
-                            display: none;
-                        }
-                    }
-                }
-            }
-        }
-
-
-
+    ul {
+      list-style: none;
+      padding: 0;
+      li {
+        display: flex;
+        align-items: center;
+        gap:8px;
+        margin-bottom: 16px;
+        color:$color-text-light;
+      }
     }
+  }
 
-    .contacts-images {
-        flex: 1;
-        max-width: 630px;
-        aspect-ratio: 1;
-        position: relative;
-        .phone {
-            width: 100%;
-            object-fit: cover;
-        }
-    }
-
-    /* Responsive */
-    @media (max-width: 900px) {
-        .contacts-container {
-            flex-direction: column;
-            text-align: center;
-        }
-
-        .contacts-images {
-            margin-top: 40px;
-
-            .phone-1,
-            .phone-2 {
-                transform: none;
-                margin: 0 10px;
-            }
-        }
-    }
 }
+  

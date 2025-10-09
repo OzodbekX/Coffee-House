@@ -1,9 +1,14 @@
-async function injectSocialIcons(containerSelector, icons) {
+async function injectSocialIcons(containerSelector) {
     const container = document.querySelector(containerSelector);
     if (!container) {
         console.error(`Container ${containerSelector} not found`);
         return;
     }
+    const icons =  [
+        { name: "twitter", path: "assets/icons/twitter.svg", link: "#" },
+        { name: "instagram", path: "assets/icons/instagram.svg", link: "#" },
+        { name: "facebook", path: "assets/icons/facebook.svg", link: "#" }
+      ]
 
     for (const icon of icons) {
         try {

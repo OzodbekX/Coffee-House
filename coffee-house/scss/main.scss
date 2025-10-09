@@ -2,11 +2,12 @@
 @use "typography" as *; // makes all variables available globally
 @use "components/navbar";
 @use "components/hero";
-@use "components/_footer";
 @use "components/about";
-@use "components/contacts";
+@use "components/download-app";
 @use "components/coffee-slider";
-@use "components/_button";
+@use "components/button";
+@use "components/contacts";
+@use "pages/menu";
 
 * {
   box-sizing: border-box;
@@ -42,6 +43,8 @@ body {
   scrollbar-width: none; // Firefox
   -ms-overflow-style: none; // IE/Edge
   scrollbar-width: none;
+  scroll-behavior: smooth;
+
 
   /* Hides the scrollbar */
   &::-webkit-scrollbar {

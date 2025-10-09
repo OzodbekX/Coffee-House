@@ -40,18 +40,18 @@ fetch("partials/about.html")
     });
 
 // Load Contacts
+fetch("partials/download-app.html")
+    .then(res => res.text())
+    .then(async data => {
+        document.querySelector("#download-app").innerHTML = data;
+        await appDownloadButton()
+    });
+// Load footer
 fetch("partials/contacts.html")
     .then(res => res.text())
     .then(async data => {
         document.querySelector("#contacts").innerHTML = data;
-        await appDownloadButton()
-    });
-// Load footer
-fetch("partials/footer.html")
-    .then(res => res.text())
-    .then(async data => {
-        document.querySelector("#footer-placeholder").innerHTML = data;
-        await injectSocialIcons()
+        await injectSocialIcons('.social-icons')
     }).catch(err => console.error("Error loading footer:", err));
 
 
