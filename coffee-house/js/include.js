@@ -49,8 +49,9 @@ fetch("partials/contacts.html")
 // Load footer
 fetch("partials/footer.html")
     .then(res => res.text())
-    .then(data => {
+    .then(async data => {
         document.querySelector("#footer-placeholder").innerHTML = data;
+        await injectSocialIcons()
     }).catch(err => console.error("Error loading footer:", err));
 
 

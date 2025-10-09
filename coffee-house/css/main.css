@@ -164,32 +164,85 @@
 }
 
 .footer {
-  background: #f8f5f2;
-  padding: 2rem 1rem;
-  text-align: center;
-  color: #333;
-}
-.footer .slogan {
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-}
-.footer .slogan span {
-  color: #b5651d;
-  font-weight: bold;
-}
-.footer .contacts {
-  margin-bottom: 1rem;
-  font-size: 0.95rem;
-  line-height: 1.5;
-}
-.footer .socials {
+  background-color: #665F55;
+  color: #E1D4C9;
+  padding: 100px;
+  border-radius: 40px;
   display: flex;
   justify-content: center;
-  gap: 1rem;
+  align-items: center;
 }
-.footer .socials a img {
+.footer .footer-content {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  flex-wrap: wrap;
+  overflow: visible;
+}
+.footer .footer-left {
+  flex: 1;
+  min-width: 250px;
+  max-width: 530px;
+}
+.footer .footer-left h2 {
+  margin-bottom: 40px;
+  color: #E1D4C9;
+}
+.footer .footer-left .social-icons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+.footer .footer-left .social-icons .social-icon {
+  border: 1px solid #C1B6AD;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+.footer .footer-left .social-icons .social-icon svg {
   width: 24px;
   height: 24px;
+}
+.footer .footer-left .social-icons .social-icon svg path {
+  stroke: #E1D4C9;
+  transition: stroke 0.3s ease;
+}
+.footer .footer-left .social-icons .social-icon:hover {
+  background-color: #E1D4C9;
+  border: none;
+}
+.footer .footer-left .social-icons .social-icon:hover svg path {
+  stroke: #403F3D;
+}
+.footer .footer-right {
+  flex: 1;
+  min-width: 250px;
+  max-width: 530px;
+}
+.footer .footer-right h3 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: #f4e3d0;
+}
+.footer .footer-right ul {
+  list-style: none;
+  padding: 0;
+}
+.footer .footer-right ul li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+.footer .footer-right ul li i {
+  color: #d4b295;
 }
 
 .about .about-flex {

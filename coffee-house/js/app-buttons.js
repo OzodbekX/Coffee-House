@@ -1,8 +1,6 @@
 
 async function appDownloadButton(){
     const buttons = document.querySelectorAll(".app-btn");
-    console.log("buttons",buttons)
-  
     buttons.forEach((btn) => {
       const type = btn.dataset.type;
       let icon = "";
@@ -34,8 +32,7 @@ async function appDownloadButton(){
 appDownloadButton()
 // document.addEventListener("DOMContentLoaded", () => {
 //     const buttons = document.querySelectorAll(".app-btn");
-//     console.log("buttons",buttons)
-  
+
 //     buttons.forEach((btn) => {
 //       const type = btn.dataset.type;
 //       let icon = "";
