@@ -23,6 +23,12 @@ fetch("partials/menu-products.html")
         document.querySelector("#catalog-grid").innerHTML = data;
         await menuProducts()
     });
+// product-modal
+fetch("partials/product-modal.html")
+    .then(res => res.text())
+    .then(async data => {
+        document.querySelector("#product-modal-placeholder").innerHTML = data;
+    });
 // Load footer
 fetch("partials/contacts.html")
     .then(res => res.text())
@@ -33,29 +39,3 @@ fetch("partials/contacts.html")
 
 
 
-
-// document.addEventListener("DOMContentLoaded", () => {
-//     const menuGrid = document.querySelector(".menu-grid");
-//     if (!menuGrid) return;
-  
-//     // Example menu items (you can load from JSON later)
-//     const menuItems = [
-//       { name: "Espresso", description: "Strong and bold", img: "assets/images/espresso.jpg" },
-//       { name: "Cappuccino", description: "Creamy with milk foam", img: "assets/images/cappuccino.jpg" },
-//       { name: "Latte", description: "Smooth and mellow", img: "assets/images/latte.jpg" },
-//       { name: "Mocha", description: "Rich chocolate blend", img: "assets/images/mocha.jpg" }
-//     ];
-  
-//     // Render menu cards
-//     menuItems.forEach(item => {
-//       const card = document.createElement("div");
-//       card.classList.add("card");
-//       card.innerHTML = `
-//         <img src="${item.img}" alt="${item.name}">
-//         <h3>${item.name}</h3>
-//         <p>${item.description}</p>
-//       `;
-//       menuGrid.appendChild(card);
-//     });
-//   });
-  

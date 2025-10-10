@@ -59,6 +59,7 @@ async function menuProducts() {
 
         // On click — open modal (later implemented)
         card.addEventListener("click", () => {
+            showModal(product)
             console.log(`Open modal for ${product.name}`);
             // showModal(product);
         });
