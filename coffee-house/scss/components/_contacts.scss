@@ -94,13 +94,21 @@
         width: fit-content;
         cursor: pointer;
 
-
         &:hover{
           border-bottom: 2px solid $color-border-light;
         }
       }
     }
   }
+
+ @media (max-width:768px) {
+  padding: 100px 60px;
+  .footer-content{
+    flex-direction: column;
+    gap: 68px;
+  }
+
+ }
 
 }
   

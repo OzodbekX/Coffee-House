@@ -1,13 +1,14 @@
 @use "variables" as *; // makes all variables available globally
 @use "typography" as *; // makes all variables available globally
-@use "components/navbar";
-@use "components/hero";
+@use "components/header";
+@use "components/banner";
 @use "components/about";
 @use "components/download-app";
 @use "components/coffee-slider";
 @use "components/button";
 @use "components/contacts";
 @use "components/product-modal";
+@use "components/mobile-navbar";
 @use "pages/menu";
 
 * {
@@ -30,6 +31,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
 }
 
 
@@ -50,5 +52,9 @@ body {
   /* Hides the scrollbar */
   &::-webkit-scrollbar {
     display: none; // Chrome, Safari
+  }
+  @media (max-width:380px) {
+    padding: 0 16px;
+    
   }
 }

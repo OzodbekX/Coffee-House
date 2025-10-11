@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", () => {
     fetch("partials/header.html")
         .then(res => res.text())
@@ -6,17 +7,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Attach mobile menu toggle logic after header is loaded
             const toggleBtn = document.querySelector(".menu-toggle");
-            const nav = document.querySelector(".nav-links");
+
 
             if (toggleBtn) {
                 toggleBtn.addEventListener("click", () => {
-                    nav.classList.toggle("active");
+                    toggleBtn.classList.toggle("active");
+                });
+            }
+
+            const mobileMenuButton = document.querySelector('.mobile-navbar-button');
+            const mobileNavbarContainer = document.querySelector('.mobile-navbar-container');
+
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenuButton.classList.toggle('active');
+                    if (mobileNavbarContainer) {
+                        mobileNavbarContainer.classList.toggle('open');
+                    }
+
                 });
             }
         })
         .catch(err => console.error("Error loading header:", err));
 });
-// main-tabs
+
+
+
+
 fetch("partials/menu-products.html")
     .then(res => res.text())
     .then(async data => {
@@ -29,13 +46,3 @@ fetch("partials/product-modal.html")
     .then(async data => {
         document.querySelector("#product-modal-placeholder").innerHTML = data;
     });
-// Load footer
-fetch("partials/contacts.html")
-    .then(res => res.text())
-    .then(async data => {
-        document.querySelector("#contacts").innerHTML = data;
-        await injectSocialIcons('.social-icons')
-    }).catch(err => console.error("Error loading footer:", err));
-
-
-

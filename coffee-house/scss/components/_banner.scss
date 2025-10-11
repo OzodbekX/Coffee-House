@@ -63,10 +63,14 @@
         }
 
     }
-
     @media (max-width: 768px) {
-        padding: 60px 5%;
-        text-align: center;
+        padding: 100px 60px;
+        justify-content: center;
+        max-height: fit-content;
+    }
+
+    @media (max-width: 380px) {
+        padding: 60px 16px;
         justify-content: center;
 
         &__content {

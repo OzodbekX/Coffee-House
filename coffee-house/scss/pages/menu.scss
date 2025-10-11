@@ -3,13 +3,13 @@
 
 .menu {
   margin-bottom: 100px;
+  transition: opacity 0.6s ease;
 
   .heading-2 {
     text-align: center;
     max-width: 800px;
     margin: 0 auto 40px;
   }
-
 
   .menu-section {
 
@@ -19,6 +19,7 @@
 
 
       .menu-tabs {
+        
         display: flex;
         justify-content: center;
         gap: 10px;

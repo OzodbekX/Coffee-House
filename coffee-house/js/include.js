@@ -6,11 +6,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Attach mobile menu toggle logic after header is loaded
             const toggleBtn = document.querySelector(".menu-toggle");
-            const nav = document.querySelector(".nav-links");
+
 
             if (toggleBtn) {
                 toggleBtn.addEventListener("click", () => {
-                    nav.classList.toggle("active");
+                    toggleBtn.classList.toggle("active");
+                });
+            }
+
+            const mobileMenuButton = document.querySelector('.mobile-navbar-button');
+            const mobileNavbarContainer = document.querySelector('.mobile-navbar-container');
+
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenuButton.classList.toggle('active');
+                    if (mobileNavbarContainer) {
+                        mobileNavbarContainer.classList.toggle('open');
+                    }
+
                 });
             }
         })
@@ -18,11 +31,13 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Load Hero
-fetch("partials/hero.html")
+fetch("partials/banner.html")
     .then(res => res.text())
     .then(data => {
-        document.querySelector("#hero-placeholder").innerHTML = data;
+        document.querySelector("#banner-placeholder").innerHTML = data;
     });
+
+
 
 // Load Cofee slider
 fetch("partials/coffee-slider.html")
@@ -46,13 +61,3 @@ fetch("partials/download-app.html")
         document.querySelector("#download-app").innerHTML = data;
         await appDownloadButton()
     });
-// Load footer
-fetch("partials/contacts.html")
-    .then(res => res.text())
-    .then(async data => {
-        document.querySelector("#contacts").innerHTML = data;
-        await injectSocialIcons('.social-icons')
-    }).catch(err => console.error("Error loading footer:", err));
-
-
-

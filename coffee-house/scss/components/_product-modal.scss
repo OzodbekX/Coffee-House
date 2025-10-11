@@ -4,7 +4,7 @@
 .modal {
   position: fixed;
   inset: 0;
-  background: $color-bg-backdrop;
+  background:  rgba($color-bg-backdrop, 0.95);
   display: flex;
   align-items: center;
   justify-content: center;
