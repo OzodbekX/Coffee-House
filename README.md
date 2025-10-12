@@ -1,31 +1,12 @@
-# ☕ Coffee House Website  
+# Coffee House ☕
 
-A simple **HTML + SCSS** project with reusable components (header & footer as partials).  
-Designed for both **desktop and mobile**.  
+## 📄 Description  
+Coffee House is a static website built with HTML, SCSS, and JavaScript. It showcases coffee products, café information, menus, and more — all visually styled and interactive.
 
----
+## 🌐 Live Demo  
+[Visit the live site](https://OzodbekX.github.io/Coffee-House/)  
 
-## 📂 Project Structure  
-
-
----
-
-## 🚀 Getting Started  
-
-### 1️⃣ Install Dependencies  
-Make sure you have **Node.js** installed.  
-
-Install Sass and a simple dev server:  
-```bash
-npm install -g sass live-server
-```
-### 1️⃣ Install Dependencies  
-Compiling scss into css
-One-time build:
-```bash
-sass scss/main.scss css/main.css
-```
-Start a local server so fetch() works for header/footer partials:
-```bash
-npx live-server
-```
+## 🧱 Technologies  
+- HTML5  
+- SCSS / CSS  
+- JavaScript (vanilla)  
