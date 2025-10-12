@@ -43,7 +43,6 @@ async function loadCoffeeSlider() {
         console.error("Error loading products:", err);
     }
 }
-
 function setupSliderNavigation() {
     const sliderContainer = document.getElementById("coffee-slides");
     const nextBtn = document.querySelector(".slider-btn.next");
@@ -52,72 +51,105 @@ function setupSliderNavigation() {
     
     const slideWidth = sliderContainer.querySelector(".coffee-card").offsetWidth + 16; // 16 = gap
     let currentIndex = 0;
+    let autoScrollInterval;
+    let autoScrollTimeout;
+    const AUTO_SCROLL_DELAY = 5000; // 5 seconds
+    let remainingTime = AUTO_SCROLL_DELAY;
+    let lastStartTime = Date.now();
 
-    // Update active dot based on scroll position
+    // Update active dot
     function updateActiveDot() {
         const scrollPosition = sliderContainer.scrollLeft;
         const newIndex = Math.round(scrollPosition / slideWidth);
         if (newIndex !== currentIndex) {
             currentIndex = newIndex;
-            
             dots.forEach((dot, index) => {
-                if (index === currentIndex) {
-                    dot.classList.add("active");
-                } else {
-                    dot.classList.remove("active");
-                }
+                dot.classList.toggle("active", index === currentIndex);
             });
         }
     }
-    
 
     // Scroll to specific slide
-    const scrollToSlide=async(index)=> {
+    const scrollToSlide = async (index) => {
         const res = await fetch("data/products.json");
         const products = await res.json();
-        
         const maxIndex = products.length - 1;
-        if (index < 0) index = 0;
-        if (index > maxIndex) index = maxIndex;
-        
+
+        if (index > maxIndex) index = 0;
+        if (index < 0) index = maxIndex;
+
         sliderContainer.scrollTo({
             left: index * slideWidth,
-            behavior: "smooth"
+            behavior: "smooth",
         });
-        
-        currentIndex = index;
-        
-        // Update active dot
-        dots.forEach((dot, i) => {
-            if (i === currentIndex) {
-                dot.classList.add("active");
-            } else {
-                dot.classList.remove("active");
-            }
-        });
-    }
 
-    // Next button click
+        currentIndex = index;
+        dots.forEach((dot, i) => {
+            dot.classList.toggle("active", i === currentIndex);
+        });
+    };
+
+    // Button clicks
     nextBtn.addEventListener("click", () => {
         scrollToSlide(currentIndex + 1);
+        restartAutoScroll();
     });
 
-    // Previous button click
     prevBtn.addEventListener("click", () => {
         scrollToSlide(currentIndex - 1);
+        restartAutoScroll();
     });
 
-    // Dot click events
+    // Dot clicks
     dots.forEach(dot => {
         dot.addEventListener("click", () => {
-            const index = parseInt(dot.getAttribute('data-index'));
+            const index = parseInt(dot.getAttribute("data-index"));
             scrollToSlide(index);
+            restartAutoScroll();
         });
     });
 
-    // Update dots on scroll
+    // Scroll updates
     sliderContainer.addEventListener("scroll", updateActiveDot);
+
+    // --- Auto Scroll Logic ---
+    function startAutoScroll(delay = AUTO_SCROLL_DELAY) {
+        clearInterval(autoScrollInterval);
+        clearTimeout(autoScrollTimeout);
+        lastStartTime = Date.now();
+
+        autoScrollTimeout = setTimeout(() => {
+            scrollToSlide(currentIndex + 1);
+            startAutoScroll(AUTO_SCROLL_DELAY);
+        }, delay);
+    }
+
+    function pauseAutoScroll() {
+        clearTimeout(autoScrollTimeout);
+        const elapsed = Date.now() - lastStartTime;
+        remainingTime = Math.max(0, AUTO_SCROLL_DELAY - elapsed);
+    }
+
+    function resumeAutoScroll() {
+        startAutoScroll(remainingTime);
+    }
+
+    function restartAutoScroll() {
+        startAutoScroll(AUTO_SCROLL_DELAY);
+    }
+
+    // --- Pause on hover or touch ---
+    sliderContainer.addEventListener("mouseenter", pauseAutoScroll);
+    sliderContainer.addEventListener("mouseleave", resumeAutoScroll);
+
+    // For mobile: pause on touch hold
+    sliderContainer.addEventListener("touchstart", pauseAutoScroll);
+    sliderContainer.addEventListener("touchend", resumeAutoScroll);
+
+    // Start auto scroll
+    startAutoScroll();
 }
+
 
 // Load slider when DOM is ready
 document.addEventListener('DOMContentLoaded', loadCoffeeSlider);

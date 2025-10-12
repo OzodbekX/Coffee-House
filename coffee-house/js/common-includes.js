@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
             // Attach mobile menu toggle logic after header is loaded
             const toggleBtn = document.querySelector(".menu-toggle");
 
-
             if (toggleBtn) {
                 toggleBtn.addEventListener("click", () => {
                     toggleBtn.classList.toggle("active");
