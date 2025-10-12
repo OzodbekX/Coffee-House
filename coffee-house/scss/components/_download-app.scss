@@ -1,0 +1,121 @@
+@use "../_variables" as *;
+@use "../typography" as *;
+
+.download-app {
+    width: 100%;
+    margin-bottom: 100px;
+
+    .download-app-container {
+        width: 100%;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 40px;
+        flex-wrap: wrap; // responsive
+    }
+
+    .download-app-content {
+        flex: 1;
+        max-width: 630px;
+
+
+        p {
+            margin: 40px 0;
+
+        }
+
+        .app-buttons {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+
+            .app-btn {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 12px 20px;
+                text-decoration: none;
+                color: $color-text-dark;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+                transition: transform 0.2s ease;
+                font-size: 14px;
+                line-height: 1.2;
+                cursor: pointer;
+                font-family: inherit;
+                width: 200px;
+                height: 64px;
+                border: 1px solid $color-border-dark;
+                border-radius: 32px;
+
+
+
+                img {
+                    width: 36px;
+                    height: 36px;
+
+                    &.light {
+                        display: none;
+                    }
+                }
+
+                span {
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                &:hover {
+                    background-color: $color-bg-container;
+                    span, strong {
+                        color: $color-text-light;
+                    }
+
+                    img {
+                        &.light {
+                            display: flex;
+                        }
+
+                        &.dark {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+    }
+
+    .download-app-images {
+        flex: 1;
+        max-width: 630px;
+        aspect-ratio: 1;
+        position: relative;
+        .phone {
+            width: 100%;
+            object-fit: cover;
+        }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .download-app-container {
+            flex-direction: column;
+            margin: 0;
+            .download-app-content{
+                max-width: 100%;
+            }
+        }
+
+        .download-app-images {
+            margin-top: 40px;
+
+            .phone-1,
+            .phone-2 {
+                transform: none;
+                margin: 0 10px;
+            }
+        }
+    }
+}

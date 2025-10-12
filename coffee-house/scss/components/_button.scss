@@ -1,0 +1,34 @@
+@use "../_variables" as *;
+@use "../typography" as *;
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 32px;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 100px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+    text-decoration: none; // in case you use <a> as button
+    @extend .text-link-button;
+  
+    &--primary {
+      background-color: $color-bg-body;
+      color: $color-text-dark;
+    }
+  
+    &--secondary {
+      background-color: white;
+      border: 1px solid $color-border-dark;
+  
+      &:hover {
+        background-color: $color-bg-container;
+        color: $color-text-light;
+      }
+    }
+  }
+  

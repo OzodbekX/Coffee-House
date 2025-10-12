@@ -1,0 +1,170 @@
+@use "../variables" as *;
+@use "../typography" as *;
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background:  rgba($color-bg-backdrop, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  transition: opacity 0.3s ease;
+
+  &.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .modal-content {
+    background: $color-bg-body;
+    border-radius: 40px;
+    display: flex;
+    flex-direction: row;
+    padding: 16px;
+    width: 800px;
+    align-items: start;
+    max-width: calc(100% - 40px);
+    animation: fadeIn 0.3s ease;
+
+    @media (max-width: 600px) {
+      flex-direction: column;
+      width: calc(100% - 40px);
+    }
+  }
+
+  .modal-image {
+    width: 310px;
+    border-radius: 12px;
+    object-fit: contain;
+    aspect-ratio: 1/1;
+    max-width: max(40%, 310px);
+  }
+
+  .modal-details {
+    display: flex;
+    flex-direction: column;
+    padding-left: 20px;
+    flex: 1;
+
+    .modal-title {
+      margin-bottom: 12px;
+      color: $color-text-dark;
+    }
+
+    .modal-description {
+      color: $color-text-dark;
+      margin-bottom: 20px;
+    }
+
+    .option-group {
+      margin-bottom: 20px;
+
+      p {
+        margin-bottom: 8px;
+      }
+
+      .sizes,
+      .additives {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+
+        button {
+          border: 1px solid $color-border-light;
+          border-radius: 100px;
+          background-color: transparent;
+          padding: 8px 16px 8px 8px;
+          cursor: pointer;
+          font-size: 0.9rem;
+          transition: all 0.2s ease;
+          display: flex;
+          gap: 8px;
+          align-items: center;
+
+          .size-key {
+            height: 30px !important;
+            width: 30px !important;
+            background-color: $color-border-light;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+          }
+
+          &.active {
+            background: $color-bg-container;
+            color: $color-border-light;
+            div:last-child{
+              color: $color-border-light;
+            }
+            .size-key{
+              background-color: $color-bg-body;
+            }
+
+          }
+        }
+      }
+    }
+
+    .total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+
+    .note {
+      color: $color-text-dark;
+      margin-bottom: 20px;
+      gap: 12px;
+      display: flex;
+    }
+
+    .close-btn {
+      transition: all 0.3s ease;
+      padding: 10px;
+      width: 100%;
+      background-color: $color-bg-body;
+      border: 1px solid $color-border-dark; 
+      border-radius: 100px;
+      cursor: pointer;
+      &:hover{
+        background-color: $color-bg-container;
+        color: $color-text-light;
+      }
+
+    }
+  }
+
+  @media (max-width:768px) {
+    .modal-content{
+      max-width: 668px;
+      max-height: 100vh;
+
+
+    }    
+  }
+  @media (max-width:380px) {
+    .modal-image{
+      display: none;
+    } 
+    .modal-details{
+      padding: 0;
+    }   
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
