@@ -76,10 +76,7 @@
 
                     }
 
-                    img {
-                        height: 20px;
-                        width: 20px;
-                    }
+                   
                 }
             }
         }
@@ -89,7 +86,6 @@
     &.open {
         .menu-panel {
             transform: translateY(0);
-
             li {
                 opacity: 1;
                 transform: translateY(0);

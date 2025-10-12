@@ -38,7 +38,7 @@
     border-radius: 12px;
     object-fit: contain;
     aspect-ratio: 1/1;
-    max-width: 40%;
+    max-width: max(40%, 310px);
   }
 
   .modal-details {
@@ -137,6 +137,23 @@
       }
 
     }
+  }
+
+  @media (max-width:768px) {
+    .modal-content{
+      max-width: 668px;
+      max-height: 100vh;
+
+
+    }    
+  }
+  @media (max-width:380px) {
+    .modal-image{
+      display: none;
+    } 
+    .modal-details{
+      padding: 0;
+    }   
   }
 }
 

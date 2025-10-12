@@ -61,9 +61,6 @@ fetch("partials/mobile-navbar.html")
 
     });
 
-
-
-
     // Load footer
 fetch("partials/contacts.html")
 .then(res => res.text())

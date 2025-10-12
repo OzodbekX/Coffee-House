@@ -126,8 +126,10 @@
     
     }
   }
-
-  
-
+  @media (max-width:380px) {
+    .slider-btn{
+      display: none;
+    }
+  }
 
 }
