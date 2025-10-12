@@ -14,6 +14,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     toggleBtn.classList.toggle("active");
                 });
             }
+            if (window.location.pathname.endsWith("menu.html")) {
+                toggleBtn.classList.add("active");        // make it look active
+                toggleBtn.style.pointerEvents = "none";   // make it unclickable
+                toggleBtn.style.opacity = "0.6";          // optional visual cue
+                toggleBtn.style.cursor = "default";       // disable pointer cursor
+            }
+        
 
             const mobileMenuButton = document.querySelector('.mobile-navbar-button');
             const mobileNavbarContainer = document.querySelector('.mobile-navbar-container');
