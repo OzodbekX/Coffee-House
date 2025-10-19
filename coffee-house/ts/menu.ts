@@ -7,7 +7,7 @@ async function loadHeaderMenu(): Promise<void> {
     const res = await fetch("partials/header.html");
     if (!res.ok) throw new Error("Failed to load header.html");
 
-    const html = await res.text();
+    const html :string= await res.text();
     const headerPlaceholder = document.querySelector<HTMLElement>("#header-placeholder");
     if (headerPlaceholder) headerPlaceholder.innerHTML = html;
 

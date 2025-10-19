@@ -1,10 +1,8 @@
 // Define the product data structure (matches your JSON)
-interface Product {
-    name: string;
-    description: string;
-    price: string | number;
-    image: string;
-}
+
+import { fetchFavoriteProducts } from "./api";
+import { SliderProduct } from "./types";
+
 
 /**
  * Loads coffee slider products and sets up interactive navigation.
@@ -12,18 +10,17 @@ interface Product {
 export async function loadCoffeeSlider(): Promise<void> {
     const sliderContainer = document.getElementById("coffee-slides");
     const dotsContainer = document.getElementById("slider-dots");
-    console.log({sliderContainer,dotsContainer});
     if (!sliderContainer || !dotsContainer) {
         console.error("Slider containers not found.");
         return;
     }
-
     try {
         const res = await fetch("data/products.json");
-        if (!res.ok) throw new Error("Failed to load products.json");
-        console.log("res", res);
+        const productssss = await fetchFavoriteProducts();
+        console.log(productssss);
 
-        const products: Product[] = await res.json();
+        if (!res.ok) throw new Error("Failed to load products.json");
+        const products: SliderProduct[] = await res.json();
 
         // Clear existing content
         sliderContainer.innerHTML = "";
@@ -36,7 +33,7 @@ export async function loadCoffeeSlider(): Promise<void> {
             slide.classList.add("coffee-card");
             slide.dataset.index = String(index);
             slide.innerHTML = `
-        <img src="../assets/images/${product.image}.png" alt="${product.name}" class="coffee-card__img" />
+        <img src="../assets/images/${product.name}.png" alt="${product.name}" class="coffee-card__img" />
         <div class="coffee-card__info">
           <h3 class="heading-3">${product.name}</h3>
           <p class="text-medium">${product.description}</p>
@@ -66,7 +63,7 @@ export async function loadCoffeeSlider(): Promise<void> {
 function setupSliderNavigation(
     sliderContainer: HTMLElement,
     dotsContainer: HTMLElement,
-    products: Product[]
+    products: SliderProduct[]
 ): void {
     const nextBtn = document.querySelector<HTMLButtonElement>(".slider-btn.next");
     const prevBtn = document.querySelector<HTMLButtonElement>(".slider-btn.prev");

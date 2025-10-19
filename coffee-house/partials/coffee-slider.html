@@ -1,6 +1,6 @@
 <div class="coffee-slider-container">
     <h2 class="heading-2">Choose your <i class="accent">favorite</i> coffee</h2>
-    
+
     <div class="coffee-slider">
         <button class="slider-btn prev">&larr;</button>
         <div class="coffee-slides" id="coffee-slides">
@@ -8,8 +8,18 @@
         </div>
         <button class="slider-btn next">&rarr;</button>
     </div>
-    
+    <div class="slider-loader" id="slider-loader">
+        <div class="coffee-loader">
+            <div class="cup"></div>
+            <div class="steam steam1"></div>
+            <div class="steam steam2"></div>
+            <div class="steam steam3"></div>
+        </div>
+        <p class="loading-text">Brewing your coffee...</p>
+    </div>
+
     <div class="slider-dots" id="slider-dots">
         <!-- Dots will be injected here by JS -->
     </div>
+
 </div>

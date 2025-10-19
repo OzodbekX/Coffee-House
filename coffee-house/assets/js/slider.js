@@ -1,19 +1,21 @@
+// Define the product data structure (matches your JSON)
+import { fetchFavoriteProducts } from "./api.js";
 /**
  * Loads coffee slider products and sets up interactive navigation.
  */
 export async function loadCoffeeSlider() {
     const sliderContainer = document.getElementById("coffee-slides");
     const dotsContainer = document.getElementById("slider-dots");
-    console.log({ sliderContainer, dotsContainer });
     if (!sliderContainer || !dotsContainer) {
         console.error("Slider containers not found.");
         return;
     }
     try {
         const res = await fetch("data/products.json");
+        const productssss = await fetchFavoriteProducts();
+        console.log(productssss);
         if (!res.ok)
             throw new Error("Failed to load products.json");
-        console.log("res", res);
         const products = await res.json();
         // Clear existing content
         sliderContainer.innerHTML = "";
@@ -25,7 +27,7 @@ export async function loadCoffeeSlider() {
             slide.classList.add("coffee-card");
             slide.dataset.index = String(index);
             slide.innerHTML = `
-        <img src="../assets/images/${product.image}.png" alt="${product.name}" class="coffee-card__img" />
+        <img src="../assets/images/${product.name}.png" alt="${product.name}" class="coffee-card__img" />
         <div class="coffee-card__info">
           <h3 class="heading-3">${product.name}</h3>
           <p class="text-medium">${product.description}</p>

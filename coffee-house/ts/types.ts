@@ -20,3 +20,12 @@ export interface MenuProduct {
     sizes: Record<string, ProductSize>;
     additives: ProductAdditive[];
 }
+
+export interface SliderProduct {
+    category: "coffee" | 'tea',
+    description: string,
+    discountPrice: string,
+    id: number,
+    name: string,
+    price: string
+}
