@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "esnext",
+    "lib": ["es2020", "dom"],
+    "rootDir": "./ts",
+    "outDir": "./assets/js",
+    "strict": true,
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "moduleResolution": "bundler",
+    "sourceMap": true,
+  },
+  "include": ["ts/**/*"]
+}
