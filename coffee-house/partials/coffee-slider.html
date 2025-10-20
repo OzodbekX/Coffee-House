@@ -1,21 +1,19 @@
-<div class="coffee-slider-container">
+<div id="coffee-slider-container" class="coffee-slider-container">
     <h2 class="heading-2">Choose your <i class="accent">favorite</i> coffee</h2>
-
-    <div class="coffee-slider">
+    <div id="coffee-slider" class="coffee-slider">
         <button class="slider-btn prev">&larr;</button>
         <div class="coffee-slides" id="coffee-slides">
             <!-- Slides will be injected here by JS -->
         </div>
         <button class="slider-btn next">&rarr;</button>
     </div>
-    <div class="slider-loader" id="slider-loader">
-        <div class="coffee-loader">
-            <div class="cup"></div>
-            <div class="steam steam1"></div>
-            <div class="steam steam2"></div>
-            <div class="steam steam3"></div>
+    <div class="loader-overlay" id="loader">
+        <div class="loader" role="status" aria-label="Loading">
+            <div class="loader__ring"></div>
+            <div class="loader__core">
+                <div class="loader__dot"></div>
+            </div>
         </div>
-        <p class="loading-text">Brewing your coffee...</p>
     </div>
 
     <div class="slider-dots" id="slider-dots">

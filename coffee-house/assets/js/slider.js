@@ -4,24 +4,29 @@ import { fetchFavoriteProducts } from "./api.js";
  * Loads coffee slider products and sets up interactive navigation.
  */
 export async function loadCoffeeSlider() {
+    const loader = document.getElementById("loader");
     const sliderContainer = document.getElementById("coffee-slides");
     const dotsContainer = document.getElementById("slider-dots");
+    const coffeeSliderContainer = document.getElementById("coffee-slider");
+    const prevBtn = document.querySelector(".slider-btn.prev");
+    const nextBtn = document.querySelector(".slider-btn.next");
     if (!sliderContainer || !dotsContainer) {
-        console.error("Slider containers not found.");
+        console.log("Slider containers not found.");
         return;
     }
+    // Show loader before starting
+    loader?.classList.remove("hidden");
+    coffeeSliderContainer?.classList.add("hidden");
+    dotsContainer?.classList.add("hidden");
+    prevBtn?.classList.remove("hidden");
+    nextBtn?.classList.remove("hidden");
     try {
-        const res = await fetch("data/products.json");
-        const productssss = await fetchFavoriteProducts();
-        console.log(productssss);
-        if (!res.ok)
-            throw new Error("Failed to load products.json");
-        const products = await res.json();
+        const products = await fetchFavoriteProducts();
         // Clear existing content
         sliderContainer.innerHTML = "";
         dotsContainer.innerHTML = "";
         // Render slides and dots
-        products.forEach((product, index) => {
+        products.data.forEach((product, index) => {
             // Create slide
             const slide = document.createElement("div");
             slide.classList.add("coffee-card");
@@ -44,10 +49,29 @@ export async function loadCoffeeSlider() {
             dotsContainer.appendChild(dot);
         });
         // Initialize navigation
-        setupSliderNavigation(sliderContainer, dotsContainer, products);
+        setupSliderNavigation(sliderContainer, dotsContainer, products.data);
     }
     catch (err) {
         console.error("Error loading products:", err);
+        // --- Hide loader and show error message ---
+        loader?.classList.add("hidden");
+        prevBtn?.classList.add("hidden");
+        nextBtn?.classList.add("hidden");
+        // Clear previous content (if any)
+        sliderContainer.innerHTML = "";
+        // Create and append error message
+        const errorMsg = document.createElement("p");
+        errorMsg.classList.add("error-message");
+        errorMsg.className = "error-message";
+        errorMsg.textContent = "Something went wrong. Please, refresh the page.";
+        sliderContainer.appendChild(errorMsg);
+    }
+    finally {
+        setTimeout(() => loader?.classList.add("hidden"), 300);
+        setTimeout(() => coffeeSliderContainer?.classList.remove("hidden"), 300);
+        setTimeout(() => dotsContainer?.classList.remove("hidden"), 300);
+        setTimeout(() => prevBtn?.classList.remove("hidden"), 300);
+        setTimeout(() => nextBtn?.classList.remove("hidden"), 300);
     }
 }
 /**
