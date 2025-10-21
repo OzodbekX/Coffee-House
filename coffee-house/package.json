@@ -1,23 +1,16 @@
 {
   "name": "coffee-house",
-  "version": "1.0.0",
-  "main": "index.js",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
-    "style": "sass --watch scss/main.scss css/main.css",
-    "start": "sass scss/main.scss css/main.css && npx tsc && node fix-imports.mjs && npx live-server --port=8080",
-    "watch": "npx tsc --watch"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "devDependencies": {
-    "@types/node": "^24.8.1",
-    "@typescript-eslint/eslint-plugin": "^8.46.1",
-    "@typescript-eslint/parser": "^8.46.1",
-    "eslint": "^9.38.0",
-    "typescript": "^5.9.3"
+    "typescript": "~5.9.3",
+    "vite": "^7.1.7",
+    "vite-plugin-html-inject": "^1.1.2"
   }
 }

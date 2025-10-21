@@ -1,4 +1,6 @@
 import {menuProducts} from "./menu-tabs"
+import '@scss/main.scss'
+
 /**
  * Initializes the header and its interactive elements.
  */

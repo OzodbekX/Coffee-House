@@ -1,5 +1,6 @@
 import {loadCoffeeSlider} from "./slider";
 import {appDownloadButton } from "./app-buttons";
+import '@scss/main.scss'
 
 /**
  * Safely loads HTML from a partial file into a container.
