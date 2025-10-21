@@ -1,5 +1,5 @@
-@use "../variables" as *;
-
+@use "@scss/_variables.scss" as *;
+@use "@scss/typography.scss" as *;
 .header {
   padding: 0;
   margin: 20px 0;

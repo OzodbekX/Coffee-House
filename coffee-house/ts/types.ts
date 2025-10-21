@@ -11,21 +11,14 @@ export interface ProductAdditive {
 }
 
 
-export interface MenuProduct {
-    name: string;
-    image_url: string;
-    description: string;
-    price: string | number;
-    category: string;
-    sizes: Record<string, ProductSize>;
-    additives: ProductAdditive[];
-}
-
 export interface SliderProduct {
-    category: "coffee" | 'tea',
-    description: string,
-    discountPrice: string,
-    id: number,
     name: string,
+    discountPrice: string,
+    category: "coffee" | "tea" | "dessert",
     price: string
+    description: string,
+    id: number,
+}
+export interface MenuProduct extends SliderProduct {
+    discountPrice: string
 }

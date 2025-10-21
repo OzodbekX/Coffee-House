@@ -1,20 +1,14 @@
 <div id="coffee-slider-container" class="coffee-slider-container">
     <h2 class="heading-2">Choose your <i class="accent">favorite</i> coffee</h2>
     <div id="coffee-slider" class="coffee-slider">
-        <button class="slider-btn prev">&larr;</button>
+        <button id="left-slider-button" class="slider-btn prev">&larr;</button>
         <div class="coffee-slides" id="coffee-slides">
             <!-- Slides will be injected here by JS -->
         </div>
-        <button class="slider-btn next">&rarr;</button>
+        <button id="right-slider-button" class="slider-btn next">&rarr;</button>
     </div>
-    <div class="loader-overlay" id="loader">
-        <div class="loader" role="status" aria-label="Loading">
-            <div class="loader__ring"></div>
-            <div class="loader__core">
-                <div class="loader__dot"></div>
-            </div>
-        </div>
-    </div>
+    <include src="./partials/loader.html"></include>
+
 
     <div class="slider-dots" id="slider-dots">
         <!-- Dots will be injected here by JS -->

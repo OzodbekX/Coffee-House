@@ -1,5 +1,6 @@
+import { fetchProducts } from "./api";
 import { showModal } from "./product-modal";
-import { MenuProduct } from "./types";
+import type { MenuProduct } from "./types";
 
 /**
  * Loads menu products, handles tab switching, and renders products.
@@ -15,15 +16,24 @@ export async function menuProducts(): Promise<void> {
     }
 
     let products: MenuProduct[] = [];
+    const loader = document.getElementById("loader");
 
     // Load product data
     try {
-        const res = await fetch("data/menu-products.json");
-        if (!res.ok) throw new Error("Failed to load menu-products.json");
-        products = await res.json();
+        loader?.classList.remove("hidden");
+        productsContainer.classList.add("hidden");
+
+        const res = await fetchProducts();
+        products = res.data
         renderProducts("coffee");
     } catch (error) {
+        loader?.classList.add("hidden");
+        productsContainer.classList.remove("hidden");
+        productsContainer.innerHTML = "Something went wrong. Please, refresh the page...";
         console.error("Error loading products:", error);
+    } finally {
+        setTimeout(() => loader?.classList.add("hidden"), 300);
+        setTimeout(() => productsContainer.classList.remove("hidden"), 300);
     }
 
     // Tab switching logic
@@ -61,6 +71,7 @@ export async function menuProducts(): Promise<void> {
         const filtered = products.filter(
             (p) => p.category.toLowerCase() === category.toLowerCase()
         );
+        console.log(filtered);
 
         filtered.forEach((prod) => {
             const card = createProductCard(prod);
@@ -78,12 +89,10 @@ export async function menuProducts(): Promise<void> {
         const card = document.createElement("div");
         card.classList.add("product-card");
 
-        const price = typeof product.price === "number"
-            ? product.price.toFixed(2)
-            : parseFloat(product.price).toFixed(2);
+        const price = parseFloat(product.price).toFixed(2);
 
         card.innerHTML = `
-      <img src="${product.image_url}" alt="${product.name}">
+      <img src="assets/images/${product.name}.png" alt="${product.name}">
       <div class="card-body">
         <h3 class="heading-3">${product.name}</h3>
         <p class="text-medium">${product.description}</p>

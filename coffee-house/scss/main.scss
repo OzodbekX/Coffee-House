@@ -1,15 +1,16 @@
-@use "variables" as *; // makes all variables available globally
-@use "typography" as *; // makes all variables available globally
-@use "components/header";
-@use "components/banner";
-@use "components/about";
-@use "components/download-app";
-@use "components/coffee-slider";
-@use "components/button";
-@use "components/contacts";
-@use "components/product-modal";
-@use "components/mobile-navbar";
-@use "pages/menu";
+@use "@scss/_variables.scss" as *; // makes all variables available globally
+@use "@scss/_typography.scss" as *; // makes all variables available globally
+@use "@scss/components/_banner.scss";
+@use "@scss/components/_about.scss";
+@use "@scss/components/_header.scss";
+@use "@scss/components/_download-app.scss";
+@use "@scss/components/_coffee-slider.scss";
+@use "@scss/components/_button.scss";
+@use "@scss/components/_contacts.scss";
+@use "@scss/components/_product-modal.scss";
+@use "@scss/components/_mobile-navbar.scss";
+@use "@scss/pages/menu.scss";
+@use "@scss/components/_loader.scss";
 
 * {
   box-sizing: border-box;

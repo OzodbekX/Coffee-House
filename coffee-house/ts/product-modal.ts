@@ -1,5 +1,5 @@
 // Define the structure of your product data (you already used similar in menu.ts)
-import {MenuProduct, ProductAdditive} from "./types"
+import type {MenuProduct, ProductAdditive} from "./types"
 
 
 /**
@@ -32,7 +32,7 @@ export function showModal(product: MenuProduct): void {
     let firstSizeAddPrice = 0;
 
     // --- Fill static content ---
-    img.src = product.image_url;
+    img.src =`assets/images/${product.name}.png`;
     img.alt = product.name;
     title.textContent = product.name;
     desc.textContent = product.description;
@@ -40,8 +40,22 @@ export function showModal(product: MenuProduct): void {
     // --- Render sizes ---
     sizesContainer.innerHTML = "";
     let firstSizeBtn: HTMLButtonElement | null = null;
+    const productSizes={
+      "s": {
+        "size": "200 ml",
+        "add-price": "0.00"
+      },
+      "m": {
+        "size": "300 ml",
+        "add-price": "0.50"
+      },
+      "l": {
+        "size": "400 ml",
+        "add-price": "1.00"
+      }
+    }
 
-    for (const [key, size] of Object.entries(product.sizes)) {
+    for (const [key, size] of Object.entries(productSizes)) {
         const btn = document.createElement("button");
         btn.innerHTML = `
       <div class="size-key text-link-button">${key.toUpperCase()}</div>
@@ -71,7 +85,21 @@ export function showModal(product: MenuProduct): void {
     // --- Render additives ---
     additivesContainer.innerHTML = "";
     let index = 0;
-    for (const add of product.additives) {
+    const producAdditives=[
+      {
+        "name": "Sugar",
+        "add-price": "0.50"
+      },
+      {
+        "name": "Cinnamon",
+        "add-price": "0.50"
+      },
+      {
+        "name": "Syrup",
+        "add-price": "0.50"
+      }
+    ]
+    for (const add of producAdditives) {
         index++;
         const btn = document.createElement("button");
         btn.innerHTML = `

@@ -1,8 +1,5 @@
-// Define the product data structure (matches your JSON)
-
 import { fetchFavoriteProducts } from "./api";
-import { SliderProduct } from "./types";
-
+import type { SliderProduct } from "./types";
 
 /**
  * Loads coffee slider products and sets up interactive navigation.
@@ -12,8 +9,8 @@ export async function loadCoffeeSlider(): Promise<void> {
     const sliderContainer = document.getElementById("coffee-slides");
     const dotsContainer = document.getElementById("slider-dots");
     const coffeeSliderContainer = document.getElementById("coffee-slider");
-    const prevBtn = document.querySelector<HTMLButtonElement>(".slider-btn.prev");
-    const nextBtn = document.querySelector<HTMLButtonElement>(".slider-btn.next");
+    const prevBtn = document.getElementById("left-slider-button");
+    const nextBtn = document.getElementById("right-slider-button");
 
     if (!sliderContainer || !dotsContainer) {
         console.log("Slider containers not found.");
@@ -23,8 +20,8 @@ export async function loadCoffeeSlider(): Promise<void> {
     loader?.classList.remove("hidden");
     coffeeSliderContainer?.classList.add("hidden")
     dotsContainer?.classList.add("hidden")
-    prevBtn?.classList.remove("hidden");
-    nextBtn?.classList.remove("hidden");
+    prevBtn?.classList.add("hidden");
+    nextBtn?.classList.add("hidden");
 
     try {
         const products = await fetchFavoriteProducts();
@@ -60,22 +57,16 @@ export async function loadCoffeeSlider(): Promise<void> {
         // Initialize navigation
         setupSliderNavigation(sliderContainer, dotsContainer, products.data);
     } catch (err) {
-        console.error("Error loading products:", err);
-
-        // --- Hide loader and show error message ---
         loader?.classList.add("hidden");
-        prevBtn?.classList.add("hidden");
-        nextBtn?.classList.add("hidden");
-
-        // Clear previous content (if any)
         sliderContainer.innerHTML = "";
-
-        // Create and append error message
         const errorMsg = document.createElement("p");
         errorMsg.classList.add("error-message")
         errorMsg.className = "error-message";
         errorMsg.textContent = "Something went wrong. Please, refresh the page.";
         sliderContainer.appendChild(errorMsg);
+        prevBtn?.classList.add("error-message");
+        nextBtn?.classList.add("error-message");
+
 
     } finally {
         setTimeout(() => loader?.classList.add("hidden"), 300);

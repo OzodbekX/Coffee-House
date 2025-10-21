@@ -1,9 +1,11 @@
 import { defineConfig } from 'vite'
 import { resolve } from 'path'
+import includeHtml from "vite-plugin-include-html";
 
 export default defineConfig({
   root: '.', // your project root
   base: './', // relative paths for deployment (e.g., GitHub Pages)
+  plugins: [includeHtml()], // ✅ correct plugin here
   server: {
     port: 3000,
     open: true,
@@ -22,7 +24,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: `@import "./scss/_variables.scss";`, // optional
+        additionalData: `@use "@scss/_variables.scss";`, // optional
       },
     },
   },
