@@ -22,7 +22,6 @@ export async function menuProducts(): Promise<void> {
     try {
         loader?.classList.remove("hidden");
         productsContainer.classList.add("hidden");
-
         const res = await fetchProducts();
         products = res.data
         renderProducts("coffee");
@@ -71,7 +70,6 @@ export async function menuProducts(): Promise<void> {
         const filtered = products.filter(
             (p) => p.category.toLowerCase() === category.toLowerCase()
         );
-        console.log(filtered);
 
         filtered.forEach((prod) => {
             const card = createProductCard(prod);
@@ -102,7 +100,6 @@ export async function menuProducts(): Promise<void> {
 
         // On click — open product modal
         card.addEventListener("click", () => {
-            console.log(`Open modal for ${product.name}`);
             showModal(product);
         });
 
