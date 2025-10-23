@@ -1,7 +1,6 @@
-import {loadCoffeeSlider} from "./slider";
-import {appDownloadButton } from "./app-buttons";
-import '@scss/main.scss'
-
+import {loadCoffeeSlider} from "./slider.ts";
+import {appDownloadButton } from "./app-buttons.ts";
+import "../scss/_main.scss"
 /**
  * Safely loads HTML from a partial file into a container.
  */

@@ -22,3 +22,12 @@ export interface SliderProduct {
 export interface MenuProduct extends SliderProduct {
     discountPrice: string
 }
+
+export interface UserData {
+    login: string;
+    token: string;
+    city: string;
+    street: string;
+    house: string;
+    payBy: string;
+}

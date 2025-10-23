@@ -1,5 +1,5 @@
-import { menuProducts } from "./menu-tabs"
-import '@scss/main.scss'
+import type { menuProducts } from "./menu-tabs"
+import "../scss/_main.scss"
 
 /**
  * Initializes the header and its interactive elements.

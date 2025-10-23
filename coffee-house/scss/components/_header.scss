@@ -59,11 +59,20 @@
     display: none;
   }
 
+  .shopping-cart-link{
+    background-color: transparent;
+    display: flex;
+    gap: 8px;
+    border: none;
+    align-items: center;
+    line-height: 100%;
+    margin-left:auto;
+    cursor: pointer;
+  }
 
 
   @media (max-width:768px) {
     .mobile-navbar-button {
-      display: block;
       background-color: transparent;
       border: 1px solid $color-border-dark;
       height: 44px;
