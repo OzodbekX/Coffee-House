@@ -1,0 +1,63 @@
+export function renderPrice(
+  price: string | number,
+  discountPrice?: string | number,
+  options?: { authed?: boolean }
+): string {
+  const isAuthed = options?.authed ?? Boolean(localStorage.getItem("user"));
+  if (!isAuthed) return "";
+
+  const priceNum = Number(price);
+  const hasDiscount =
+    discountPrice !== undefined && discountPrice !== null && Number(discountPrice) < priceNum;
+
+  const priceText = `$${priceNum.toFixed(2)}`;
+  if (hasDiscount) {
+    const discText = `$${Number(discountPrice).toFixed(2)}`;
+    return writePriceWithDiscount(priceText, discText)
+  }
+
+  return writePriceWithDiscount(priceText)
+}
+
+
+export function writePriceWithDiscount(priceText: string, discText?: string) {
+  if (discText) return `
+      <div class="price-block" style="display:flex; align-items:center; gap:8px;">
+        <h3 class="price heading-3" style="margin:0;">${discText}</h3>
+        <h3 class="old-price heading-3" style="margin:0; text-decoration:line-through; opacity:0.5;">${priceText}</h3>
+      </div>
+    `;
+    else return `<h3 class=\"price heading-3\">${priceText}</h3>`;
+
+}
+
+// ---- Price calculation helper ----
+export interface CalcPriceArgs {
+  product: { price: string | number; discountPrice?: string | number };
+  size?: number | string; // add-price from selected size (e.g., 0, 0.5, 1)
+  additives?: Array<number | { [key: string]: string }>; // accepts numbers or objects with "add-price"
+}
+
+export interface CalcPriceResult {
+  total: number; // base price + size + additives
+  discounted: number; // discount base + size + additives
+}
+
+export function calculatePrice({ product, size = 0, additives = [] }: CalcPriceArgs): CalcPriceResult {
+  const base = Number(product.price) || 0;
+  const discountBase =
+    product.discountPrice !== undefined && product.discountPrice !== null
+      ? Number(product.discountPrice)
+      : base;
+
+  const toNumber = (v: number | { [key: string]: string }): number =>
+    typeof v === "number" ? v : Number((v as any)["add-price"]) || 0;
+
+  const addSum: number = additives.reduce<number>((acc, item) => acc + toNumber(item), 0);
+  const sizeNum = Number(size) || 0;
+  const delta = sizeNum + addSum;
+  const total = base + delta;
+  const discounted = discountBase + delta;
+
+  return { total, discounted };
+}

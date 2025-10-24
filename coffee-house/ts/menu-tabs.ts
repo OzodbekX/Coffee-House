@@ -1,4 +1,5 @@
 import { fetchProducts } from "./api";
+import { renderPrice } from "./helpers";
 import { showModal } from "./product-modal";
 import type { ProductType } from "./types";
 
@@ -86,24 +87,7 @@ export async function menuProducts(): Promise<void> {
         const card = document.createElement("div");
         card.classList.add("product-card");
 
-        const isAuthed = Boolean(localStorage.getItem("user"));
-        const price = parseFloat(product.price).toFixed(2);
-        const hasDiscount = !!product.discountPrice && Number(product.discountPrice) < Number(product.price);
-        const discounted = hasDiscount ? parseFloat(product.discountPrice as unknown as string).toFixed(2) : null;
-
-        let priceHtml = "";
-        if (isAuthed) {
-            if (hasDiscount && discounted) {
-                priceHtml = `
-                  <div class="price-block" style="display:flex; align-items:center; gap:8px;">
-                    <h3 class="price heading-3" style="margin:0;">$${discounted}</h3>
-                    <h3 class="old-price heading-3" style="margin:0; text-decoration:line-through; opacity:0.5;">$${price}</h3>
-                  </div>
-                `;
-            } else {
-                priceHtml = `<h3 class=\"price heading-3\">$${price}</h3>`;
-            }
-        }
+        const priceHtml = renderPrice(product.price, product.discountPrice);
 
         card.innerHTML = `
           <img src="assets/images/${product.name}.png" alt="${product.name}">

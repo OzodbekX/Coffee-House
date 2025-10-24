@@ -1,5 +1,7 @@
 // Define the structure of your product data (you already used similar in menu.ts)
 import { fetchProductById } from "./api";
+import { calculatePrice, renderPrice, writePriceWithDiscount } from "./helpers";
+
 import type { ProductType } from "./types"
 
 
@@ -85,7 +87,7 @@ function fillModal(modal: HTMLElement, product: ProductType) {
     `;
 
     // --- Hover tooltip ---
-    btn.addEventListener("mouseenter", (e) => showTooltip(e, size["add-price"]));
+    btn.addEventListener("mouseenter", (e) => showTooltip(e, size["add-price"], "size"));
     btn.addEventListener("mouseleave", hideTooltip);
 
     btn.addEventListener("click", () => {
@@ -126,7 +128,7 @@ function fillModal(modal: HTMLElement, product: ProductType) {
     `;
 
     // --- Hover tooltip ---
-    btn.addEventListener("mouseenter", (e) => showTooltip(e, add["add-price"]));
+    btn.addEventListener("mouseenter", (e) => showTooltip(e, add["add-price"], "additive", add));
     btn.addEventListener("mouseleave", hideTooltip);
 
     btn.addEventListener("click", () => {
@@ -142,30 +144,58 @@ function fillModal(modal: HTMLElement, product: ProductType) {
   // --- Update total price ---
   function updateTotal(): void {
     let total = basePrice;
-    if (selectedSize) total += selectedSize;
     selectedAdditives.forEach((a) => (total += parseFloat(a["add-price"])));
     if (priceEl) {
-      priceEl.textContent = `$${total.toFixed(2)}`;
-
+      const { total, discounted } = calculatePrice({
+        product: { price: product.price, discountPrice: product.discountPrice },
+        size: selectedSize,
+        additives: Array.from(selectedAdditives)
+      });
+      priceEl.innerHTML = renderPrice(total, discounted);
     }
   }
 
   // --- Tooltip Handlers ---
-  function showTooltip(e: MouseEvent, addPrice: string) {
-    console.log("33333333333333333",e.pageY)
-    const total = basePrice + parseFloat(addPrice || "0") + selectedSize;
-    const discounted = total - (basePrice - discountPrice);
-    tooltip.innerHTML = `
-      <div><strong>Total:</strong> $${total.toFixed(2)}</div>
-      <div><strong>With discount:</strong> $${discounted.toFixed(2)}</div>
-    `;
+  function showTooltip(
+    e: MouseEvent,
+    addPrice: string,
+    kind: "size" | "additive",
+    hoveredAdd?: { name: string; "add-price": string }
+  ) {
+    let sizeAddon = 0;
+    let additivesForCalc: Array<{ [key: string]: string }> = Array.from(selectedAdditives);
+
+    if (kind === "size") {
+      // Use hovered size only; exclude currently selected size
+      sizeAddon = Number(addPrice || 0);
+    } else {
+      // kind === "additive": include selected size + hovered additive (if not already selected)
+      sizeAddon = Number(selectedSize) || 0;
+      if (hoveredAdd && !selectedAdditives.has(hoveredAdd)) {
+        additivesForCalc = [...additivesForCalc, hoveredAdd];
+      }
+    }
+
+    const { total, discounted } = calculatePrice({
+      product: { price: product.price, discountPrice: product.discountPrice },
+      size: sizeAddon,
+      additives: additivesForCalc
+    });
+    const isAuthed = Boolean(localStorage.getItem("user"));
+    let totalHtml = "";
+    if (isAuthed) {
+      totalHtml = writePriceWithDiscount(total.toFixed(2), discounted.toFixed(2));
+    } else {
+      totalHtml = writePriceWithDiscount(total.toFixed(2));
+    }
+
+    tooltip.innerHTML = totalHtml
     tooltip.classList.remove("hidden");
     tooltip.style.left = `${e.pageX + 15}px`;
     tooltip.style.top = `${e.pageY + 15}px`;
   }
 
   function hideTooltip() {
-    console.log("44444444444444444")
     tooltip.classList.add("hidden");
   }
 
