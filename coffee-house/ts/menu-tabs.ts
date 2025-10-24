@@ -109,6 +109,5 @@ export async function menuProducts(): Promise<void> {
 
 // Run automatically on DOM load
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("DOMContentLoaded");
     void menuProducts();
 });

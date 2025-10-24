@@ -4,14 +4,13 @@ export function renderPrice(
   options?: { authed?: boolean }
 ): string {
   const isAuthed = options?.authed ?? Boolean(localStorage.getItem("user"));
-  if (!isAuthed) return "";
 
   const priceNum = Number(price);
   const hasDiscount =
     discountPrice !== undefined && discountPrice !== null && Number(discountPrice) < priceNum;
 
   const priceText = `$${priceNum.toFixed(2)}`;
-  if (hasDiscount) {
+  if (hasDiscount && isAuthed) {
     const discText = `$${Number(discountPrice).toFixed(2)}`;
     return writePriceWithDiscount(priceText, discText)
   }
@@ -27,7 +26,7 @@ export function writePriceWithDiscount(priceText: string, discText?: string) {
         <h3 class="old-price heading-3" style="margin:0; text-decoration:line-through; opacity:0.5;">${priceText}</h3>
       </div>
     `;
-    else return `<h3 class=\"price heading-3\">${priceText}</h3>`;
+  else return `<h3 class=\"price heading-3\">${priceText}</h3>`;
 
 }
 
@@ -60,4 +59,26 @@ export function calculatePrice({ product, size = 0, additives = [] }: CalcPriceA
   const discounted = discountBase + delta;
 
   return { total, discounted };
+}
+
+// ---- Header cart count helper ----
+export function setShoppingItemCount(): void {
+  const raw = localStorage.getItem("selectedItems");
+  let parsed: number[] = [];
+  try {
+     parsed = raw ? JSON.parse(raw) : [];
+
+  } catch {
+    parsed = [];
+  }
+  const count = parsed.length;
+  const el = document.getElementById("shopping-item-count");
+  if (!el) return;
+  if (count > 0) {
+    el.textContent = String(count);
+    (el as HTMLElement).style.display = "";
+  } else {
+    el.textContent = "";
+    (el as HTMLElement).style.display = "none";
+  }
 }

@@ -1,5 +1,6 @@
 import type { ProductType, UserData } from "./types.ts";
 import { fetchProducts } from "./api";
+import { renderPrice, setShoppingItemCount, calculatePrice } from "./helpers.ts";
 
 
 function getUserData(): UserData | null {
@@ -7,10 +8,21 @@ function getUserData(): UserData | null {
   return data ? JSON.parse(data) : null;
 }
 
-function getSelectedIds(): number[] {
-  const ids = localStorage.getItem("selectedItems");
-  return ids ? JSON.parse(ids) : [];
+type CartItem = { id: number; size?: number; additives?: Array<{ name: string; "add-price": string }> };
+
+function getSelectedItems(): CartItem[] {
+  const raw = localStorage.getItem("selectedItems");
+  if (!raw) return [];
+  try {
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter((it: any) => it && typeof it.id === "number");
+  } catch {
+    localStorage.removeItem("selectedItems");
+    return [];
+  }
 }
+
 
 function renderCartItems(products: ProductType[]) {
   const container = document.getElementById("cart-items")!;
@@ -20,39 +32,42 @@ function renderCartItems(products: ProductType[]) {
   const actions = document.getElementById("cart-actions")!;
 
   const user = getUserData();
-  const selectedIds = getSelectedIds();
-  const filtered = products.filter(p => selectedIds.includes(p.id));
+  const cartItems = getSelectedItems();
+  const rows = cartItems
+    .map((ci, index) => {
+      const product = products.find(p => p.id === ci.id);
+      if (!product) return null;
+      return { index, ci, product };
+    })
+    .filter(Boolean) as Array<{ index: number; ci: CartItem; product: ProductType }>;
 
   let total = 0;
+  let totalDiscount = 0;
   container.innerHTML = "";
 
-  filtered.forEach(p => {
+  rows.forEach(({ index, ci, product: p }) => {
     const item = document.createElement("div");
     item.className = "cart-item";
 
     let priceHTML = "";
-    let priceToAdd = 0;
-    console.log({ user });
-
-    if (user) {
-      priceHTML = `
-        <div class="old-price">$${Number(p.price).toFixed(2)}</div>
-        <div class="new-price">$${Number(p.discountPrice).toFixed(2)}</div>
-      `;
-      priceToAdd = Number(p.discountPrice);
-    } else {
-      priceHTML = `<div class="new-price">$${Number(p.price).toFixed(2)}</div>`;
-      priceToAdd = Number(p.price);
-    }
-
-    total += priceToAdd;
+    const { total: itemTotal, discounted } = calculatePrice({
+      product: { price: p.price, discountPrice: p.discountPrice },
+      size: ci.size || 0,
+      additives: ci.additives || []
+    });
+    priceHTML = renderPrice(itemTotal, discounted);
+    total += Number(itemTotal);
+    totalDiscount += Number(discounted);
 
     item.innerHTML = `
       <div class="item-left">
-        <img class="item-img" src="./images/${p.id}.jpg" alt="${p.name}" />
+        <div class="remove-item-icon" style="cursor:pointer" data-index="${index}">
+         <img width="24" height="24" src="./assets/icons/trash.png"/>
+        </div>
+        <img class="item-img" src="assets/images/${p.name}.png" alt="${p.name}" />
         <div class="item-info">
-          <span class="item-name">${p.name}</span>
-          <span class="item-desc">${p.description}</span>
+          <h3 class="heading-3">${p.name}</h3>
+          <p class="text-medium">${p.description}</p>
         </div>
       </div>
       <div class="item-right">
@@ -60,9 +75,22 @@ function renderCartItems(products: ProductType[]) {
       </div>
     `;
     container.appendChild(item);
+
+    const removeBtn = item.querySelector<HTMLDivElement>(".remove-item-icon");
+    removeBtn?.addEventListener("click", () => {
+      const current = getSelectedItems();
+      const idxAttr = removeBtn.getAttribute("data-index");
+      const idx = idxAttr ? Number(idxAttr) : -1;
+      if (idx >= 0 && idx < current.length) {
+        current.splice(idx, 1);
+        localStorage.setItem("selectedItems", JSON.stringify(current));
+        setShoppingItemCount();
+        renderCartItems(products);
+      }
+    });
   });
 
-  totalEl.textContent = `$${total.toFixed(2)}`;
+  totalEl.innerHTML = renderPrice(total, totalDiscount);
 
   if (user) {
     addressEl.textContent = `${user.city}, ${user.street}, ${user.houseNumber}`;
@@ -76,16 +104,16 @@ function renderCartItems(products: ProductType[]) {
       <a href="registration.html" id="register" class="button button--secondary">Register</a>
     `;
     const addressAndPayment = document.getElementById("cart-summary");
-      const children = addressAndPayment?.children;
-      // Remove second child (index 1)
-      if (children && children?.length > 1) {
-        addressAndPayment?.removeChild(children?.[1]);
-      }
+    const children = addressAndPayment?.children;
+    // Remove second child (index 1)
+    if (children && children?.length > 1) {
+      addressAndPayment?.removeChild(children?.[1]);
+    }
 
-      // Remove last child
-      if (children && children?.length > 0) {
-        addressAndPayment?.removeChild(children?.[children.length - 1]);
-      }
+    // Remove last child
+    if (children && children?.length > 0) {
+      addressAndPayment?.removeChild(children?.[children.length - 1]);
+    }
   }
 
 }
@@ -105,7 +133,7 @@ function renderCartItems(products: ProductType[]) {
     productsContainer?.classList.add("error");
 
     console.error("Error loading products:", err);
-  }finally{
+  } finally {
     setTimeout(() => loader?.classList.add("hidden"), 300);
     setTimeout(() => productsContainer?.classList.remove("hidden"), 300);
   }

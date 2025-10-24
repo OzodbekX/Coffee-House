@@ -33,7 +33,6 @@ form?.addEventListener("submit", async (e) => {
 
         const payload: LoginPayload = { login, password };
         const res: any = await loginUser(payload);
-        console.log({ res });
         const token: string = (res && (res.token || res.data?.token)) || "";
         if (token) {
             localStorage.setItem("token", token);

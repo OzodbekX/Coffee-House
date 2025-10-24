@@ -1,6 +1,7 @@
-import {loadCoffeeSlider} from "./slider.ts";
-import {appDownloadButton } from "./app-buttons.ts";
+import { loadCoffeeSlider } from "./slider.ts";
+import { appDownloadButton } from "./app-buttons.ts";
 import "../scss/_main.scss"
+import { setShoppingItemCount } from "./helpers.ts";
 /**
  * Safely loads HTML from a partial file into a container.
  */
@@ -53,6 +54,8 @@ async function loadHeaderIndex(): Promise<void> {
                 }
             });
         }
+        setShoppingItemCount()
+
     } catch (err) {
         console.error("Error loading header:", err);
     }

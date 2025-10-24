@@ -1,6 +1,6 @@
 // Define the structure of your product data (you already used similar in menu.ts)
 import { fetchProductById } from "./api";
-import { calculatePrice, renderPrice, writePriceWithDiscount } from "./helpers";
+import { calculatePrice, renderPrice, setShoppingItemCount, writePriceWithDiscount } from "./helpers";
 
 import type { ProductType } from "./types"
 
@@ -54,7 +54,6 @@ function fillModal(modal: HTMLElement, product: ProductType) {
 
   // --- Base state ---
   const basePrice = parseFloat(product.price);
-  const discountPrice = parseFloat(product.discountPrice || product.discountPrice || product.price);
   let selectedSize = 0;
   const selectedAdditives = new Set<{ name: string; "add-price": string }>();
   let firstSizeAddPrice = 0;
@@ -203,7 +202,32 @@ function fillModal(modal: HTMLElement, product: ProductType) {
   modal.classList.remove("hidden");
 
   // --- Close modal logic ---
-  closeBtn.addEventListener("click", () => modal.classList.add("hidden"));
+  function addToCart(id: number): void {
+    const raw = localStorage.getItem("selectedItems");
+    type CartItem = { id: number; size?: number; additives?: Array<{ name: string; "add-price": string }> };
+    let items: CartItem[] = [];
+    try {
+      const parsed = raw ? JSON.parse(raw) : [];
+      items = Array.isArray(parsed) ? parsed : [];
+    } catch {
+      items = [];
+    }
+
+    const entry: CartItem = {
+      id,
+      size: Number(selectedSize) || 0,
+      additives: Array.from(selectedAdditives)
+    };
+
+    items.push(entry);
+    localStorage.setItem("selectedItems", JSON.stringify(items));
+  }
+
+  closeBtn.addEventListener("click", () => {
+    addToCart(product.id);
+    setShoppingItemCount()
+    modal.classList.add("hidden");
+  });
   modal.addEventListener("click", (e) => {
     if (e.target === modal) modal.classList.add("hidden");
   });

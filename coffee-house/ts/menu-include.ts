@@ -1,5 +1,6 @@
 import { menuProducts } from "./menu-tabs"
 import "../scss/_main.scss"
+import { setShoppingItemCount } from "./helpers";
 
 /**
  * Initializes the header and its interactive elements.
@@ -41,6 +42,7 @@ async function loadHeaderMenu(): Promise<void> {
         }
       });
     }
+    setShoppingItemCount()
   } catch (err) {
     console.error("Error loading header:", err);
   }

@@ -1,4 +1,5 @@
 import { injectSocialIcons } from "./footer";
+import { setShoppingItemCount } from "./helpers";
 // Helper function to safely fetch and insert HTML into a container
 
 
@@ -10,6 +11,9 @@ async function loadHTML(selector: string, url: string): Promise<void> {
     if (container) container.innerHTML = data;
   } catch (err) {
     console.error(`Error loading ${url}:`, err);
+  }
+  finally {
+    setShoppingItemCount()
   }
 }
 
@@ -33,12 +37,15 @@ function setupMobileMenuToggle(): void {
       }
     });
   }
+  setShoppingItemCount()
+
 }
 
 // Load header and attach behavior
 document.addEventListener("DOMContentLoaded", async () => {
   await loadHTML("#header-placeholder", "partials/header.html");
   setupMobileMenuToggle();
+  setShoppingItemCount()
 });
 
 // Load mobile navbar
@@ -63,6 +70,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   } catch (err) {
     console.error("Error loading mobile navbar:", err);
+  }
+  finally {
+    setShoppingItemCount()
   }
 })();
 
