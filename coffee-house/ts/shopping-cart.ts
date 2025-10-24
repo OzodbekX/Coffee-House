@@ -1,4 +1,4 @@
-import type { MenuProduct, UserData } from "./types.ts";
+import type { ProductType, UserData } from "./types.ts";
 import { fetchProducts } from "./api";
 
 
@@ -12,7 +12,7 @@ function getSelectedIds(): number[] {
   return ids ? JSON.parse(ids) : [];
 }
 
-function renderCartItems(products: MenuProduct[]) {
+function renderCartItems(products: ProductType[]) {
   const container = document.getElementById("cart-items")!;
   const totalEl = document.getElementById("total-price")!;
   const addressEl = document.getElementById("address")!;

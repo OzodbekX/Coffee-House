@@ -1,17 +1,5 @@
-interface ProductSize {
-    size: string;
-    ["add-price"]: string;
-}
 
-
-
-export interface ProductAdditive {
-    name: string;
-    ["add-price"]: string;
-}
-
-
-export interface SliderProduct {
+export interface ProductType {
     name: string,
     discountPrice: string,
     category: "coffee" | "tea" | "dessert",
@@ -19,9 +7,7 @@ export interface SliderProduct {
     description: string,
     id: number,
 }
-export interface MenuProduct extends SliderProduct {
-    discountPrice: string
-}
+
 
 export interface UserData {
     login: string;

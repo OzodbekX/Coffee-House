@@ -1,4 +1,4 @@
-import type { menuProducts } from "./menu-tabs"
+import { menuProducts } from "./menu-tabs"
 import "../scss/_main.scss"
 
 /**

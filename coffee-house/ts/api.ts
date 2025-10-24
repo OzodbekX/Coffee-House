@@ -1,23 +1,23 @@
 // favorites.ts
 import { apiRequest } from "./request";
-import type { MenuProduct, SliderProduct } from "./types";
+import type { ProductType } from "./types";
 
-export async function fetchFavoriteProducts(): Promise<{ data: SliderProduct[] }> {
-  return await apiRequest<{ data: SliderProduct[] }>("/products/favorites", {
+export async function fetchFavoriteProducts(): Promise<{ data: ProductType[] }> {
+  return await apiRequest<{ data: ProductType[] }>("/products/favorites", {
     method: "GET",
     auth: true
   });
 }
 
-export async function fetchProducts(): Promise<{ data: MenuProduct[] }> {
-  return await apiRequest<{ data: MenuProduct[] }>("/products", {
+export async function fetchProducts(): Promise<{ data: ProductType[] }> {
+  return await apiRequest<{ data: ProductType[] }>("/products", {
     method: "GET",
     auth: true
   });
 }
 
-export async function fetchProductById(id:number): Promise<{ data: MenuProduct }> {
-  return await apiRequest<{ data: MenuProduct }>("/products/"+id, {
+export async function fetchProductById(id:number): Promise<{ data: ProductType }> {
+  return await apiRequest<{ data: ProductType }>("/products/"+id, {
     method: "GET",
     auth: true
   });

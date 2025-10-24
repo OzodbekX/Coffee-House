@@ -1,5 +1,5 @@
 import { fetchFavoriteProducts } from "./api";
-import type { SliderProduct } from "./types";
+import type { ProductType } from "./types";
 
 /**
  * Loads coffee slider products and sets up interactive navigation.
@@ -84,7 +84,7 @@ export async function loadCoffeeSlider(): Promise<void> {
 function setupSliderNavigation(
     sliderContainer: HTMLElement,
     dotsContainer: HTMLElement,
-    products: SliderProduct[]
+    products: ProductType[]
 ): void {
     const nextBtn = document.querySelector<HTMLButtonElement>(".slider-btn.next");
     const prevBtn = document.querySelector<HTMLButtonElement>(".slider-btn.prev");

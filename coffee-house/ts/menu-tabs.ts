@@ -1,6 +1,6 @@
 import { fetchProducts } from "./api";
 import { showModal } from "./product-modal";
-import type { MenuProduct } from "./types";
+import type { ProductType } from "./types";
 
 /**
  * Loads menu products, handles tab switching, and renders products.
@@ -8,14 +8,13 @@ import type { MenuProduct } from "./types";
 export async function menuProducts(): Promise<void> {
     const productsContainer = document.getElementById("menu-products");
     const tabs = document.querySelectorAll<HTMLButtonElement>(".tab");
-
     // Exit early if container is missing
     if (!productsContainer) {
         console.error("#menu-products container not found.");
         return;
     }
 
-    let products: MenuProduct[] = [];
+    let products: ProductType[] = [];
     const loader = document.getElementById("loader");
 
     // Load product data
@@ -83,20 +82,37 @@ export async function menuProducts(): Promise<void> {
     /**
      * Creates a reusable product card DOM element
      */
-    function createProductCard(product: MenuProduct): HTMLElement {
+    function createProductCard(product: ProductType): HTMLElement {
         const card = document.createElement("div");
         card.classList.add("product-card");
 
+        const isAuthed = Boolean(localStorage.getItem("user"));
         const price = parseFloat(product.price).toFixed(2);
+        const hasDiscount = !!product.discountPrice && Number(product.discountPrice) < Number(product.price);
+        const discounted = hasDiscount ? parseFloat(product.discountPrice as unknown as string).toFixed(2) : null;
+
+        let priceHtml = "";
+        if (isAuthed) {
+            if (hasDiscount && discounted) {
+                priceHtml = `
+                  <div class="price-block" style="display:flex; align-items:center; gap:8px;">
+                    <h3 class="price heading-3" style="margin:0;">$${discounted}</h3>
+                    <h3 class="old-price heading-3" style="margin:0; text-decoration:line-through; opacity:0.5;">$${price}</h3>
+                  </div>
+                `;
+            } else {
+                priceHtml = `<h3 class=\"price heading-3\">$${price}</h3>`;
+            }
+        }
 
         card.innerHTML = `
-      <img src="assets/images/${product.name}.png" alt="${product.name}">
-      <div class="card-body">
-        <h3 class="heading-3">${product.name}</h3>
-        <p class="text-medium">${product.description}</p>
-        <h3 class="price heading-3">$${price}</h3>
-      </div>
-    `;
+          <img src="assets/images/${product.name}.png" alt="${product.name}">
+          <div class="card-body">
+            <h3 class="heading-3">${product.name}</h3>
+            <p class="text-medium">${product.description}</p>
+            ${priceHtml}
+          </div>
+        `;
 
         // On click — open product modal
         card.addEventListener("click", () => {
@@ -109,5 +125,6 @@ export async function menuProducts(): Promise<void> {
 
 // Run automatically on DOM load
 document.addEventListener("DOMContentLoaded", () => {
+    console.log("DOMContentLoaded");
     void menuProducts();
 });

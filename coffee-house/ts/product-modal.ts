@@ -1,12 +1,12 @@
 // Define the structure of your product data (you already used similar in menu.ts)
 import { fetchProductById } from "./api";
-import type { MenuProduct, ProductAdditive } from "./types"
+import type { ProductType } from "./types"
 
 
 /**
  * Displays the product details modal and handles interactive selections.
  */
-export async function showModal(product: MenuProduct): Promise<void> {
+export async function showModal(product: ProductType): Promise<void> {
   const modal = document.getElementById("product-modal") as HTMLElement | null;
   if (!modal) {
     console.error("#product-modal not found");
@@ -27,7 +27,7 @@ export async function showModal(product: MenuProduct): Promise<void> {
     modal.classList.add("hidden")
     modalContent?.classList.remove("hidden")
     loader?.classList.add("hidden")
-    errorAlert(error)
+    errorAlert(error as string)
 
   } finally {
     modalContent?.classList.remove("hidden")
@@ -36,7 +36,7 @@ export async function showModal(product: MenuProduct): Promise<void> {
 
   }
 }
-function fillModal(modal: HTMLElement, product: MenuProduct) {
+function fillModal(modal: HTMLElement, product: ProductType) {
   const img = modal.querySelector<HTMLImageElement>(".modal-image");
   const title = modal.querySelector<HTMLElement>(".modal-title");
   const desc = modal.querySelector<HTMLElement>(".modal-description");
