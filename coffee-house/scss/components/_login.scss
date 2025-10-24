@@ -1,26 +1,27 @@
-@use "@scss/_variables.scss" as *;
-@use "@scss/typography.scss" as *;
-
-.registration-container {
+.login-container {
   margin: 20px auto 100px;
   width: 100%;
 
-  .registration-title {
+  .login-title {
     text-align: center;
     margin-bottom: 40px;
   }
 
-  .register-form {
+  .login-form {
     display: flex;
     flex-direction: column;
     gap: 24px;
   }
 
-  .form-row {
+  .form-row-login {
     display: flex;
     flex-wrap: wrap;
     gap: 24px;
     justify-content: space-between;
+    flex-direction: column;
+    max-width: 400px;
+    margin: 0 auto;
+    width: 100%;
   }
 
   .form-field {
@@ -36,36 +37,19 @@
     input {
       padding: 12px 12px;
       border-radius: 12px;
-      border: 1px solid $color-border-light;
-      background: transparent !important;;
+      border: 1px solid #C1B6AD;
+      background: transparent !important;
       outline: none;
       height: 56px;
       transition: border 0.2s;
 
       &:focus {
-        border-color: $color-border-dark;
+        border-color: #665F55;
       }
-      &:active, &:focus  {
+      &:active,
+      &:focus {
         background-color: transparent;
       }
-    }
-  }
-
-  .radio-group {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-
-    label {
-      font-weight: normal;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    input[type="radio"] {
-      margin-right: 6px;
-      accent-color: $color-border-dark;
     }
   }
 
@@ -77,12 +61,10 @@
       cursor: pointer;
       transition: background 0.3s;
       width: 200px;
-
-    
     }
   }
 
-  .register-message {
+  .login-message {
     text-align: center;
     font-weight: 600;
     margin-top: 20px;

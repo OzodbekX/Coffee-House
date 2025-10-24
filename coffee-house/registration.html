@@ -40,14 +40,14 @@
                         <input type="text" id="street" placeholder="Placeholder" required />
                     </div>
                     <div class="form-field">
-                        <label for="house" class="text-medium">House number</label>
-                        <input type="text" id="house" placeholder="Placeholder" required />
+                        <label for="houseNumber" class="text-medium">House number</label>
+                        <input type="number" id="houseNumber" placeholder="Placeholder" required />
                     </div>
                     <div class="form-field payby-field">
                         <label class="text-medium">Pay by</label>
                         <div class="radio-group">
-                            <label><input type="radio" name="payBy" value="Cash" checked /> Cash</label>
-                            <label><input type="radio" name="payBy" value="Card" /> Card</label>
+                            <label><input type="radio" name="paymentMethod" value="Cash" checked /> Cash</label>
+                            <label><input type="radio" name="paymentMethod" value="Card" /> Card</label>
                         </div>
                     </div>
                 </div>
@@ -68,7 +68,6 @@
     <script type="module" src="ts/common-includes.ts"></script>
     <script type="module" src="ts/registration.ts"></script>
     <script type="module" src="ts/footer.ts"></script>
-    <script type="module" src="ts/menu-tabs.ts"></script>
 </body>
 
 </html>

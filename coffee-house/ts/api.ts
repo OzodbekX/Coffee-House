@@ -22,3 +22,34 @@ export async function fetchProductById(id:number): Promise<{ data: MenuProduct }
     auth: true
   });
 }
+
+// Registration
+export interface RegisterPayload {
+  login: string;
+  password: string;
+  confirmPassword: string;
+  city: string;
+  street: string;
+  houseNumber: number;
+  paymentMethod: "cash" | "card";
+}
+
+export async function registerUser(payload: RegisterPayload): Promise<any> {
+  return await apiRequest<any>("/auth/register", {
+    method: "POST",
+    body: JSON.stringify(payload)
+  });
+}
+
+// Login
+export interface LoginPayload {
+  login: string;
+  password: string;
+}
+
+export async function loginUser(payload: LoginPayload): Promise<any> {
+  return await apiRequest<any>("/auth/login", {
+    method: "POST",
+    body: JSON.stringify(payload)
+  });
+}

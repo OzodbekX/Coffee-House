@@ -1,11 +1,12 @@
-import type{ UserData } from "./types";
-import "../scss/_main.scss"
+import type { UserData } from "./types";
+import { registerUser, type RegisterPayload } from "./api";
+import "../scss/_main.scss";
 
 
 const form = document.getElementById("register-form") as HTMLFormElement;
 const message = document.getElementById("register-message") as HTMLElement;
 
-form?.addEventListener("submit", (e) => {
+form?.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const login = (document.getElementById("login") as HTMLInputElement).value.trim();
@@ -13,12 +14,12 @@ form?.addEventListener("submit", (e) => {
   const confirm = (document.getElementById("confirm") as HTMLInputElement).value;
   const city = (document.getElementById("city") as HTMLInputElement).value.trim();
   const street = (document.getElementById("street") as HTMLInputElement).value.trim();
-  const house = (document.getElementById("house") as HTMLInputElement).value.trim();
-  const payBy = (
-    document.querySelector('input[name="payBy"]:checked') as HTMLInputElement
+  const houseNumber = (document.getElementById("houseNumber") as HTMLInputElement).value.trim();
+  const payByRaw = (
+    document.querySelector('input[name="paymentMethod"]:checked') as HTMLInputElement
   )?.value;
 
-  if (!login || !password || !confirm || !city || !street || !house) {
+  if (!login || !password || !confirm || !city || !street || !houseNumber) {
     showMessage("All fields are required.", "error");
     return;
   }
@@ -28,26 +29,51 @@ form?.addEventListener("submit", (e) => {
     return;
   }
 
-  // Mock token creation
-  const token = crypto.randomUUID();
+  const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+  const originalText = submitBtn?.textContent || "Registration";
+  try {
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Loading...";
+    }
 
-  const newUser: UserData = {
-    login,
-    token,
-    city,
-    street,
-    house,
-    payBy,
-  };
+    const payload: RegisterPayload = {
+      login,
+      password,
+      confirmPassword: confirm,
+      city,
+      street,
+      houseNumber: Number(houseNumber),
+      paymentMethod: (payByRaw || "cash").toLowerCase() as RegisterPayload["paymentMethod"],
+    };
 
-  // Save to localStorage
-  localStorage.setItem("user", JSON.stringify(newUser));
+    const res: any = await registerUser(payload);
 
-  showMessage("Registration successful!", "success");
+    const token: string = (res && (res.token || res.data?.token)) || "";
+    if (token) {
+      localStorage.setItem("token", token);
+    }
 
-  setTimeout(() => {
-    window.location.href = "cart.html"; // redirect to cart
-  }, 1500);
+    const newUser: UserData = {
+      login,
+      token,
+      city,
+      street,
+      houseNumber: Number(houseNumber),
+      paymentMethod: payload.paymentMethod,
+    };
+
+    localStorage.setItem("user", JSON.stringify(newUser));
+    showMessage("Registration successful!", "success");
+    window.location.href = "shoppingCart.html";
+  } catch (err) {
+    alert("Registration failed. Please try again.");
+  } finally {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalText;
+    }
+  }
 });
 
 function showMessage(text: string, type: "success" | "error") {

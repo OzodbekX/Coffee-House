@@ -28,6 +28,6 @@ export interface UserData {
     token: string;
     city: string;
     street: string;
-    house: string;
-    payBy: string;
+    houseNumber: number;
+    paymentMethod: string;
 }

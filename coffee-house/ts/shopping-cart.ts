@@ -65,9 +65,9 @@ function renderCartItems(products: MenuProduct[]) {
   totalEl.textContent = `$${total.toFixed(2)}`;
 
   if (user) {
-    addressEl.textContent = `${user.city}, ${user.street}, ${user.house}`;
-    payByEl.textContent = user.payBy;
-    actions.innerHTML = `<button id="confirm">Confirm</button>`;
+    addressEl.textContent = `${user.city}, ${user.street}, ${user.houseNumber}`;
+    payByEl.textContent = user.paymentMethod;
+    actions.innerHTML = `<button id="confirm" class="button button--secondary">Confirm</button>`;
   } else {
     addressEl.textContent = "-";
     payByEl.textContent = "-";
