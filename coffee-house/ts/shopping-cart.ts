@@ -47,8 +47,9 @@ function getSelectedItems(): CartItem[] {
   try {
     const parsed = JSON.parse(raw);
     if (!Array.isArray(parsed)) return [];
-    return parsed.filter((it: any) => it && typeof it.id === "number");
-  } catch {
+    return parsed.filter((it: CartItem) => it && typeof it.id === "number");
+  } catch (e:unknown)   {
+    console.log(e);
     localStorage.removeItem("selectedItems");
     return [];
   }
@@ -179,7 +180,8 @@ function renderCartItems(products: ProductType[]) {
         setShoppingItemCount();
         showTopNotify("Thank you for your order! Our manager will contact you shortly.", "success");
         renderCartItems(products);
-      } catch (e) {
+      } catch (e:unknown) {
+        console.log(e);
         showTopNotify("Something went wrong. Please, try again", "error");
       } finally {
         confirmBtn.disabled = false;

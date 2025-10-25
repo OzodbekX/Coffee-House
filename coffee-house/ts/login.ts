@@ -1,5 +1,5 @@
 import { loginUser, type LoginPayload } from "./api";
-import type{ UserData } from "./types";
+import type { UserData } from "./types";
 import "../scss/_main.scss";
 
 const form = document.getElementById("login-form") as HTMLFormElement | null;
@@ -120,14 +120,14 @@ form?.addEventListener("submit", async (e) => {
         }
 
         const payload: LoginPayload = { login, password };
-        const res: any = await loginUser(payload);
-        const token: string = (res && (res.token || res.data?.token)) || "";
+        const res: { data: { access_token: string; user: UserData; } } = await loginUser(payload);
+        console.log(res);
+        const token: string = (res && (res.data?.access_token)) || "";
         if (token) {
             localStorage.setItem("token", token);
         }
         const newUser: UserData = {
-            login,
-            token,
+            token: res.data.access_token,
             ...res?.data?.user
         };
 
@@ -140,7 +140,8 @@ form?.addEventListener("submit", async (e) => {
 
         showMessage("Signed in successfully!", "success");
         window.location.href = "shoppingCart.html";
-    } catch (err) {
+    } catch (err: unknown) {
+        console.log(err);
         showMessage("Incorrect login or password", "error");
     } finally {
         if (submitBtn) {

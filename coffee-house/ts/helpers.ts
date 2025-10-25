@@ -26,7 +26,7 @@ export function writePriceWithDiscount(priceText: string, discText?: string) {
         <h3 class="old-price heading-3" style="margin:0; text-decoration:line-through; opacity:0.5;">${priceText}</h3>
       </div>
     `;
-  else return `<h3 class=\"price heading-3\">${priceText}</h3>`;
+  else return `<h3 class="price heading-3">${priceText}</h3>`;
 
 }
 
@@ -50,7 +50,7 @@ export function calculatePrice({ product, size = 0, additives = [] }: CalcPriceA
       : base;
 
   const toNumber = (v: number | { [key: string]: string }): number =>
-    typeof v === "number" ? v : Number((v as any)["add-price"]) || 0;
+    typeof v === "number" ? v : Number((v)["add-price"]) || 0;
 
   const addSum: number = additives.reduce<number>((acc, item) => acc + toNumber(item), 0);
   const sizeNum = Number(size) || 0;

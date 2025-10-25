@@ -1,11 +1,16 @@
 import { defineConfig } from 'vite'
-import { resolve } from 'path'
 import includeHtml from "vite-plugin-include-html";
+import eslint from 'vite-plugin-eslint';
+import { fileURLToPath } from 'node:url';
+import { resolve, dirname } from 'node:path';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
 
 export default defineConfig({
   root: '.', // your project root
   base: './', // relative paths for deployment (e.g., GitHub Pages)
-  plugins: [includeHtml()], // ✅ correct plugin here
+  plugins: [includeHtml(), eslint()], // ✅ correct plugin here
   server: {
     port: 3000,
     open: true,
@@ -17,6 +22,9 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, 'index.html'),
         menu: resolve(__dirname, 'menu.html'),
+        registration: resolve(__dirname, 'registration.html'),
+        login: resolve(__dirname, 'login.html'),
+        shoppingCart: resolve(__dirname, 'shopping-cart.html'),
         // add other html pages here if needed
       },
     },

@@ -240,9 +240,9 @@ form?.addEventListener("submit", async (e) => {
       paymentMethod: (payByRaw || "cash").toLowerCase() as RegisterPayload["paymentMethod"],
     };
 
-    const res: any = await registerUser(payload);
+    const res: {data: {access_token: string, user: UserData}} = await registerUser(payload);
 
-    const token: string = (res && (res.token || res.data?.token)) || "";
+    const token: string = (res && (res.data.access_token)) || "";
     if (token) {
       localStorage.setItem("token", token);
     }
@@ -259,7 +259,8 @@ form?.addEventListener("submit", async (e) => {
     localStorage.setItem("user", JSON.stringify(newUser));
     showMessage("Registration successful!", "success");
     window.location.href = "shoppingCart.html";
-  } catch (err) {
+  } catch (err:unknown) {
+    console.error(err);
     showMessage("Registration failed. Please try again.", "error");
   } finally {
     if (submitBtn) {

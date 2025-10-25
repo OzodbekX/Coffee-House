@@ -1,6 +1,6 @@
 // favorites.ts
 import { apiRequest } from "./request";
-import type { ProductType } from "./types";
+import type { ProductType, UserData } from "./types";
 
 export async function fetchFavoriteProducts(): Promise<{ data: ProductType[] }> {
   return await apiRequest<{ data: ProductType[] }>("/products/favorites", {
@@ -16,8 +16,8 @@ export async function fetchProducts(): Promise<{ data: ProductType[] }> {
   });
 }
 
-export async function fetchProductById(id:number): Promise<{ data: ProductType }> {
-  return await apiRequest<{ data: ProductType }>("/products/"+id, {
+export async function fetchProductById(id: number): Promise<{ data: ProductType }> {
+  return await apiRequest<{ data: ProductType }>("/products/" + id, {
     method: "GET",
     auth: true
   });
@@ -34,8 +34,8 @@ export interface RegisterPayload {
   paymentMethod: "cash" | "card";
 }
 
-export async function registerUser(payload: RegisterPayload): Promise<any> {
-  return await apiRequest<any>("/auth/register", {
+export async function registerUser(payload: RegisterPayload): Promise<{ data: { access_token: string, user: UserData } }> {
+  return await apiRequest<{ data: { access_token: string, user: UserData } }>("/auth/register", {
     method: "POST",
     body: JSON.stringify(payload)
   });
@@ -47,8 +47,8 @@ export interface LoginPayload {
   password: string;
 }
 
-export async function loginUser(payload: LoginPayload): Promise<any> {
-  return await apiRequest<any>("/auth/login", {
+export async function loginUser(payload: LoginPayload): Promise<{ data: { access_token: string, user: UserData } }> {
+  return await apiRequest<{ data: { access_token: string, user: UserData } }>("/auth/login", {
     method: "POST",
     body: JSON.stringify(payload)
   });
@@ -67,8 +67,16 @@ export interface ConfirmOrderPayload {
   totalPrice: number;
 }
 
-export async function confirmOrder(payload: ConfirmOrderPayload): Promise<any> {
-  return await apiRequest<any>("/orders/confirm", {
+export async function confirmOrder(payload: ConfirmOrderPayload): Promise<{
+  data: ConfirmOrderPayload,
+  message: string,
+  error: string
+}> {
+  return await apiRequest<{
+    data: ConfirmOrderPayload,
+    message: string,
+    error: string
+  }>("/orders/confirm", {
     method: "POST",
     auth: true,
     body: JSON.stringify(payload)

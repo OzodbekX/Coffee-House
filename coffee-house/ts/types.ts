@@ -11,7 +11,7 @@ export interface ProductType {
 
 export interface UserData {
     login: string;
-    token: string;
+    token?: string;
     city: string;
     street: string;
     houseNumber: number;

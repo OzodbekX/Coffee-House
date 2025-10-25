@@ -56,7 +56,8 @@ export async function loadCoffeeSlider(): Promise<void> {
 
         // Initialize navigation
         setupSliderNavigation(sliderContainer, dotsContainer, products.data);
-    } catch (err) {
+    } catch (err:unknown) {
+        console.log(err);
         loader?.classList.add("hidden");
         sliderContainer.innerHTML = "";
         const errorMsg = document.createElement("p");
