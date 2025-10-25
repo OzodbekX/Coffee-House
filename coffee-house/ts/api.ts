@@ -53,3 +53,24 @@ export async function loginUser(payload: LoginPayload): Promise<any> {
     body: JSON.stringify(payload)
   });
 }
+
+// Orders
+export interface ConfirmOrderItem {
+  productId: number;
+  size: "s" | "m" | "l";
+  additives: string[];
+  quantity: number;
+}
+
+export interface ConfirmOrderPayload {
+  items: ConfirmOrderItem[];
+  totalPrice: number;
+}
+
+export async function confirmOrder(payload: ConfirmOrderPayload): Promise<any> {
+  return await apiRequest<any>("/orders/confirm", {
+    method: "POST",
+    auth: true,
+    body: JSON.stringify(payload)
+  });
+}

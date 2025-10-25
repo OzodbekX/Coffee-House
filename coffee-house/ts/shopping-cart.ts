@@ -1,11 +1,42 @@
 import type { ProductType, UserData } from "./types.ts";
-import { fetchProducts } from "./api";
+import { fetchProducts, confirmOrder } from "./api";
 import { renderPrice, setShoppingItemCount, calculatePrice, productSizes, productSizesDesert } from "./helpers.ts";
 
 
 function getUserData(): UserData | null {
   const data = localStorage.getItem("user");
   return data ? JSON.parse(data) : null;
+}
+
+function showTopNotify(text: string, type: "error" | "success") {
+  const existing = document.getElementById("cart-top-notify");
+  if (existing) existing.remove();
+  const el = document.createElement("div");
+  el.id = "cart-top-notify";
+  el.textContent = text;
+  el.style.position = "fixed";
+  el.style.top = "0";
+  el.style.left = "50%";
+  el.style.transform = "translateX(-50%)";
+  el.style.zIndex = "2000";
+  el.style.padding = "12px 20px";
+  el.style.borderRadius = "0 0 12px 12px";
+  el.style.boxShadow = "0 4px 10px rgba(0,0,0,0.15)";
+  el.style.fontWeight = "600";
+  el.style.backgroundColor = type === "error" ? "#b00020" : "#2e7d32";
+  el.style.color = "white";
+  el.style.opacity = "0";
+  el.style.transition = "opacity 0.4s ease, top 0.4s ease";
+  document.body.appendChild(el);
+  setTimeout(() => {
+    el.style.top = "0px";
+    el.style.opacity = "1";
+  }, 30);
+  setTimeout(() => {
+    el.style.opacity = "0";
+    el.style.top = "-100px";
+    setTimeout(() => el.remove(), 400);
+  }, 4000);
 }
 
 type CartItem = { id: number; size?: number; additives?: Array<{ name: string; "add-price": string }> };
@@ -106,7 +137,55 @@ function renderCartItems(products: ProductType[]) {
   if (user) {
     addressEl.textContent = `${user.city}, ${user.street}, ${user.houseNumber}`;
     payByEl.textContent = user.paymentMethod;
-    actions.innerHTML = `<button id="confirm" class="button button--secondary">Confirm</button>`;
+    actions.innerHTML = `<button id="confirm" class="button button--secondary">Confirm Order</button>`;
+    const confirmBtn = document.getElementById("confirm") as HTMLButtonElement | null;
+    confirmBtn?.addEventListener("click", async () => {
+      if (!confirmBtn) return;
+      const originalText = confirmBtn.textContent || "Confirm Order";
+      confirmBtn.disabled = true;
+      confirmBtn.textContent = "Placing...";
+
+      try {
+        const itemsRaw = getSelectedItems();
+        const payloadItems = itemsRaw
+          .map((ci) => {
+            const product = products.find((p) => p.id === ci.id);
+            if (!product) return null;
+            const sizesMap = product.category === "dessert" ? productSizesDesert : productSizes;
+            const sizeEntry = Object.entries(sizesMap).find(([, s]) => Number(s["add-price"]) === Number(ci.size || 0));
+            const sizeKey = (sizeEntry ? sizeEntry[0] : "s") as "s" | "m" | "l";
+            const additives = (ci.additives || []).map((a) => a.name);
+            return {
+              productId: product.id,
+              size: sizeKey,
+              additives,
+              quantity: 1,
+            };
+          })
+          .filter(Boolean) as Array<{ productId: number; size: "s" | "m" | "l"; additives: string[]; quantity: number }>;
+
+        const totalPrice = rows.reduce((acc, { ci, product: p }) => {
+          const { total } = calculatePrice({
+            product: { price: p.price, discountPrice: p.discountPrice },
+            size: ci.size || 0,
+            additives: ci.additives || [],
+          });
+          return acc + Number(total);
+        }, 0);
+
+        await confirmOrder({ items: payloadItems, totalPrice });
+
+        localStorage.setItem("selectedItems", JSON.stringify([]));
+        setShoppingItemCount();
+        showTopNotify("Thank you for your order! Our manager will contact you shortly.", "success");
+        renderCartItems(products);
+      } catch (e) {
+        showTopNotify("Something went wrong. Please, try again", "error");
+      } finally {
+        confirmBtn.disabled = false;
+        confirmBtn.textContent = originalText;
+      }
+    });
   } else {
     addressEl.textContent = "-";
     payByEl.textContent = "-";
