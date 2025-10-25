@@ -13,7 +13,7 @@ const htmlPages = fs
 
 module.exports = {
     context: path.resolve(__dirname),
-    mode:process.env.NODE_ENV,
+    mode: process.env.NODE_ENV,
     entry: {
         index: './ts/index.ts',
         menu: './ts/menu.ts',
@@ -25,7 +25,7 @@ module.exports = {
         filename: '[name].bundle.js', // ✅ unique per entry (index.bundle.js, menu.bundle.js, etc.)
         path: path.resolve(__dirname, 'dist'),
         clean: true,
-        publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
+        publicPath: process.env.NODE_ENV === 'production' ? 'http://coffee-shop-be.eu-central-1.elasticbeanstalk.com/' : '/',
     },
 
     resolve: {
@@ -71,12 +71,12 @@ module.exports = {
     },
 
     plugins: [
-        new MiniCssExtractPlugin({ filename: "styles/[name].[contenthash].css" }),
+        new MiniCssExtractPlugin({filename: "styles/[name].[contenthash].css"}),
 
         new CopyWebpackPlugin({
             patterns: [
-                { from: "assets", to: "assets" },
-                { from: "partials", to: "partials" },
+                {from: "assets", to: "assets"},
+                {from: "partials", to: "partials"},
             ],
         }),
         // Auto-create an HtmlWebpackPlugin instance for every HTML file found
