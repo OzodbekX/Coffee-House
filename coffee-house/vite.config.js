@@ -13,7 +13,6 @@ export default defineConfig({
   plugins: [includeHtml(), eslint()], // ✅ correct plugin here
   server: {
     port: 3000,
-    open: true,
     host: true,
     open: '/index.html'
 
@@ -26,7 +25,7 @@ export default defineConfig({
         menu: resolve(__dirname, 'menu.html'),
         registration: resolve(__dirname, 'registration.html'),
         login: resolve(__dirname, 'login.html'),
-        shoppingCart: resolve(__dirname, 'shopping-cart.html'),
+        shoppingCart: resolve(__dirname, 'shoppingCart.html'),
         // add other html pages here if needed
       },
     },
