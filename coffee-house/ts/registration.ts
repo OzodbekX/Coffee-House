@@ -113,7 +113,7 @@ function updateSubmitState() {
     const houseErr = validateHouseNumber(houseInput.value.trim());
     const cityValid = Boolean(citySel.value);
     const streetValid = Boolean(streetSel.value);
-    submitBtn.disabled = Boolean(loginErr || passErr || confirmErr || houseErr || !cityValid || !streetValid);
+    // submitBtn.disabled = Boolean(loginErr || passErr || confirmErr || houseErr || !cityValid || !streetValid);
 }
 
 // Attach validation handlers
@@ -143,7 +143,7 @@ function updateSubmitState() {
     const streetErrEl = ensureErrorElement("register-street-error", streetFieldWrap);
     const houseErrEl = ensureErrorElement("register-house-error", houseFieldWrap);
 
-    if (submitBtn) submitBtn.disabled = true;
+    // if (submitBtn) submitBtn.disabled = true;
 
     loginInput.addEventListener("blur", () => {
         const err = validateLoginField(loginInput.value.trim());
@@ -204,7 +204,6 @@ function updateSubmitState() {
 
 async function validateForm(e: Event) {
     e.preventDefault();
-    debugger
     const login = (document.getElementById("login-register") as HTMLInputElement).value.trim();
     const password = (document.getElementById("password-register") as HTMLInputElement).value;
     const confirm = (document.getElementById("confirm") as HTMLInputElement).value;

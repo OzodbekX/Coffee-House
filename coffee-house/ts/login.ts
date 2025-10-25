@@ -57,9 +57,7 @@ function updateSubmitState() {
     const passwordInput = document.getElementById("password") as HTMLInputElement | null;
     const submitBtn = form?.querySelector('button[type="submit"]') as HTMLButtonElement | null;
     if (!loginInput || !passwordInput || !submitBtn) return;
-    const loginErr = validateLoginField(loginInput.value.trim());
-    const passErr = validatePasswordField(passwordInput.value);
-    submitBtn.disabled = Boolean(loginErr || passErr);
+    // submitBtn.disabled = Boolean(loginErr || passErr);
 }
 
 // Attach blur/focus handlers for validation UI
@@ -76,7 +74,7 @@ function updateSubmitState() {
     const passErrEl = ensureErrorElement("password-error", passFieldWrap);
 
     // initial
-    if (submitBtn) submitBtn.disabled = true;
+    // if (submitBtn) submitBtn.disabled = true;
 
     loginInput.addEventListener("blur", () => {
         const err = validateLoginField(loginInput.value.trim());

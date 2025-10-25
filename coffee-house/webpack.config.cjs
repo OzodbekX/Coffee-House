@@ -81,13 +81,14 @@ module.exports = {
         }),
         // Auto-create an HtmlWebpackPlugin instance for every HTML file found
         ...htmlPages.map(
-            (filename) =>
-                new HtmlWebpackPlugin({
+            (filename) => {
+                return new HtmlWebpackPlugin({
                     template: `./${filename}`,
                     filename, // same name in dist
                     inject: "body",
                     minify: false,
                 })
+            }
         ),
 
         // Add shared partials (header/footer)
