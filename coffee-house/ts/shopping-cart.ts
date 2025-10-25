@@ -140,14 +140,20 @@ function renderCartItems(products: ProductType[]) {
     payByEl.textContent = user.paymentMethod;
     actions.innerHTML = `<button id="confirm" class="button button--secondary">Confirm Order</button>`;
     const confirmBtn = document.getElementById("confirm") as HTMLButtonElement | null;
+    if (confirmBtn) confirmBtn.disabled = getSelectedItems().length === 0;
     confirmBtn?.addEventListener("click", async () => {
       if (!confirmBtn) return;
+      const itemsRawPre = getSelectedItems();
+      if (!itemsRawPre.length) {
+        showTopNotify("Your cart is empty.", "error");
+        return;
+      }
       const originalText = confirmBtn.textContent || "Confirm Order";
       confirmBtn.disabled = true;
       confirmBtn.textContent = "Placing...";
 
       try {
-        const itemsRaw = getSelectedItems();
+        const itemsRaw = itemsRawPre;
         const payloadItems = itemsRaw
           .map((ci) => {
             const product = products.find((p) => p.id === ci.id);
@@ -165,14 +171,28 @@ function renderCartItems(products: ProductType[]) {
           })
           .filter(Boolean) as Array<{ productId: number; size: "s" | "m" | "l"; additives: string[]; quantity: number }>;
 
-        const totalPrice = rows.reduce((acc, { ci, product: p }) => {
-          const { total } = calculatePrice({
-            product: { price: p.price, discountPrice: p.discountPrice },
-            size: ci.size || 0,
-            additives: ci.additives || [],
-          });
-          return acc + Number(total);
-        }, 0);
+        const { payloadTotal, confirmDisplayTotal } = rows.reduce(
+          (acc, { ci, product: p }) => {
+            const { total, discounted } = calculatePrice({
+              product: { price: p.price, discountPrice: p.discountPrice },
+              size: ci.size || 0,
+              additives: ci.additives || [],
+            });
+            acc.payloadTotal += Number(total);
+            acc.confirmDisplayTotal += Number(user ? discounted : total);
+            return acc;
+          },
+          { payloadTotal: 0, confirmDisplayTotal: 0 }
+        );
+
+        const totalPrice = payloadTotal;
+
+        const ok = window.confirm(
+          `Confirm your order of ${payloadItems.length} item(s) totaling $${confirmDisplayTotal.toFixed(2)}?`
+        );
+        if (!ok) {
+          return;
+        }
 
         await confirmOrder({ items: payloadItems, totalPrice });
 
@@ -181,7 +201,7 @@ function renderCartItems(products: ProductType[]) {
         showTopNotify("Thank you for your order! Our manager will contact you shortly.", "success");
         renderCartItems(products);
       } catch (e:unknown) {
-        console.log(e);
+        console.error(e);
         showTopNotify("Something went wrong. Please, try again", "error");
       } finally {
         confirmBtn.disabled = false;
