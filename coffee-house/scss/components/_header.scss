@@ -71,6 +71,10 @@
     cursor: pointer;
     text-decoration: none!important;
     font-size: 24px;
+    &.hidden{
+      visibility: hidden;
+      opacity: 0;
+    }
   }
 
 

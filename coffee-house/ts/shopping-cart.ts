@@ -1,6 +1,6 @@
 import type { ProductType, UserData } from "./types.ts";
 import { fetchProducts } from "./api";
-import { renderPrice, setShoppingItemCount, calculatePrice } from "./helpers.ts";
+import { renderPrice, setShoppingItemCount, calculatePrice, productSizes, productSizesDesert } from "./helpers.ts";
 
 
 function getUserData(): UserData | null {
@@ -59,6 +59,17 @@ function renderCartItems(products: ProductType[]) {
     total += Number(itemTotal);
     totalDiscount += Number(discounted);
 
+    // Build size label from helpers using selected size add-price
+    const sizeValue = Number(ci.size || 0);
+    const sizesMap = p.category === "dessert" ? productSizesDesert : productSizes;
+    const sizeEntry = Object.entries(sizesMap).find(([, s]) => Number(s["add-price"]) === sizeValue);
+    const sizeLabel = sizeEntry ? sizeEntry[1].size : "";
+
+    // Build additives label from selected additives
+    const additivesLabel = (ci.additives && ci.additives.length > 0)
+      ? ci.additives.map(a => a.name).join(", ")
+      : "";
+
     item.innerHTML = `
       <div class="item-left">
         <div class="remove-item-icon" style="cursor:pointer" data-index="${index}">
@@ -67,7 +78,7 @@ function renderCartItems(products: ProductType[]) {
         <img class="item-img" src="assets/images/${p.name}.png" alt="${p.name}" />
         <div class="item-info">
           <h3 class="heading-3">${p.name}</h3>
-          <p class="text-medium">${p.description}</p>
+          <p class="text-medium">${sizeLabel}, ${additivesLabel ?? ""}</p>
         </div>
       </div>
       <div class="item-right">
@@ -120,7 +131,6 @@ function renderCartItems(products: ProductType[]) {
 
 (async function initCart() {
   const loader = document.getElementById("loader");
-
   const productsContainer = document.getElementById("cart-items");
   try {
     productsContainer?.classList.add("hidden");

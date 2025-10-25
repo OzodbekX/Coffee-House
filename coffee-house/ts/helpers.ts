@@ -66,19 +66,50 @@ export function setShoppingItemCount(): void {
   const raw = localStorage.getItem("selectedItems");
   let parsed: number[] = [];
   try {
-     parsed = raw ? JSON.parse(raw) : [];
+    parsed = raw ? JSON.parse(raw) : [];
 
   } catch {
     parsed = [];
   }
   const count = parsed.length;
   const el = document.getElementById("shopping-item-count");
-  if (!el) return;
+
+  const isAuthed = Boolean(localStorage.getItem("user"));
+
+  if (!el) {
+    return;
+  }
   if (count > 0) {
     el.textContent = String(count);
     (el as HTMLElement).style.display = "";
   } else {
+    if (!isAuthed) {
+      el?.classList.add("hidden")
+    } else {
+      el?.classList.remove("hidden")
+    }
     el.textContent = "";
     (el as HTMLElement).style.display = "none";
   }
 }
+
+
+export const producAdditives = [
+  { name: "Sugar", "add-price": "0.50" },
+  { name: "Cinnamon", "add-price": "0.50" },
+  { name: "Syrup", "add-price": "0.50" },
+];
+
+
+export const productSizes = {
+  s: { size: "200 ml", "add-price": "0.00" },
+  m: { size: "300 ml", "add-price": "0.50" },
+  l: { size: "400 ml", "add-price": "1.00" },
+};
+
+
+export const productSizesDesert = {
+  s: { size: "50 g", "add-price": "0.00" },
+  m: { size: "100 g", "add-price": "0.50" },
+  l: { size: "200 g", "add-price": "1.00" },
+};

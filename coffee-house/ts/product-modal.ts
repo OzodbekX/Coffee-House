@@ -1,6 +1,6 @@
 // Define the structure of your product data (you already used similar in menu.ts)
 import { fetchProductById } from "./api";
-import { calculatePrice, renderPrice, setShoppingItemCount, writePriceWithDiscount } from "./helpers";
+import { calculatePrice, producAdditives, productSizes, productSizesDesert, renderPrice, setShoppingItemCount, writePriceWithDiscount } from "./helpers";
 
 import type { ProductType } from "./types"
 
@@ -72,13 +72,11 @@ function fillModal(modal: HTMLElement, product: ProductType) {
   // --- Render sizes ---
   sizesContainer.innerHTML = "";
   let firstSizeBtn: HTMLButtonElement | null = null;
-  const productSizes = {
-    s: { size: "200 ml", "add-price": "0.00" },
-    m: { size: "300 ml", "add-price": "0.50" },
-    l: { size: "400 ml", "add-price": "1.00" },
-  };
 
-  for (const [key, size] of Object.entries(productSizes)) {
+
+  const sizesMap = product.category === "dessert" ? productSizesDesert : productSizes;
+
+  for (const [key, size] of Object.entries(sizesMap)) {
     const btn = document.createElement("button");
     btn.innerHTML = `
       <div class="size-key text-link-button">${key.toUpperCase()}</div>
@@ -112,11 +110,7 @@ function fillModal(modal: HTMLElement, product: ProductType) {
   // --- Render additives ---
   additivesContainer.innerHTML = "";
   let index = 0;
-  const producAdditives = [
-    { name: "Sugar", "add-price": "0.50" },
-    { name: "Cinnamon", "add-price": "0.50" },
-    { name: "Syrup", "add-price": "0.50" },
-  ];
+
 
   for (const add of producAdditives) {
     index++;
