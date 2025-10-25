@@ -76,7 +76,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Coffee slider
     try {
         const res = await fetch("partials/coffee-slider.html");
-        debugger
         if (!res.ok) throw new Error("Failed to load coffee-slider.html");
         const data = await res.text();
 
