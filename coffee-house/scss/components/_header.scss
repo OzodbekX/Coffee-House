@@ -1,5 +1,5 @@
-@use "../variables" as *;
-
+@use "@scss/_variables.scss" as *;
+@use "@scss/typography.scss" as *;
 .header {
   padding: 0;
   margin: 20px 0;
@@ -59,11 +59,27 @@
     display: none;
   }
 
+  .shopping-cart-link{
+    background-color: transparent;
+    display: flex;
+    gap: 8px;
+    border: none;
+    align-items: center;
+    line-height: 100%;
+    margin-left:auto;
+    margin-right: 32px;
+    cursor: pointer;
+    text-decoration: none!important;
+    font-size: 24px;
+    &.hidden{
+      visibility: hidden;
+      opacity: 0;
+    }
+  }
 
 
   @media (max-width:768px) {
     .mobile-navbar-button {
-      display: block;
       background-color: transparent;
       border: 1px solid $color-border-dark;
       height: 44px;

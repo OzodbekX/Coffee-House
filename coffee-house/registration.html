@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration | Coffee House</title>
+</head>
+
+<body>
+    <div class="main-container">
+        <div id="header-placeholder"></div>
+        <div id="mobile-navbar-placeholder"></div>
+        <div class="registration-container">
+            <h2 class="heading-2 registration-title">Registration</h2>
+
+            <form id="register-form" class="register-form">
+                <div class="form-row">
+                    <div class="form-field">
+                        <label for="login" class="text-medium">Login</label>
+                        <input type="text" id="login" placeholder="Placeholder" required />
+                    </div>
+                    <div class="form-field">
+                        <label for="password" class="text-medium">Password</label>
+                        <input type="password" id="password" placeholder="Placeholder" required />
+                    </div>
+                    <div class="form-field">
+                        <label for="confirm" class="text-medium">Confirm Password</label>
+                        <input type="password" id="confirm" placeholder="Placeholder" required />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-field">
+                        <label for="city" class="text-medium">City</label>
+                        <select id="city" required></select>
+                    </div>
+                    <div class="form-field">
+                        <label for="street" class="text-medium">Street</label>
+                        <select id="street" required></select>
+                    </div>
+                    <div class="form-field">
+                        <label for="houseNumber" class="text-medium">House number</label>
+                        <input type="number" id="houseNumber" placeholder="Placeholder" required />
+                    </div>
+                    <div class="form-field payby-field">
+                        <label class="text-medium">Pay by</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="paymentMethod" value="Cash" checked /> Cash</label>
+                            <label><input type="radio" name="paymentMethod" value="Card" /> Card</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="button button--secondary">Registration</button>
+                </div>
+            </form>
+
+            <div id="register-message" class="register-message hidden"></div>
+        </div>
+
+        <script type="module" src="./register.ts"></script>
+
+
+        <div id="contacts"></div>
+    </div>
+    <script type="module" src="ts/common-includes.ts"></script>
+    <script type="module" src="ts/registration.ts"></script>
+    <script type="module" src="ts/footer.ts"></script>
+</body>
+
+</html>

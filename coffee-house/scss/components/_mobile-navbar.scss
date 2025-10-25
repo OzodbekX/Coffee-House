@@ -1,5 +1,5 @@
-@use "../_variables" as *;
-@use "../typography" as *;
+@use "@scss/_variables.scss" as *;
+@use "@scss/typography.scss" as *;
 
 .mobile-navbar-container {
     position: relative;

@@ -1,5 +1,5 @@
-@use "../_variables" as *;
-@use "../typography" as *;
+@use "@scss/_variables.scss" as *;
+@use "@scss/typography.scss" as *;
 
 .footer {
   background-color: $color-bg-container;

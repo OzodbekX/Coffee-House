@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In | Coffee House</title>
+</head>
+<body>
+  <div class="main-container">
+    <div id="header-placeholder"></div>
+    <div id="mobile-navbar-placeholder"></div>
+
+    <div class="login-container">
+      <h2 class="heading-2 login-title">Sign In</h2>
+
+      <form id="login-form" class="login-form">
+        <div class="form-row-login">
+          <div class="form-field">
+            <label for="login" class="text-medium">Login</label>
+            <input type="text" id="login" placeholder="Placeholder" required />
+          </div>
+          <div class="form-field">
+            <label for="password" class="text-medium">Password</label>
+            <input type="password" id="password" placeholder="Placeholder" required />
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="button button--secondary">Sign In</button>
+        </div>
+      </form>
+
+      <div id="login-message" class="login-message hidden"></div>
+    </div>
+
+    <div id="contacts"></div>
+  </div>
+  <script type="module" src="ts/common-includes.ts"></script>
+  <script type="module" src="ts/login.ts"></script>
+  <script type="module" src="ts/footer.ts"></script>
+</body>
+</html>

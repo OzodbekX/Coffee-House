@@ -1,5 +1,5 @@
-@use "../variables" as *;
-@use "../typography" as *;
+@use "@scss/_variables.scss" as *;
+@use "@scss/typography.scss" as *;
 
 .hero {
   position: relative;

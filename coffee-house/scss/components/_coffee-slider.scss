@@ -1,14 +1,16 @@
-@use "../variables" as *;
-@use "../typography" as *;
+@use "@scss/_variables.scss" as *;
+@use "@scss/typography.scss" as *;
 
 .coffee-slider-container {
   width: 100%;
   margin-bottom: 100px;
+  position: relative;
 
   .heading-2 {
     text-align: center;
     margin-bottom: 40px;
     color: $color-text-dark;
+
     .accent {
       color: $color-text-accent;
     }
@@ -18,7 +20,22 @@
     position: relative;
     width: 100%;
     margin-bottom: 40px;
+
+    &.hidden {
+      opacity: 0;
+      visibility: hidden;
+      * {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
   }
+  .error-message{
+    color: $color-text-dark;
+    text-align: center;
+    margin: 0 auto;
+    width: 100%;
+    }
 
   .coffee-slides {
     display: flex;
@@ -95,13 +112,26 @@
     z-index: 10;
     background: transparent;
     transition: background 0.3s ease;
+
+    &.hidden, &.error-message {
+      opacity: 0;
+      visibility: hidden;
+      * {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+
+
     &:hover {
       background: $color-bg-container;
       color: $color-text-light;
     }
+
     &.prev {
       left: 0;
     }
+
     &.next {
       right: 0;
     }
@@ -111,6 +141,19 @@
     display: flex;
     justify-content: center;
     gap: 12px;
+
+    &.hidden {
+      opacity: 0;
+      visibility: hidden;
+
+      * {
+        opacity: 0;
+        visibility: hidden;
+
+      }
+
+    }
+
     .slider-dot {
       width: 40px;
       height: 4px;
@@ -120,14 +163,15 @@
       background: $color-border-light;
 
       &.active {
-      background: $color-border-dark;
+        background: $color-border-dark;
 
       }
-    
+
     }
   }
+
   @media (max-width:380px) {
-    .slider-btn{
+    .slider-btn {
       display: none;
     }
   }
