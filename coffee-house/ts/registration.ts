@@ -1,11 +1,12 @@
 import type { UserData } from "./types";
 import { registerUser, type RegisterPayload } from "./api";
-import "../scss/_main.scss";
+import "../scss/_main.scss"
+import "./common-includes"
+import "./footer"
 
 
 const form = document.getElementById("register-form") as HTMLFormElement;
 const message = document.getElementById("register-message") as HTMLElement;
-
 // --- Dropdown data ---
 const cities = ["New York", "Los Angeles", "Chicago"];
 const cityStreets: Record<string, string[]> = {
@@ -46,6 +47,7 @@ function setFieldError(input: HTMLInputElement | HTMLSelectElement, errorEl: HTM
   (input as HTMLElement).style.border = "1px solid #b00020";
   input.setAttribute("aria-invalid", "true");
   errorEl.textContent = `❗ ${text}`;
+  input.classList.add("error");
 }
 
 function clearFieldError(input: HTMLInputElement | HTMLSelectElement, errorEl: HTMLElement) {
@@ -95,8 +97,8 @@ function populateCitiesAndStreets() {
 }
 
 function updateSubmitState() {
-  const loginInput = document.getElementById("login") as HTMLInputElement | null;
-  const passwordInput = document.getElementById("password") as HTMLInputElement | null;
+  const loginInput = document.getElementById("login-register") as HTMLInputElement | null;
+  const passwordInput = document.getElementById("password-register") as HTMLInputElement | null;
   const confirmInput = document.getElementById("confirm") as HTMLInputElement | null;
   const citySel = document.getElementById("city") as HTMLSelectElement | null;
   const streetSel = document.getElementById("street") as HTMLSelectElement | null;
@@ -116,7 +118,6 @@ function updateSubmitState() {
 // Attach validation handlers
 (() => {
   populateCitiesAndStreets();
-
   const loginFieldWrap = document.getElementById("login")?.closest(".form-field") as HTMLElement | null;
   const passFieldWrap = document.getElementById("password")?.closest(".form-field") as HTMLElement | null;
   const confirmFieldWrap = document.getElementById("confirm")?.closest(".form-field") as HTMLElement | null;
@@ -199,10 +200,8 @@ function updateSubmitState() {
   houseInput.addEventListener("focus", () => clearFieldError(houseInput, houseErrEl));
   houseInput.addEventListener("input", updateSubmitState);
 })();
-
-form?.addEventListener("submit", async (e) => {
+async function validateForm(e: Event) {
   e.preventDefault();
-
   const login = (document.getElementById("login") as HTMLInputElement).value.trim();
   const password = (document.getElementById("password") as HTMLInputElement).value;
   const confirm = (document.getElementById("confirm") as HTMLInputElement).value;
@@ -240,7 +239,7 @@ form?.addEventListener("submit", async (e) => {
       paymentMethod: (payByRaw || "cash").toLowerCase() as RegisterPayload["paymentMethod"],
     };
 
-    const res: {data: {access_token: string, user: UserData}} = await registerUser(payload);
+    const res: { data: { access_token: string, user: UserData } } = await registerUser(payload);
 
     const token: string = (res && (res.data.access_token)) || "";
     if (token) {
@@ -259,7 +258,7 @@ form?.addEventListener("submit", async (e) => {
     localStorage.setItem("user", JSON.stringify(newUser));
     showMessage("Registration successful!", "success");
     window.location.href = "shoppingCart.html";
-  } catch (err:unknown) {
+  } catch (err: unknown) {
     console.error(err);
     showMessage("Registration failed. Please try again.", "error");
   } finally {
@@ -268,4 +267,7 @@ form?.addEventListener("submit", async (e) => {
       submitBtn.textContent = originalText;
     }
   }
+}
+form?.addEventListener("submit", async (e) => {
+  validateForm(e)
 });

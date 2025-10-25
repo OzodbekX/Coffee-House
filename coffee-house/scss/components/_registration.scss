@@ -1,5 +1,5 @@
 @use "@scss/_variables.scss" as *;
-@use "@scss/typography.scss" as *;
+@use "@scss/_typography.scss" as *;
 
 .registration-container {
   margin: 20px auto 100px;
@@ -47,6 +47,9 @@
       }
       &:active, &:focus  {
         background-color: transparent;
+      }
+      &.error{
+        border:1px solid #b00020
       }
     }
   }

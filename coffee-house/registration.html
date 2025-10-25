@@ -5,24 +5,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration | Coffee House</title>
-</head>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
 
+</head>
 <body>
     <div class="main-container">
         <div id="header-placeholder"></div>
         <div id="mobile-navbar-placeholder"></div>
         <div class="registration-container">
             <h2 class="heading-2 registration-title">Registration</h2>
-
             <form id="register-form" class="register-form">
                 <div class="form-row">
                     <div class="form-field">
-                        <label for="login" class="text-medium">Login</label>
-                        <input type="text" id="login" placeholder="Placeholder" required />
+                        <label for="login-register" class="text-medium">Login</label>
+                        <input type="text" id="login-register" placeholder="Placeholder" required />
                     </div>
                     <div class="form-field">
-                        <label for="password" class="text-medium">Password</label>
-                        <input type="password" id="password" placeholder="Placeholder" required />
+                        <label for="password-register" class="text-medium">Password</label>
+                        <input type="password" id="password-register" placeholder="Placeholder" required />
                     </div>
                     <div class="form-field">
                         <label for="confirm" class="text-medium">Confirm Password</label>
@@ -53,20 +53,14 @@
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit" class="button button--secondary">Registration</button>
+                    <button type="submit" id="register-submit-button" class="button button--secondary">Registration</button>
                 </div>
             </form>
 
             <div id="register-message" class="register-message hidden"></div>
         </div>
-
-
-
         <div id="contacts"></div>
     </div>
-    <script type="module" src="ts/common-includes.ts"></script>
-    <script type="module" src="ts/registration.ts"></script>
-    <script type="module" src="ts/footer.ts"></script>
 </body>
 
 </html>

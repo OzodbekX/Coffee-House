@@ -1,7 +1,8 @@
 import { loginUser, type LoginPayload } from "./api";
 import type { UserData } from "./types";
 import "../scss/_main.scss";
-
+import "./common-includes"
+import "./footer"
 const form = document.getElementById("login-form") as HTMLFormElement | null;
 const message = document.getElementById("login-message") as HTMLElement | null;
 

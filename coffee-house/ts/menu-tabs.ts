@@ -9,11 +9,8 @@ import type { ProductType } from "./types";
 export async function menuProducts(): Promise<void> {
     const productsContainer = document.getElementById("menu-products");
     const tabs = document.querySelectorAll<HTMLButtonElement>(".tab");
-    // Exit early if container is missing
-    if (!productsContainer) {
-        console.error("#menu-products container not found.");
-        return;
-    }
+    // Exit quietly if container is missing (e.g., not on menu page)
+    if (!productsContainer) return;
 
     let products: ProductType[] = [];
     const loader = document.getElementById("loader");
@@ -90,7 +87,7 @@ export async function menuProducts(): Promise<void> {
         const priceHtml = renderPrice(product.price, product.discountPrice);
 
         card.innerHTML = `
-          <img src="assets/images/${product.name}.png" alt="${product.name}">
+          <img loading="lazy" src="assets/images/${product.name}.png" alt="${product.name}">
           <div class="card-body">
             <h3 class="heading-3">${product.name}</h3>
             <p class="text-medium">${product.description}</p>
@@ -107,7 +104,9 @@ export async function menuProducts(): Promise<void> {
     }
 }
 
-// Run automatically on DOM load
+// Run automatically on DOM load only if the container exists on this page
 document.addEventListener("DOMContentLoaded", () => {
-    void menuProducts();
+    if (document.getElementById("menu-products")) {
+        void menuProducts();
+    }
 });

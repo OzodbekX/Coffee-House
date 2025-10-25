@@ -73,23 +73,23 @@ export function setShoppingItemCount(): void {
   }
   const count = parsed.length;
   const el = document.getElementById("shopping-item-count");
-
   const isAuthed = Boolean(localStorage.getItem("user"));
-
   if (!el) {
     return;
   }
   if (count > 0) {
+    el?.parentElement?.classList.remove("hidden")
+
     el.textContent = String(count);
     (el as HTMLElement).style.display = "";
   } else {
     if (!isAuthed) {
-      el?.classList.add("hidden")
+      el?.parentElement?.classList.add("hidden")
     } else {
-      el?.classList.remove("hidden")
+      el?.parentElement?.classList.remove("hidden")
     }
     el.textContent = "";
-    (el as HTMLElement).style.display = "none";
+    (el as HTMLElement).style.display = "";
   }
 }
 

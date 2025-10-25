@@ -215,11 +215,12 @@ function fillModal(modal: HTMLElement, product: ProductType) {
 
     items.push(entry);
     localStorage.setItem("selectedItems", JSON.stringify(items));
+    setShoppingItemCount()
+
   }
 
   closeBtn.addEventListener("click", () => {
     addToCart(product.id);
-    setShoppingItemCount()
     modal.classList.add("hidden");
   });
   modal.addEventListener("click", (e) => {
