@@ -37,7 +37,7 @@ export async function loadCoffeeSlider(): Promise<void> {
             slide.classList.add("coffee-card");
             slide.dataset.index = String(index);
             slide.innerHTML = `
-        <img src="../assets/images/${product.name}.png" alt="${product.name}" class="coffee-card__img" />
+        <img loading="lazy" src="assets/images/${product.name}.png" alt="${product.name}" class="coffee-card__img" />
         <div class="coffee-card__info">
           <h3 class="heading-3">${product.name}</h3>
           <p class="text-medium">${product.description}</p>

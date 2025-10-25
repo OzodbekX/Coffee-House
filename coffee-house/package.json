@@ -4,27 +4,35 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "dev": "webpack serve --mode development",
+    "build": "webpack --mode production",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "lint:fix": "eslint . --fix"
   },
   "devDependencies": {
     "@eslint/js": "^9.38.0",
+    "@types/minimatch": "^6.0.0",
     "@typescript-eslint/eslint-plugin": "^8.46.2",
     "@typescript-eslint/parser": "^8.46.2",
+    "clean-webpack-plugin": "^4.0.0",
+    "copy-webpack-plugin": "^13.0.1",
+    "css-loader": "^7.1.2",
     "eslint": "^9.38.0",
     "globals": "^16.4.0",
-    "jiti": "^2.6.1",
-    "sass-embedded": "^1.93.2",
+    "html-loader": "^5.1.0",
+    "html-webpack-partials-plugin": "^0.8.0",
+    "html-webpack-plugin": "^5.6.4",
+    "mini-css-extract-plugin": "^2.9.4",
+    "sass": "^1.93.2",
+    "sass-loader": "^16.0.6",
+    "style-loader": "^4.0.0",
+    "ts-loader": "^9.5.4",
     "typescript": "~5.9.3",
-    "typescript-eslint": "^8.46.2",
-    "vite": "^7.1.7",
-    "vite-plugin-eslint": "^1.8.1",
-    "vite-plugin-include-html": "^1.0.0"
+    "webpack": "^5.102.1",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.2"
   },
   "dependencies": {
-    "vite-include-html-plugin": "^0.0.3"
+    "minimatch": "^10.0.3"
   }
 }

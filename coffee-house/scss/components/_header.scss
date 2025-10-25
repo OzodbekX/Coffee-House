@@ -55,6 +55,13 @@
     }
   }
 
+  .shopping-item-count{
+    &.hidden{
+      visibility: hidden;
+      opacity: 0;
+    }
+  }
+
   .mobile-navbar-button {
     display: none;
   }
