@@ -125,6 +125,7 @@ module.exports = {
         ],
         port: 3000,
         open: "index.html",
+        allowedHosts: "all",
         hot: true,
     },
 };
