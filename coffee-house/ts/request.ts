@@ -2,7 +2,8 @@ export interface ApiOptions extends RequestInit {
   auth?: boolean;
 }
 
-const API_BASE = "http://coffee-shop-be.eu-central-1.elasticbeanstalk.com";
+const API_BASE = "https://6kt29kkeub.execute-api.eu-central-1.amazonaws.com";
+// const API_BASE = "http://coffee-shop-be.eu-central-1.elasticbeanstalk.com";
 
 export async function apiRequest<T>(
   endpoint: string,
