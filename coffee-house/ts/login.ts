@@ -138,7 +138,7 @@ form?.addEventListener("submit", async (e) => {
         localStorage.setItem("user", JSON.stringify(newUser));
 
         showMessage("Signed in successfully!", "success");
-        window.location.href = "shoppingCart.html";
+        window.location.href = "menu.html";
     } catch (err: unknown) {
         console.log(err);
         showMessage("Incorrect login or password", "error");

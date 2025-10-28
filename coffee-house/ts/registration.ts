@@ -259,7 +259,7 @@ async function validateForm(e: Event) {
 
         localStorage.setItem("user", JSON.stringify(newUser));
         showMessage("Registration successful!", "success");
-        window.location.href = "shoppingCart.html";
+        window.location.href = "menu.html";
     } catch (err: unknown) {
         console.error(err);
         showMessage("Registration failed. Please try again.", "error");

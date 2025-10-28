@@ -6,6 +6,12 @@ Coffee House is a static website built with HTML, SCSS, and JavaScript. It showc
 ## 🌐 Live Demo  
 [Visit the live site](https://OzodbekX.github.io/Coffee-House/)  
 
+
+## 🌐 Coffee House Business Functionality
+[Visit the live site]
+## 🌐 Live Demo
+[Visit the live site](https://OzodbekX.github.io/Coffee-House/)
+
 ## 🧱 Technologies  
 - HTML5  
 - SCSS / CSS  
