@@ -151,7 +151,7 @@ function renderCartItems(products: ProductType[]) {
             }
             const originalText = confirmBtn.textContent || "Confirm Order";
             confirmBtn.disabled = true;
-            confirmBtn.textContent = "Placing...";
+            if (confirmBtn.textContent) confirmBtn.textContent = "Placing...";
 
             try {
                 const itemsRaw = itemsRawPre;
@@ -212,7 +212,7 @@ function renderCartItems(products: ProductType[]) {
             } finally {
                 if (confirmBtn) {
                     confirmBtn.disabled = false;
-                    confirmBtn.textContent = originalText || "Confirm Order";
+                    if (confirmBtn?.textContent) confirmBtn.textContent = originalText || "Confirm Order";
                 }
             }
         });
