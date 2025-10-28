@@ -229,7 +229,6 @@ function fillModal(modal: HTMLElement, product: ProductType) {
     }
 
     function handleCloseClick() {
-
         addToCart(product.id);
         modal.classList.add("hidden");
     }
@@ -239,12 +238,14 @@ function fillModal(modal: HTMLElement, product: ProductType) {
     closeBtn.addEventListener("click", handleCloseClick);
 
     modal.addEventListener("click", (e) => {
+        closeBtn.removeEventListener("click", handleCloseClick);
         if (e.target === modal) modal.classList.add("hidden");
     });
 
     // --- Close on ESC key ---
     function handleEscClose(e: KeyboardEvent) {
         if (e.key === "Escape" || e.key === "Esc") {
+            closeBtn?.removeEventListener("click", handleCloseClick);
             modal.classList.add("hidden");
             document.removeEventListener("keydown", handleEscClose);
         }
