@@ -1,3 +1,5 @@
+
+
 :root {
   /* ======================
      🎨 Color Variables
@@ -16,17 +18,5 @@
   /* Border */
   --color-border-light: #C1B6AD; /* Light */
   --color-border-dark: #665F55;  /* Dark */
-
-  //width: 100vw;
-  //height: 100vh;
-  //padding: 0;
-  //margin: 0;
 }
 
-html, body, #root {
-  width: 100%;
-  min-height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-}

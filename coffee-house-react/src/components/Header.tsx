@@ -1,13 +1,42 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import "../styles/Header.scss";
+import React, {useState} from "react";
+import {Link, useLocation, useNavigate} from "react-router-dom";
+import "../styles/components/_header.scss";
 
 const Header: React.FC = () => {
+
+    const navigate = useNavigate();
+    const location = useLocation();
+
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     const toggleMobileMenu = () => {
         setMobileMenuOpen((prev) => !prev);
     };
+
+    const handleScrollTo = (id: string) => {
+        setMobileMenuOpen(false);
+
+        if (location.pathname !== "/") {
+            // If on a different page, navigate to home with hash
+            navigate(`/#${id}`);
+        } else {
+            // Already on home, update hash manually
+            window.location.hash = id;
+        }
+    };
+
+
+    interface NavLinkItem {
+        id: string;
+        label: string;
+    }
+
+    const navLinks: NavLinkItem[] = [
+        {id: "coffee-slider-container", label: "Favorite Coffee"},
+        {id: "about-section", label: "About"},
+        {id: "download-app-section", label: "Download App"},
+        {id: "contacts-section", label: "Contacts"},
+    ];
 
     return (
         <header className="header">
@@ -24,37 +53,18 @@ const Header: React.FC = () => {
                 {/* Navigation */}
                 <nav className={`nav ${mobileMenuOpen ? "open" : ""}`}>
                     <ul className="nav-links">
-                        <li>
-                            <Link className="text-link-button" to="/#coffee-slider">
-                                Favorite Coffee
-                            </Link>
-                        </li>
-                        <li>
-                            <Link className="text-link-button" to="/#about">
-                                About
-                            </Link>
-                        </li>
-                        <li>
-                            <Link className="text-link-button" to="/#download-app">
-                                Download App
-                            </Link>
-                        </li>
-                        <li>
-                            <Link className="text-link-button" to="/#contacts">
-                                Contacts
-                            </Link>
-                        </li>
+                        {navLinks.map((link) => <li>
+                            <span key={link.label} className="text-link-button pointer"
+                                  onClick={() => handleScrollTo(link.id)}>
+                                {link.label}
+                            </span>
+                        </li>)}
                     </ul>
                 </nav>
 
                 {/* Right-side buttons */}
                 <div
-                    style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        gap: "8px",
-                    }}
+                    className={"right-side-buttons"}
                 >
                     <Link to="/cart" className="shopping-cart-link">
                         <img

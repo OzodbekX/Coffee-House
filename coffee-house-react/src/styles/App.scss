@@ -1,5 +1,6 @@
 @use "./_typography.scss" as *; // makes all variables available globally
-
+@use "./components/_button.scss" as *; // makes all variables available globally
+@use "./utils.scss" as *;
 * {
   box-sizing: border-box;
   margin: 0;
@@ -7,7 +8,13 @@
   font-family: 'Inter', sans-serif;
   color: var(--color-text-dark);
 }
-
+html, body, #root {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
 
 
 body {
@@ -16,11 +23,7 @@ body {
   width: 100vw;
   height: 100vh;
   background-color: var(--color-bg-body);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
+  max-height: 100vh;
   overflow-y: auto;
   scrollbar-width: none; // Firefox
   -ms-overflow-style: none; // IE/Edge
@@ -30,11 +33,11 @@ body {
 }
 
 .main-container {
-  margin: 0;
+  margin: 0 auto;
   padding: 0 40px;
   width: 100%;
-  height: 100%;
   max-width: 1440px;
+  height: fit-content;
   /* Hides the scrollbar */
   &::-webkit-scrollbar {
     display: none; // Chrome, Safari
