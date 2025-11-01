@@ -1,0 +1,46 @@
+@use "./_typography.scss" as *; // makes all variables available globally
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  color: var(--color-text-dark);
+}
+
+
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--color-bg-body);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  overflow-y: auto;
+  scrollbar-width: none; // Firefox
+  -ms-overflow-style: none; // IE/Edge
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+
+}
+
+.main-container {
+  margin: 0;
+  padding: 0 40px;
+  width: 100%;
+  height: 100%;
+  max-width: 1440px;
+  /* Hides the scrollbar */
+  &::-webkit-scrollbar {
+    display: none; // Chrome, Safari
+  }
+  @media (max-width:380px) {
+    padding: 0 16px;
+
+  }
+}
