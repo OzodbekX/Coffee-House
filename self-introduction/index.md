@@ -1,5 +1,6 @@
 
-https://youtube.com/shorts/uZtXOJbMMto?feature=share
+[Video on you tube](https://youtu.be/jJnR6eWoeGM?si=CV2wouSHbhfWwQyO)
+
 Hello everyone!
 My name is Ozodbek Xayrullayev, and I’m a Senior Front-End Developer from Uzbekistan.
 
@@ -22,4 +23,12 @@ Besides that, it’s a great opportunity to expand my community in programming.
 I also see this as a great step toward working in big international companies and growing into a strong Full-Stack Engineer.
 
 I love learning, sharing ideas, and solving real problems through code.
+
+Recently, I have also become very interested in Artificial Intelligence, especially in the field of Computer Vision.
+I have been exploring how AI models can process and understand images — for example, detecting objects and automating visual tasks.
+It’s exciting to see how these technologies can be combined with web development to create more intelligent and interactive solutions.
+
+Here created two modules in huggingface.
+That is all from my side.
+
 Thank you for watching!
