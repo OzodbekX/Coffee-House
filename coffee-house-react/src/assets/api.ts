@@ -1,6 +1,6 @@
 // favorites.ts
 import { apiRequest } from "./request";
-import type { ProductType, UserData } from "./types";
+import {ProductType, SelectedProductType, UserData} from "./types";
 
 export async function fetchFavoriteProducts(): Promise<{ data: ProductType[] }> {
   return await apiRequest<{ data: ProductType[] }>("/products/favorites", {
@@ -16,8 +16,8 @@ export async function fetchProducts(): Promise<{ data: ProductType[] }> {
   });
 }
 
-export async function fetchProductById(id: number): Promise<{ data: ProductType }> {
-  return await apiRequest<{ data: ProductType }>("/products/" + id, {
+export async function fetchProductById(id: number): Promise<{ data: SelectedProductType }> {
+  return await apiRequest<{ data: SelectedProductType }>("/products/" + id, {
     method: "GET",
     auth: true
   });

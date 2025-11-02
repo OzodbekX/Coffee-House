@@ -54,7 +54,7 @@ const Header: React.FC = () => {
                 <nav className={`nav ${mobileMenuOpen ? "open" : ""}`}>
                     <ul className="nav-links">
                         {navLinks.map((link) => <li>
-                            <span key={link.label} className="text-link-button pointer"
+                            <span  key={link.id} className="text-link-button pointer"
                                   onClick={() => handleScrollTo(link.id)}>
                                 {link.label}
                             </span>

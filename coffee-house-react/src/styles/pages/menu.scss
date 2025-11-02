@@ -1,0 +1,134 @@
+@use "../typography" as *;
+
+.menu {
+  margin-bottom: 100px;
+  transition: opacity 0.6s ease;
+
+  .heading-2 {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 40px;
+  }
+
+  .menu-section {
+    position: relative;
+    min-height: 200px;
+
+    .menu-header {
+      text-align: center;
+      margin-bottom: 40px;
+
+
+      .menu-tabs {
+        
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+
+        .tab {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          border: 1px solid var(--color-border-light);
+          border-radius: 23px;
+          padding: 8px;
+          background: transparent;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          color: var(--color-text-dark);
+          @extend .text-link-button;
+
+          .menu-wrapper {
+            background: var(--color-border-light);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+
+
+            img {
+              width: 20px;
+              height: 20px;
+            }
+
+          }
+
+
+          &:hover {
+            background: var(--color-bg-container);
+            color: var(--color-text-light);
+            .menu-wrapper {
+              background-color: var(--color-bg-body);
+            }
+
+          }
+
+          &.active {
+            background: var(--color-bg-container);
+            color: var(--color-text-light);
+            .menu-wrapper {
+              background-color: var(--color-bg-body);
+            }
+
+          }
+        }
+      }
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 40px;
+      transition: all 0.4s ease;
+      &.hidden {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+  }
+
+  .product-card {
+    overflow: hidden;
+    cursor: pointer;
+    border: 1px solid var(--color-border-light);
+    border-radius: 40px;
+
+    img {
+      width: 100%;
+      object-fit: cover;
+      border-radius: 40px;
+      aspect-ratio: 1;
+      transition: transform 0.3s ease; // smooth animation
+
+    }
+    &:hover {
+      img{
+        transform: scale(0.9);
+      }
+
+    }
+
+    .card-body {
+      padding: 20px;
+
+      h3 {
+        margin-bottom: 12px;
+        color: var(--color-text-dark);
+      }
+
+      p {
+        color: var(--color-text-dark);
+        margin-bottom: 12px;
+      }
+
+      .price {
+        font-weight: 600;
+        color: #3b2f2f;
+      }
+    }
+  }
+
+
+}

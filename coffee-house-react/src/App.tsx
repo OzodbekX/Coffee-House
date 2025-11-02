@@ -6,6 +6,7 @@ import Main from "./pages/Main";
 import Menu from "./pages/Menu";
 import Login from "./pages/Login";
 import Registration from "./pages/Registration";
+import {CartPage} from "./pages/Cart";
 import "./styles/App.scss";
 
 const App: React.FC = () => {
@@ -19,6 +20,7 @@ const App: React.FC = () => {
                         <Route path="/menu" element={<Menu/>}/>
                         <Route path="/login" element={<Login/>}/>
                         <Route path="/register" element={<Registration/>}/>
+                        <Route path="/cart" element={<CartPage/>}/>
                     </Routes>
                 </main>
                 <Footer/>
