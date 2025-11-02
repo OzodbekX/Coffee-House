@@ -2,7 +2,7 @@
 .modal {
   position: fixed;
   inset: 0;
-  background: rgba(var(--color-bg-backdrop), 0.95);
+  background: var(--color-bg-backdrop);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -26,11 +26,27 @@
     animation: fadeIn 0.3s ease;
     position: relative;
 
+
     @media (max-width: 600px) {
       flex-direction: column;
       width: calc(100% - 40px);
     }
 
+    .modal-close-btn {
+      position: absolute;
+      top: -44px;
+      right:0;
+      background: transparent;
+      height: 44px;
+      width: 44px;
+      cursor: pointer;
+      border: solid 1px var(--color-border-dark);
+      border-radius: 50%;
+      justify-content: center;
+      display: flex;
+      align-items: center;
+
+    }
     .loader-overlay {
       top: 10%
     }

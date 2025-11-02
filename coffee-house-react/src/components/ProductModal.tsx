@@ -16,6 +16,19 @@ export const ProductModal: React.FC<ProductModalProps> = ({product, onClose}) =>
     const [selectedAdditives, setSelectedAdditives] = useState<ProductAdditiveInfo[]>([]);
     const tooltipRef = useRef<HTMLDivElement | null>(null);
 
+    function parseSize(size: string): number {
+        const match = size.toLowerCase().match(/([\d.]+)\s*(ml|l)/);
+        if (!match) return Infinity; // fallback if unrecognized format
+
+        const value = parseFloat(match[1]);
+        const unit = match[2];
+
+        if (unit === "l") {
+            return value * 1000; // convert liters to milliliters
+        }
+        return value; // already in ml
+    }
+
     // --- Fetch product data when modal opens
     useEffect(() => {
         (async () => {
@@ -24,11 +37,23 @@ export const ProductModal: React.FC<ProductModalProps> = ({product, onClose}) =>
                 setProductData(res.data);
             } catch (err) {
                 console.error("Error loading product:", err);
+                alert("Something went wrong. Please, try again.");
+
             } finally {
                 setLoading(false);
             }
         })();
     }, [product.id]);
+
+    useEffect(() => {
+        if (productData?.sizes) {
+            setSelectedSize({
+                key:"s",
+                info:productData?.sizes?.s
+            });
+        }
+
+    }, [productData]);
 
     const handleAdditiveToggle = (add: ProductAdditiveInfo) => {
         setSelectedAdditives((prev) =>
@@ -53,7 +78,6 @@ export const ProductModal: React.FC<ProductModalProps> = ({product, onClose}) =>
     ) => {
         if (!tooltipRef.current || !productData) return;
         const discounted = Boolean(localStorage.getItem("user")) ? Number(sizeInfo?.discountPrice) : null
-
         const html = writePriceWithDiscount(Number(sizeInfo?.price).toFixed(2), discounted?.toFixed(2));
         tooltipRef.current.innerHTML = html;
         tooltipRef.current.style.left = `${e.pageX + 15}px`;
@@ -67,9 +91,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({product, onClose}) =>
     ) => {
         if (!tooltipRef.current || !productData) return;
         const discounted = Boolean(localStorage.getItem("user")) ? Number(addPrice?.discountPrice) : null
-
-
-        const html = writePriceWithDiscount(total.toFixed(2), discounted?.toFixed(2));
+        const html = writePriceWithDiscount(Number(addPrice?.price).toFixed(2), discounted?.toFixed(2));
         tooltipRef.current.innerHTML = html;
         tooltipRef.current.style.left = `${e.pageX + 15}px`;
         tooltipRef.current.style.top = `${e.pageY + 15}px`;
@@ -118,6 +140,9 @@ export const ProductModal: React.FC<ProductModalProps> = ({product, onClose}) =>
             onClick={(e) => e.target === e.currentTarget && onClose()}
         >
             <div id="modal-content" className="modal-content">
+                <button className="modal-close-btn" onClick={onClose}>
+                    <img src="./icons/close.png" alt="close" height={16} width={16} />
+                </button>
                 {loading ? (
                     <div id="loader-placeholder" className="loader">
                         Loading...

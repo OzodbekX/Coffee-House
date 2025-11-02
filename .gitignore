@@ -23,3 +23,5 @@ coffee-house-react/.vscode/
 
 # macOS
 coffee-house-react/.DS_Store
+coffee-house/node_modules
+coffee-house/dist
