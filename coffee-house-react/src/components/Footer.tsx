@@ -1,4 +1,4 @@
-import React, {FunctionComponent, ReactComponentElement, SVGProps, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import "../styles/components/_contacts.scss";
 
 interface SocialIcon {

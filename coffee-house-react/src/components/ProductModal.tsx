@@ -16,18 +16,18 @@ export const ProductModal: React.FC<ProductModalProps> = ({product, onClose}) =>
     const [selectedAdditives, setSelectedAdditives] = useState<ProductAdditiveInfo[]>([]);
     const tooltipRef = useRef<HTMLDivElement | null>(null);
 
-    function parseSize(size: string): number {
-        const match = size.toLowerCase().match(/([\d.]+)\s*(ml|l)/);
-        if (!match) return Infinity; // fallback if unrecognized format
-
-        const value = parseFloat(match[1]);
-        const unit = match[2];
-
-        if (unit === "l") {
-            return value * 1000; // convert liters to milliliters
-        }
-        return value; // already in ml
-    }
+    // function parseSize(size: string): number {
+    //     const match = size.toLowerCase().match(/([\d.]+)\s*(ml|l)/);
+    //     if (!match) return Infinity; // fallback if unrecognized format
+    //
+    //     const value = parseFloat(match[1]);
+    //     const unit = match[2];
+    //
+    //     if (unit === "l") {
+    //         return value * 1000; // convert liters to milliliters
+    //     }
+    //     return value; // already in ml
+    // }
 
     // --- Fetch product data when modal opens
     useEffect(() => {

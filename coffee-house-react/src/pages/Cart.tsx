@@ -73,7 +73,7 @@ export const CartPage: React.FC = () => {
             return {productId: product.id, size: sizeKey, additives, quantity: 1};
         });
 
-        const totalPrice = rows.reduce((acc, {ci, product}) => {
+        const totalPrice = rows.reduce((acc, {ci}) => {
             const {total} = calculatePrice({
                 size: ci.size,
                 additives: ci.additives || [],
@@ -101,8 +101,6 @@ export const CartPage: React.FC = () => {
         .map((ci, index) => {
             const product = products.find((p) => p.id === ci.id);
             if (!product) return null;
-            debugger
-
             const {total, discounted} = calculatePrice({
                 size: ci.size,
                 additives: ci.additives || [],

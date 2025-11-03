@@ -5,7 +5,6 @@ export function renderPrice(
     discountPrice?: string | number,
     options?: { authed?: boolean }
 ): string {
-    console.log({discountPrice, price})
     const isAuthed = options?.authed ?? Boolean(localStorage.getItem("user"));
 
     const priceNum = Number(price);
