@@ -1,10 +1,11 @@
-import {ProductAdditiveInfo, ProductSizeInfo} from "./types";
+import {CartItemType, ProductAdditiveInfo, ProductSizeInfo} from "./types";
 
 export function renderPrice(
     price: string | number,
     discountPrice?: string | number,
     options?: { authed?: boolean }
 ): string {
+    console.log({discountPrice, price})
     const isAuthed = options?.authed ?? Boolean(localStorage.getItem("user"));
 
     const priceNum = Number(price);
@@ -13,8 +14,8 @@ export function renderPrice(
 
     const priceText = `$${priceNum.toFixed(2)}`;
     if (hasDiscount && isAuthed) {
-        const discText = `$${Number(discountPrice).toFixed(2)}`;
-        return writePriceWithDiscount(priceText, discText)
+        const discText = Number(discountPrice || 0).toFixed(2);
+        return writePriceWithDiscount(priceText, Number(discText) > 0 ? discText : undefined)
     }
 
     return writePriceWithDiscount(priceText)
@@ -34,7 +35,6 @@ export function writePriceWithDiscount(priceText: string, discText?: string) {
 
 // ---- Price calculation helper ----
 export interface CalcPriceArgs {
-    product: { price: string | number; discountPrice?: string | number };
     size?: { key: string, info: ProductSizeInfo }; // add-price from selected size (e.g., 0, 0.5, 1)
     additives?: ProductAdditiveInfo[]; // accepts numbers or objects with "add-price"
 }
@@ -44,24 +44,15 @@ export interface CalcPriceResult {
     discounted: number; // discount base + size + additives
 }
 
-export function calculatePrice({product, size, additives = []}: CalcPriceArgs): CalcPriceResult {
-    const base = Number(product.price) || 0;
-    const discountBase =
-        product.discountPrice !== undefined && product.discountPrice !== null
-            ? Number(product.discountPrice)
-            : base;
-
+export function calculatePrice({size, additives = []}: CalcPriceArgs): CalcPriceResult {
     const toNumber = (v: number | { [key: string]: string }): number =>
         typeof v === "number" ? v : Number((v)["price"]) || 0;
-
     const addSum: number = additives.reduce<number>((acc, item) => acc + toNumber(Number(item?.price)), 0);
-    const addSumDisc: number = additives.reduce<number>((acc, item) => acc + toNumber(Number(item?.discountPrice || item?.price)), 0);
-    const sizeNum = Number(size?.info?.price) || 0;
-    const sizeNumDisc = Number(size?.info?.discountPrice || size?.info?.discountPrice) || 0;
-    const delta = sizeNum + addSum;
-    const deltaDisc = addSumDisc + sizeNumDisc;
-    const total = base + delta;
-    const discounted = discountBase + deltaDisc;
+    const addSumDisc: number = additives.reduce<number>((acc, item) => acc + toNumber(Number(item?.discountPrice || item?.price || 0)), 0);
+    const sizeNum = Number(size?.info?.price || 0);
+    const sizeNumDisc = Number(size?.info?.discountPrice || size?.info?.price || 0);
+    const total = sizeNum + addSum;
+    const discounted = addSumDisc + sizeNumDisc;
     return {total, discounted};
 }
 
@@ -116,4 +107,15 @@ export const productSizesDesert = {
     s: {size: "50 g", "add-price": "0.00"},
     m: {size: "100 g", "add-price": "0.50"},
     l: {size: "200 g", "add-price": "1.00"},
+};
+
+export const getSelectedItems = (): CartItemType[] => {
+    try {
+        const raw = localStorage.getItem("selectedItems");
+        const parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed : [];
+    } catch {
+        localStorage.removeItem("selectedItems");
+        return [];
+    }
 };

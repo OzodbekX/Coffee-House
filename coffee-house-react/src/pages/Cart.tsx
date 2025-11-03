@@ -1,30 +1,26 @@
-import React, { useEffect, useState } from "react";
-import {ProductType, UserData} from "../assets/types";
+import React, {useEffect, useState} from "react";
+import {CartItemType, ProductType, UserData} from "../assets/types";
 import {confirmOrder, fetchProducts} from "../assets/api";
-import {calculatePrice, productSizes, productSizesDesert, renderPrice, setShoppingItemCount} from "../assets/helpers";
+import {
+    calculatePrice,
+    getSelectedItems,
+    productSizes,
+    productSizesDesert,
+    renderPrice,
+    setShoppingItemCount
+} from "../assets/helpers";
 import Loader from "../components/Loader";
 import {CartItem} from "../components/Cart/CartItem";
 import {Notification} from "../components/Cart/Notification";
 import {CartSummary} from "../components/Cart/CartSummary";
 import "../styles/components/_shopping-cart.scss";
 
-type CartItemType = { id: number; size?: number; additives?: Array<{ name: string; "add-price": string }> };
 
 const getUserData = (): UserData | null => {
     const data = localStorage.getItem("user");
     return data ? JSON.parse(data) : null;
 };
 
-const getSelectedItems = (): CartItemType[] => {
-    try {
-        const raw = localStorage.getItem("selectedItems");
-        const parsed = raw ? JSON.parse(raw) : [];
-        return Array.isArray(parsed) ? parsed : [];
-    } catch {
-        localStorage.removeItem("selectedItems");
-        return [];
-    }
-};
 
 export const CartPage: React.FC = () => {
     const [products, setProducts] = useState<ProductType[]>([]);
@@ -40,7 +36,7 @@ export const CartPage: React.FC = () => {
                 setProducts(res.data);
             } catch (err) {
                 console.error(err);
-                setNotify({ text: "Failed to load products.", type: "error" });
+                setNotify({text: "Failed to load products.", type: "error"});
             } finally {
                 setLoading(false);
             }
@@ -57,7 +53,7 @@ export const CartPage: React.FC = () => {
 
     const handleConfirm = async () => {
         if (!cartItems.length) {
-            setNotify({ text: "Your cart is empty.", type: "error" });
+            setNotify({text: "Your cart is empty.", type: "error"});
             return;
         }
 
@@ -65,22 +61,21 @@ export const CartPage: React.FC = () => {
             .map((ci) => {
                 const product = products.find((p) => p.id === ci.id);
                 if (!product) return null;
-                return { ci, product };
+                return {ci, product};
             })
             .filter(Boolean) as { ci: CartItemType; product: ProductType }[];
 
-        const payloadItems = rows.map(({ ci, product }) => {
+        const payloadItems = rows.map(({ci, product}) => {
             const sizesMap = product.category === "dessert" ? productSizesDesert : productSizes;
             const sizeEntry = Object.entries(sizesMap).find(([, s]) => Number(s["add-price"]) === (ci.size || 0));
             const sizeKey = (sizeEntry ? sizeEntry[0] : "s") as "s" | "m" | "l";
             const additives = (ci.additives || []).map((a) => a.name);
-            return { productId: product.id, size: sizeKey, additives, quantity: 1 };
+            return {productId: product.id, size: sizeKey, additives, quantity: 1};
         });
 
-        const totalPrice = rows.reduce((acc, { ci, product }) => {
-            const { total } = calculatePrice({
-                product: { price: product.price, discountPrice: product.discountPrice },
-                size: ci.size || 0,
+        const totalPrice = rows.reduce((acc, {ci, product}) => {
+            const {total} = calculatePrice({
+                size: ci.size,
                 additives: ci.additives || [],
             });
             return acc + Number(total);
@@ -90,26 +85,26 @@ export const CartPage: React.FC = () => {
         if (!ok) return;
 
         try {
-            await confirmOrder({ items: payloadItems, totalPrice });
+            await confirmOrder({items: payloadItems, totalPrice});
             localStorage.setItem("selectedItems", JSON.stringify([]));
             setCartItems([]);
             setShoppingItemCount();
-            setNotify({ text: "Thank you! Your order is placed.", type: "success" });
+            setNotify({text: "Thank you! Your order is placed.", type: "success"});
         } catch {
-            setNotify({ text: "Something went wrong. Please try again.", type: "error" });
+            setNotify({text: "Something went wrong. Please try again.", type: "error"});
         }
     };
 
-    if (loading) return <Loader />;
+    if (loading) return <Loader/>;
 
     const renderedItems = cartItems
         .map((ci, index) => {
             const product = products.find((p) => p.id === ci.id);
             if (!product) return null;
+            debugger
 
-            const { total, discounted } = calculatePrice({
-                product: { price: product.price, discountPrice: product.discountPrice },
-                size: ci.size || 0,
+            const {total, discounted} = calculatePrice({
+                size: ci.size,
                 additives: ci.additives || [],
             });
 
@@ -139,16 +134,17 @@ export const CartPage: React.FC = () => {
 
     return (
         <div className="shopping-cart-container">
-            {notify && <Notification text={notify.text} type={notify.type} onClose={() => setNotify(null)} />}
+            {notify && <Notification text={notify.text} type={notify.type} onClose={() => setNotify(null)}/>}
 
             <h2 className="cart-title heading-2">Cart</h2>
 
             <div id="cart-items">{renderedItems}</div>
 
-            <CartSummary user={user} totalHtml={totalHtml} onConfirm={handleConfirm} />
+            <CartSummary user={user} totalHtml={totalHtml}/>
 
             <div className="cart-actions">
-                {!user && (
+                {user ? <button onClick={handleConfirm} disabled={cartItems?.length == 0}
+                                className={"button button--secondary"}>Confirm</button> : (
                     <>
                         <a href="/login" className="button button--secondary">Login</a>
                         <a href="/register" className="button button--secondary">Register</a>

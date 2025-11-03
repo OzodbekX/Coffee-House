@@ -1,4 +1,3 @@
-
 export interface ProductType {
     name: string,
     discountPrice: string,
@@ -7,21 +6,24 @@ export interface ProductType {
     description: string,
     id: number,
 }
+
 export interface ProductSizeInfo {
     size: string;              // e.g., "200 ml"
     price: string;             // e.g., "7.00"
     discountPrice?: string;    // optional, since not all sizes have it
 }
+
 export interface ProductAdditiveInfo {
     name: string;              // e.g., "200 ml"
     price: string;             // e.g., "7.00"
     discountPrice?: string;    // optional, since not all sizes have it
 }
+
 export type ProductSizes = Record<string, ProductSizeInfo>;
 
-export interface SelectedProductType extends ProductType{
-    additives:ProductAdditiveInfo[]
-    sizes:ProductSizes
+export interface SelectedProductType extends ProductType {
+    additives: ProductAdditiveInfo[]
+    sizes: ProductSizes
 }
 
 export interface UserData {
@@ -32,3 +34,9 @@ export interface UserData {
     houseNumber: number;
     paymentMethod: string;
 }
+
+export type CartItemType = {
+    id: number;
+    size?: { key: string, info: ProductSizeInfo };
+    additives?: Array<ProductAdditiveInfo>
+};

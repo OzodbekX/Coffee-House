@@ -52,7 +52,7 @@ const Menu: React.FC = () => {
                     </div>
                 </div>
                 {loading ? (
-                    <Loader />
+                    <Loader/>
                 ) : (
                     <div id="menu-products" className="menu-grid">
                         {filteredProducts.map((product) => (
@@ -71,7 +71,7 @@ const Menu: React.FC = () => {
                                     <p className="text-medium">{product.description}</p>
                                     <div
                                         dangerouslySetInnerHTML={{
-                                            __html: renderPrice(product.price, product.discountPrice),
+                                            __html: renderPrice(product.price, Number(product.discountPrice) > 0 ? product.discountPrice : undefined),
                                         }}
                                     />
                                 </div>

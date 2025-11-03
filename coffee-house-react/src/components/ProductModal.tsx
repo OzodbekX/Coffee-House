@@ -48,8 +48,8 @@ export const ProductModal: React.FC<ProductModalProps> = ({product, onClose}) =>
     useEffect(() => {
         if (productData?.sizes) {
             setSelectedSize({
-                key:"s",
-                info:productData?.sizes?.s
+                key: "s",
+                info: productData?.sizes?.s
             });
         }
 
@@ -63,13 +63,10 @@ export const ProductModal: React.FC<ProductModalProps> = ({product, onClose}) =>
 
     // --- Compute total + discounted price
     const {total, discounted} = calculatePrice({
-        product: {
-            price: productData?.price ?? "0",
-            discountPrice: productData?.discountPrice,
-        },
         size: selectedSize,
         additives: selectedAdditives,
     });
+    console.log({selectedSize, selectedAdditives})
 
     // --- Tooltip handlers ---
     const showToolSizeTip = (
@@ -78,7 +75,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({product, onClose}) =>
     ) => {
         if (!tooltipRef.current || !productData) return;
         const discounted = Boolean(localStorage.getItem("user")) ? Number(sizeInfo?.discountPrice) : null
-        const html = writePriceWithDiscount(Number(sizeInfo?.price).toFixed(2), discounted?.toFixed(2));
+        const html = writePriceWithDiscount(Number(sizeInfo?.price).toFixed(2), discounted ? discounted?.toFixed(2) : undefined);
         tooltipRef.current.innerHTML = html;
         tooltipRef.current.style.left = `${e.pageX + 15}px`;
         tooltipRef.current.style.top = `${e.pageY + 15}px`;
@@ -91,7 +88,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({product, onClose}) =>
     ) => {
         if (!tooltipRef.current || !productData) return;
         const discounted = Boolean(localStorage.getItem("user")) ? Number(addPrice?.discountPrice) : null
-        const html = writePriceWithDiscount(Number(addPrice?.price).toFixed(2), discounted?.toFixed(2));
+        const html = writePriceWithDiscount(Number(addPrice?.price).toFixed(2), discounted ? discounted?.toFixed(2) : undefined);
         tooltipRef.current.innerHTML = html;
         tooltipRef.current.style.left = `${e.pageX + 15}px`;
         tooltipRef.current.style.top = `${e.pageY + 15}px`;
@@ -141,7 +138,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({product, onClose}) =>
         >
             <div id="modal-content" className="modal-content">
                 <button className="modal-close-btn" onClick={onClose}>
-                    <img src="./icons/close.png" alt="close" height={16} width={16} />
+                    <img src="./icons/close.png" alt="close" height={16} width={16}/>
                 </button>
                 {loading ? (
                     <div id="loader-placeholder" className="loader">
@@ -204,7 +201,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({product, onClose}) =>
                                 <span
                                     className="price heading-3"
                                     dangerouslySetInnerHTML={{
-                                        __html: renderPrice(total, discounted),
+                                        __html: renderPrice(total, discounted > 0 ? discounted : undefined),
                                     }}
                                 />
                             </div>

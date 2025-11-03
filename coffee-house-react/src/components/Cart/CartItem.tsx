@@ -1,6 +1,6 @@
 import React from "react";
-import type { ProductType } from "../../assets/types";
-import { renderPrice } from "../../assets/helpers";
+import type {ProductType} from "../../assets/types";
+import {renderPrice} from "../../assets/helpers";
 
 interface CartItemProps {
     product: ProductType;
@@ -22,7 +22,7 @@ export const CartItem: React.FC<CartItemProps> = ({
     <div className="cart-item">
         <div className="item-left">
             <button className="remove-item" onClick={onRemove}>
-                <img loading="lazy" width={24} height={24} src="./icons/trash.png" alt="Remove" />
+                <img loading="lazy" width={24} height={24} src="./icons/trash.png" alt="Remove"/>
             </button>
 
             <img
@@ -43,7 +43,7 @@ export const CartItem: React.FC<CartItemProps> = ({
 
         <div
             className="item-right"
-            dangerouslySetInnerHTML={{ __html: renderPrice(total, discounted) }}
+            dangerouslySetInnerHTML={{__html: renderPrice(total, discounted > 0 ? discounted : undefined)}}
         />
     </div>
 );

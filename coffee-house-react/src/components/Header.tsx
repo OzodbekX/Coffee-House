@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import "../styles/components/_header.scss";
+import {getSelectedItems} from "../assets/helpers";
 
 const Header: React.FC = () => {
 
@@ -37,6 +38,7 @@ const Header: React.FC = () => {
         {id: "download-app-section", label: "Download App"},
         {id: "contacts-section", label: "Contacts"},
     ];
+    const cartItemCount = getSelectedItems()?.length > 0 ? getSelectedItems()?.length : null
 
     return (
         <header className="header">
@@ -54,7 +56,7 @@ const Header: React.FC = () => {
                 <nav className={`nav ${mobileMenuOpen ? "open" : ""}`}>
                     <ul className="nav-links">
                         {navLinks.map((link) => <li>
-                            <span  key={link.id} className="text-link-button pointer"
+                            <span key={link.id} className="text-link-button pointer"
                                   onClick={() => handleScrollTo(link.id)}>
                                 {link.label}
                             </span>
@@ -74,9 +76,8 @@ const Header: React.FC = () => {
                             src="./icons/shopping-bag.png"
                             alt="Shopping Cart"
                         />
-                        <span className="text-link-button" id="shopping-item-count">
-              2
-            </span>
+                        <span className="text-link-button"
+                              id="shopping-item-count">{cartItemCount}</span>
                     </Link>
 
                     <Link to="/menu" className="menu-toggle">

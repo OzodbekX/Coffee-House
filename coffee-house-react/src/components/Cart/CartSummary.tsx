@@ -4,10 +4,9 @@ import type { UserData } from "../../assets/types";
 interface CartSummaryProps {
     user: UserData | null;
     totalHtml: string;
-    onConfirm: () => void;
 }
 
-export const CartSummary: React.FC<CartSummaryProps> = ({ user, totalHtml, onConfirm }) => (
+export const CartSummary: React.FC<CartSummaryProps> = ({ user, totalHtml }) => (
     <div className="cart-summary" id="cart-summary">
         <p>
             <strong className="heading-3">Total:</strong>
