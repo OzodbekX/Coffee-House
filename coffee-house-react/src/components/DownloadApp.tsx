@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import "../styles/components/_download-app.scss";
 
 interface AppButtonProps {
@@ -6,6 +7,8 @@ interface AppButtonProps {
 }
 
 const AppButton: React.FC<AppButtonProps> = ({ type }) => {
+    const { t } = useTranslation();
+
     const isIOS = type === "ios";
 
     const icon = isIOS
@@ -15,33 +18,40 @@ const AppButton: React.FC<AppButtonProps> = ({ type }) => {
         ? "./icons/ios-light.png"
         : "./icons/google-play-light.png";
 
-    const smallText = isIOS ? "Available on the" : "Available on";
-    const bigText = isIOS ? "App Store" : "Google Play";
+    const smallText = isIOS
+        ? t("downloadApp.ios.smallText")
+        : t("downloadApp.android.smallText");
+
+    const bigText = isIOS
+        ? t("downloadApp.ios.bigText")
+        : t("downloadApp.android.bigText");
 
     return (
         <button className="app-btn" data-type={type}>
             <img loading="lazy" src={icon} className="dark" alt={bigText} />
             <img loading="lazy" src={iconLight} className="light" alt={bigText} />
             <span className="text-caption">
-        {smallText}
+                {smallText}
                 <br />
-        <strong className="text-link-button">{bigText}</strong>
-      </span>
+                <strong className="text-link-button">{bigText}</strong>
+            </span>
         </button>
     );
 };
 
 export const AppDownloadSection: React.FC = () => {
+    const { t } = useTranslation();
+
     return (
         <section id="download-app-section" className="download-app">
             <div className="download-app-container">
                 <div className="download-app-content">
-                    <h2 className="heading-2">
-                        <span className="accent">Download</span> our apps to start ordering
-                    </h2>
+                    <h2
+                        className="heading-2"
+                        dangerouslySetInnerHTML={{ __html: t("downloadApp.title") }}
+                    />
                     <p className="text-medium">
-                        Download the Resource app today and experience the comfort of
-                        ordering your favorite coffee from wherever you are.
+                        {t("downloadApp.description")}
                     </p>
 
                     <div className="app-buttons">
@@ -54,7 +64,7 @@ export const AppDownloadSection: React.FC = () => {
                     <img
                         loading="lazy"
                         src="./images/contacts-mobile-phones.png"
-                        alt="App preview 1"
+                        alt={t("downloadApp.imageAlt")}
                         className="phone"
                     />
                 </div>

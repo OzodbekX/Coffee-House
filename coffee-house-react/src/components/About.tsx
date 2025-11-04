@@ -1,13 +1,13 @@
 import React from 'react';
+import {useTranslation} from "react-i18next";
 import "../styles/components/_about.scss"
+
 const About = () => {
+    const {t} = useTranslation();
     return (
         <section id={"about-section"} className="about">
             <div className="about__content">
-                <h2 className="heading-2">
-                    Resource is <i className="accent">the perfect and cozy place </i>where you can enjoy a variety of
-                    hot beverages,
-                    relax, catch up with friends, or get some work done. </h2>
+                <h2 className="heading-2" dangerouslySetInnerHTML={{__html:t("banner.resource")}}></h2>
                 <div className="about-flex">
                     <div className="column">
                         <div className="grid-item"><img loading="lazy" src="./images/about-image-1.png"

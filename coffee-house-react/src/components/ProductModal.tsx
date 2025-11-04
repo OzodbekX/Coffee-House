@@ -3,6 +3,7 @@ import {calculatePrice, renderPrice, setShoppingItemCount, writePriceWithDiscoun
 import {fetchProductById} from "../assets/api";
 import {ProductAdditiveInfo, ProductSizeInfo, ProductType, SelectedProductType} from "../assets/types";
 import "../styles/components/_product-modal.scss";
+import {useTranslation} from "react-i18next";
 
 interface ProductModalProps {
     product: ProductType;
@@ -15,7 +16,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({product, onClose}) =>
     const [selectedSize, setSelectedSize] = useState<{ key: string, info: ProductSizeInfo }>();
     const [selectedAdditives, setSelectedAdditives] = useState<ProductAdditiveInfo[]>([]);
     const tooltipRef = useRef<HTMLDivElement | null>(null);
-
+    const {t} = useTranslation()
     // function parseSize(size: string): number {
     //     const match = size.toLowerCase().match(/([\d.]+)\s*(ml|l)/);
     //     if (!match) return Infinity; // fallback if unrecognized format
@@ -36,8 +37,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({product, onClose}) =>
                 const res = await fetchProductById(product.id);
                 setProductData(res.data);
             } catch (err) {
-                console.error("Error loading product:", err);
-                alert("Something went wrong. Please, try again.");
+                alert(t("alertError"));
 
             } finally {
                 setLoading(false);
@@ -104,7 +104,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({product, onClose}) =>
         const existing = raw ? JSON.parse(raw) : [];
         const entry = {
             id: productData.id,
-            product:productData,
+            product: productData,
             size: selectedSize,
             additives: selectedAdditives,
         };
@@ -124,7 +124,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({product, onClose}) =>
         return (
             <div className="modal-overlay">
                 <div className="modal-content">
-                    {loading ? <div className="loader">Loading...</div> : <p>Error loading product.</p>}
+                    {loading ? <div className="loader">{t('productModal.loading')}</div> : <p>{t('productModal.error')}</p>}
                 </div>
             </div>
         );
@@ -142,7 +142,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({product, onClose}) =>
                 </button>
                 {loading ? (
                     <div id="loader-placeholder" className="loader">
-                        Loading...
+                        {t('productModal.loading')}
                     </div>
                 ) : (
                     <>
@@ -178,7 +178,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({product, onClose}) =>
 
                             {/* Additives */}
                             <div className="option-group">
-                                <p className="text-medium">Additives</p>
+                                <p className="text-medium">{t('productModal.additives')}</p>
                                 <div className="additives">
                                     {productData.additives.map((add, index) => (
                                         <button
@@ -197,7 +197,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({product, onClose}) =>
 
                             {/* Total */}
                             <div className="total">
-                                <strong className="heading-3">Total:</strong>
+                                <strong className="heading-3">{t('productModal.total')}:</strong>
                                 <span
                                     className="price heading-3"
                                     dangerouslySetInnerHTML={{
@@ -216,14 +216,12 @@ export const ProductModal: React.FC<ProductModalProps> = ({product, onClose}) =>
                                     alt="info"
                                 />
                                 <div className="text-caption">
-                                    The cost is not final. Download our mobile app to see the final price and place
-                                    your order. Earn loyalty points and enjoy your favorite coffee with up to 20%
-                                    discount.
+                                    {t('productModal.note')}
                                 </div>
                             </div>
 
                             <button className="close-btn text-link-button" onClick={handleAddToCart}>
-                                Add to cart
+                                {t('productModal.addToCart')}
                             </button>
                         </div>
                     </>

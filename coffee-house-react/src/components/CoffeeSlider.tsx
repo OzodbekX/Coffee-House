@@ -1,9 +1,9 @@
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {fetchFavoriteProducts} from "../assets/api";
 import type {ProductType} from "../assets/types";
 import {useNavigate} from "react-router-dom";
+import {useTranslation} from "react-i18next"; // ✅ Import translation hook
 import "../styles/components/_coffee-slider.scss";
-
 
 export const CoffeeSlider: React.FC = React.memo(() => {
     const AUTO_SCROLL_DELAY = 5000;
@@ -15,9 +15,10 @@ export const CoffeeSlider: React.FC = React.memo(() => {
     const autoScrollTimeout = useRef<number | undefined>(undefined);
     const lastStartTime = useRef<number>(Date.now());
     const remainingTime = useRef<number>(AUTO_SCROLL_DELAY);
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const GAP = 16;
 
+    const {t} = useTranslation(); // ✅ Hook for translations
 
     const loadProducts = async () => {
         try {
@@ -92,31 +93,36 @@ export const CoffeeSlider: React.FC = React.memo(() => {
     // --- Render states ---
     if (loading) {
         return (
-            <section id={'coffee-slider-container'} className="coffee-slider-container">
-                <h2 className="heading-2">
-                    Choose your <i className="accent">favorite</i> coffee
-                </h2>
-                <div id="loader-placeholder" className="loader">Loading...</div>
+            <section id="coffee-slider-container" className="coffee-slider-container">
+                <h2
+                    className="heading-2"
+                    dangerouslySetInnerHTML={{__html: t("coffeeSlider.title")}}
+                />
+                <div id="loader-placeholder" className="loader">
+                    {t("coffeeSlider.loading")}
+                </div>
             </section>
         );
     }
 
     if (error) {
         return (
-            <section id={'coffee-slider-container'} className="coffee-slider-container">
-                <h2 className="heading-2">
-                    Choose your <i className="accent">favorite</i> coffee
-                </h2>
-                <p className="error-message">Something went wrong. Please refresh the page.</p>
+            <section id="coffee-slider-container" className="coffee-slider-container">
+                <h2
+                    className="heading-2"
+                    dangerouslySetInnerHTML={{__html: t("coffeeSlider.title")}}
+                />
+                <p className="error-message">{t("coffeeSlider.error")}</p>
             </section>
         );
     }
 
     return (
         <section id="coffee-slider-container" className="coffee-slider-container">
-            <h2 className="heading-2">
-                Choose your <i className="accent">favorite</i> coffee
-            </h2>
+            <h2
+                className="heading-2"
+                dangerouslySetInnerHTML={{__html: t("coffeeSlider.title")}}
+            />
 
             <div
                 id="coffee-slider"
@@ -136,13 +142,13 @@ export const CoffeeSlider: React.FC = React.memo(() => {
                     &larr;
                 </button>
 
-                <div
-                    className="coffee-slides"
-                    ref={sliderRef}
-                    onScroll={handleScroll}
-                >
+                <div className="coffee-slides" ref={sliderRef} onScroll={handleScroll}>
                     {products.map((product, index) => (
-                        <div onClick={()=>navigate("menu")} key={index} className="coffee-card">
+                        <div
+                            key={index}
+                            onClick={() => navigate("menu")}
+                            className="coffee-card"
+                        >
                             <img
                                 loading="lazy"
                                 src={`./images/${product.name}.png`}
@@ -152,7 +158,9 @@ export const CoffeeSlider: React.FC = React.memo(() => {
                             <div className="coffee-card__info">
                                 <h3 className="heading-3">{product.name}</h3>
                                 <p className="text-medium">{product.description}</p>
-                                <span className="heading-3">${Number(product.price).toFixed(2)}</span>
+                                <span className="heading-3">
+                                    ${Number(product.price).toFixed(2)}
+                                </span>
                             </div>
                         </div>
                     ))}
@@ -184,4 +192,3 @@ export const CoffeeSlider: React.FC = React.memo(() => {
         </section>
     );
 });
-

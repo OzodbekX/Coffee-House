@@ -1,4 +1,125 @@
 {
   "welcome": "Ilovamizga xush kelibsiz",
-  "change_language": "Tilni o'zgartirish"
+  "change_language": "Tilni o'zgartirish",
+  "header": {
+    "navLinks": {
+      "favoriteCoffee": "Sevimli qahvangiz",
+      "about": "Biz haqimizda",
+      "downloadApp": "Ilovani yuklab oling",
+      "contacts": "Aloqa"
+    },
+    "menu": "Menyu"
+  },
+  "downloadApp": {
+    "title": "<span className=\"accent\">Yuklab oling</span> ilovalarimizni va buyurtma berishni boshlang",
+    "description": "Bugunoq Resource ilovasini yuklab oling va sevimli qahvangizni istalgan joydan buyurtma berish qulayligidan bahramand bo‘ling.",
+    "ios": {
+      "smallText": "Mavjud",
+      "bigText": "App Store’da"
+    },
+    "android": {
+      "smallText": "Mavjud",
+      "bigText": "Google Play’da"
+    }
+  },
+  "banner": {
+    "heading": "<i class='accent'>Zavq bilan</i> bizning chiroyli kafemizda premium qahvadan bahramand bo‘ling",
+    "text": "Yoqumli muhit va mazali qahva turlari bilan Coffee House Resource qahvani sevuvchilar va qulay joy izlayotganlar uchun mashhur maskan hisoblanadi.",
+    "button": "Menyu",
+    "resource": "Resource — bu <i class='accent'>mukammal va qulay joy</i>, bu yerda siz issiq ichimliklardan bahramand bo‘lib, dam olishingiz, do‘stlaringiz bilan uchrashishingiz yoki ishlashingiz mumkin."
+  },
+  "coffeeSlider": {
+    "title": "O‘zingizning <i class='accent'>sevimli</i> qahvangizni tanlang",
+    "loading": "Yuklanmoqda...",
+    "error": "Xatolik yuz berdi. Iltimos, sahifani yangilang."
+  },
+  "footer": {
+    "title": "Iching, zavqlaning, tabassum qiling. <i class='accent'>Bu — qahva vaqti!</i>",
+    "contactUs": "Biz bilan bog‘laning",
+    "address": "85384 Green Blvd, Los-Anjeles",
+    "phone": "+1 (803) 550-0123",
+    "workTime": "Dush–Shan: 9:00 – 23:00"
+  },
+  "productModal": {
+    "loading": "Yuklanmoqda...",
+    "error": "Mahsulotni yuklashda xatolik yuz berdi.",
+    "size": "Hajm",
+    "additives": "Qo‘shimchalar",
+    "total": "Jami:",
+    "note": "Narx yakuniy emas. Yakuniy narxni ko‘rish va buyurtma berish uchun mobil ilovamizni yuklab oling. Bonus ball to‘plang va sevimli qahvangizdan 20% gacha chegirma bilan rohatlaning.",
+    "addToCart": "Savatga qo‘shish",
+    "alertError": "Xatolik yuz berdi. Iltimos, qayta urinib ko‘ring."
+  },
+  "alertError": "Xatolik yuz berdi. Iltimos, qayta urinib ko‘ring.",
+  "cartPage": {
+    "title": "Savat",
+    "emptyCart": "Savatda hech narsa yo‘q.",
+    "confirmPrompt": "{{count}} ta mahsulot uchun buyurtmani tasdiqlaysizmi?",
+    "success": "Rahmat! Buyurtmangiz qabul qilindi.",
+    "error": "Xatolik yuz berdi. Iltimos, qayta urinib ko‘ring.",
+    "confirm": "Tasdiqlash",
+    "login": "Kirish",
+    "register": "Ro‘yxatdan o‘tish"
+  },
+  "login": {
+    "title": "Tizimga kirish",
+    "loginLabel": "Login",
+    "passwordLabel": "Parol",
+    "placeholder": "Loginni kiriting",
+    "loading": "Yuklanmoqda...",
+    "submit": "Kirish",
+    "success": "Muvaffaqiyatli kirdingiz!",
+    "invalidCredentials": "Login yoki parol noto‘g‘ri",
+    "validation": {
+      "loginTooShort": "Login kamida 3 ta belgidan iborat bo‘lishi kerak.",
+      "loginStartLetter": "Login harf bilan boshlanishi kerak.",
+      "loginEnglish": "Faqat lotin harflariga ruxsat berilgan.",
+      "passwordTooShort": "Parol kamida 6 ta belgidan iborat bo‘lishi kerak.",
+      "passwordSpecial": "Parolda kamida bitta maxsus belgi bo‘lishi kerak."
+    }
+  },
+  "menu": {
+    "heading": "Har bir chashkamiz ortida <i class='accent'>ajoyib sir</i> yashiringan",
+    "categories": {
+      "coffee": "Qahva",
+      "tea": "Choy",
+      "dessert": "Desert"
+    },
+    "loading": "Yuklanmoqda...",
+    "error": "Mahsulotlarni yuklashda xatolik yuz berdi."
+  },
+  "registration": {
+    "title": "Ro‘yxatdan o‘tish",
+    "labels": {
+      "login": "Login",
+      "password": "Parol",
+      "confirmPassword": "Parolni tasdiqlang",
+      "city": "Shahar",
+      "street": "Ko‘cha",
+      "houseNumber": "Uy raqami",
+      "payBy": "To‘lov turi",
+      "cash": "Naqd pul",
+      "card": "Karta"
+    },
+    "placeholder": "Ma’lumot kiriting",
+    "button": {
+      "register": "Ro‘yxatdan o‘tish",
+      "loading": "Yuklanmoqda..."
+    },
+    "messages": {
+      "success": "Ro‘yxatdan o‘tish muvaffaqiyatli amalga oshirildi!",
+      "error": "Ro‘yxatdan o‘tishda xatolik yuz berdi. Iltimos, qayta urinib ko‘ring.",
+      "fixErrors": "Iltimos, qizil bilan belgilangan xatolarni tuzating."
+    },
+    "validation": {
+      "loginTooShort": "Login kamida 3 ta belgidan iborat bo‘lishi kerak.",
+      "loginStartLetter": "Login harf bilan boshlanishi kerak.",
+      "loginEnglish": "Faqat lotin harflariga ruxsat berilgan.",
+      "passwordTooShort": "Parol kamida 6 ta belgidan iborat bo‘lishi kerak.",
+      "passwordSpecial": "Parolda kamida bitta maxsus belgi bo‘lishi kerak.",
+      "passwordMismatch": "Parollar mos emas.",
+      "houseNumberNumeric": "Uy raqami raqam bo‘lishi kerak.",
+      "houseNumberPositive": "Uy raqami 1 dan katta bo‘lishi kerak."
+    }
+  }
 }

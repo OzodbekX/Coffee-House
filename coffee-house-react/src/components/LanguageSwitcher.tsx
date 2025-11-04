@@ -8,8 +8,8 @@ export const LanguageSwitcher: React.FC = () => {
 
   return (
     <div className="language-switcher">
-      <button onClick={() => changeLanguage("en")}>en EN</button>
-      <button onClick={() => changeLanguage("uz")}>uz UZ</button>
+      <button onClick={() => changeLanguage("en")}>EN</button>
+      <button onClick={() => changeLanguage("uz")}>UZ</button>
     </div>
   );
 };

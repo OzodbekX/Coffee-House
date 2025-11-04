@@ -2,9 +2,10 @@ import React, {useState} from "react";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import {getSelectedItems} from "../assets/helpers";
 import "../styles/components/_header.scss";
+import {useTranslation} from "react-i18next";
 
 const Header: React.FC = () => {
-
+    const {t} = useTranslation();
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -33,10 +34,10 @@ const Header: React.FC = () => {
     }
 
     const navLinks: NavLinkItem[] = [
-        {id: "coffee-slider-container", label: "Favorite Coffee"},
-        {id: "about-section", label: "About"},
-        {id: "download-app-section", label: "Download App"},
-        {id: "contacts-section", label: "Contacts"},
+        {id: "coffee-slider-container", label: t('header.navLinks.favoriteCoffee')},
+        {id: "about-section", label: t('header.navLinks.about')},
+        {id: "download-app-section", label: t('header.navLinks.downloadApp') },
+        {id: "contacts-section", label:t('header.navLinks.contacts') },
     ];
     const cartItemCount = getSelectedItems()?.length > 0 ? getSelectedItems()?.length : null
 
@@ -55,8 +56,8 @@ const Header: React.FC = () => {
                 {/* Navigation */}
                 <nav className={`nav ${mobileMenuOpen ? "open" : ""}`}>
                     <ul className="nav-links">
-                        {navLinks.map((link) => <li>
-                            <span key={link.id} className="text-link-button pointer"
+                        {navLinks.map((link) => <li key={link.id}>
+                            <span className="text-link-button pointer"
                                   onClick={() => handleScrollTo(link.id)}>
                                 {link.label}
                             </span>
@@ -81,7 +82,7 @@ const Header: React.FC = () => {
                     </Link>
 
                     <Link to="/menu" className="menu-toggle">
-                        <span className="text-link-button">Menu</span>
+                        <span className="text-link-button">{t("header.menu")}</span>
                         <img
                             loading="lazy"
                             src="./icons/coffee-cup.png"

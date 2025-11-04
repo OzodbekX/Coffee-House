@@ -1,5 +1,6 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/components/_contacts.scss";
+import { useTranslation } from "react-i18next";
 
 interface SocialIcon {
     name: string;
@@ -15,6 +16,7 @@ const socialIcons: SocialIcon[] = [
 
 export const Footer: React.FC = () => {
     const [svgs, setSvgs] = useState<Record<string, string>>({});
+    const { t } = useTranslation();
 
     useEffect(() => {
         (async () => {
@@ -31,11 +33,10 @@ export const Footer: React.FC = () => {
             setSvgs(results);
         })();
     }, []);
-    const writeSocialIcons=()=>{
 
-        return socialIcons.map(  (icon) => {
-
-            return <a
+    const writeSocialIcons = () =>
+        socialIcons.map((icon) => (
+            <a
                 key={icon.name}
                 href={icon.link}
                 className="social-icon"
@@ -43,37 +44,24 @@ export const Footer: React.FC = () => {
                 rel="noopener noreferrer"
                 aria-label={icon.name}
                 dangerouslySetInnerHTML={{ __html: svgs[icon.name] ?? "" }}
+            ></a>
+        ));
 
-            >
-                {/*{svg}*/}
-                {/* Inline SVG load */}
-                {/*<img*/}
-                {/*    src={icon.path}*/}
-                {/*    alt={`${icon.name} icon`}*/}
-                {/*    width={24}*/}
-                {/*    height={24}*/}
-                {/*    loading="lazy"*/}
-                {/*/>*/}
-            </a>
-        })
-    }
     return (
         <footer className="footer" id="contacts-section">
             <div className="footer-content">
                 {/* Left side */}
                 <div className="footer-left">
-                    <h2 className="heading-2">
-                        Sip, Savor, Smile. <i className="accent">It's coffee time!</i>
-                    </h2>
-
-                    <div className="social-icons">
-                        {writeSocialIcons()}
-                    </div>
+                    <h2
+                        className="heading-2"
+                        dangerouslySetInnerHTML={{ __html: t("footer.title") }}
+                    />
+                    <div className="social-icons">{writeSocialIcons()}</div>
                 </div>
 
                 {/* Right side */}
                 <div className="footer-right">
-                    <h3 className="heading-3">Contact us</h3>
+                    <h3 className="heading-3">{t("footer.contactUs")}</h3>
                     <ul>
                         <li className="text-link-button">
                             <a
@@ -88,7 +76,7 @@ export const Footer: React.FC = () => {
                                     src="./icons/pin.png"
                                     alt="Location pin"
                                 />
-                                85384 Green Blvd, LA
+                                {t("footer.address")}
                             </a>
                         </li>
 
@@ -101,7 +89,7 @@ export const Footer: React.FC = () => {
                                     src="./icons/phone.png"
                                     alt="Phone"
                                 />
-                                +1 (803) 550-0123
+                                {t("footer.phone")}
                             </a>
                         </li>
 
@@ -113,7 +101,7 @@ export const Footer: React.FC = () => {
                                 src="./icons/clock.png"
                                 alt="Clock"
                             />
-                            Mon–Sat: 9:00 AM – 23:00 PM
+                            {t("footer.workTime")}
                         </li>
                     </ul>
                 </div>
