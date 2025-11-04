@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 import {fetchFavoriteProducts} from "../assets/api";
 import type {ProductType} from "../assets/types";
 import {useNavigate} from "react-router-dom";
-import {useTranslation} from "react-i18next"; // ✅ Import translation hook
+import {useTranslation} from "react-i18next";
 import "../styles/components/_coffee-slider.scss";
 
 export const CoffeeSlider: React.FC = React.memo(() => {
@@ -18,7 +18,7 @@ export const CoffeeSlider: React.FC = React.memo(() => {
     const navigate = useNavigate();
     const GAP = 16;
 
-    const {t} = useTranslation(); // ✅ Hook for translations
+    const {t} = useTranslation();
 
     const loadProducts = async () => {
         try {

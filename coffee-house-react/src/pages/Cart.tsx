@@ -11,7 +11,7 @@ import { CartItem } from "../components/Cart/CartItem";
 import { Notification } from "../components/Cart/Notification";
 import { CartSummary } from "../components/Cart/CartSummary";
 import "../styles/components/_shopping-cart.scss";
-import { useTranslation } from "react-i18next"; // ✅ import i18n hook
+import { useTranslation } from "react-i18next";
 
 const getUserData = (): UserData | null => {
     const data = localStorage.getItem("user");
@@ -19,7 +19,7 @@ const getUserData = (): UserData | null => {
 };
 
 export const CartPage: React.FC = () => {
-    const { t } = useTranslation(); // ✅ initialize translation
+    const { t } = useTranslation();
     const [cartItems, setCartItems] = useState<CartItemType[]>(getSelectedItems());
     const [notify, setNotify] = useState<{ text: string; type: "success" | "error" } | null>(null);
     const [user] = useState<UserData | null>(getUserData());
@@ -57,7 +57,7 @@ export const CartPage: React.FC = () => {
         }, 0);
 
         const ok = window.confirm(
-            t("cartPage.confirmPrompt", { count: cartItems.length }) // ✅ translated prompt
+            t("cartPage.confirmPrompt", { count: cartItems.length })
         );
         if (!ok) return;
 
@@ -66,9 +66,9 @@ export const CartPage: React.FC = () => {
             localStorage.setItem("selectedItems", JSON.stringify([]));
             setCartItems([]);
             setShoppingItemCount();
-            setNotify({ text: t("cartPage.success"), type: "success" }); // ✅ success message
+            setNotify({ text: t("cartPage.success"), type: "success" });
         } catch {
-            setNotify({ text: t("cartPage.error"), type: "error" }); // ✅ error message
+            setNotify({ text: t("cartPage.error"), type: "error" });
         }
     };
 
