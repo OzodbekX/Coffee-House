@@ -87,27 +87,6 @@ export function setShoppingItemCount(): void {
     }
 }
 
-
-export const producAdditives = [
-    {name: "Sugar", "add-price": "0.50"},
-    {name: "Cinnamon", "add-price": "0.50"},
-    {name: "Syrup", "add-price": "0.50"},
-];
-
-
-export const productSizes = {
-    s: {size: "200 ml", "add-price": "0.00"},
-    m: {size: "300 ml", "add-price": "0.50"},
-    l: {size: "400 ml", "add-price": "1.00"},
-};
-
-
-export const productSizesDesert = {
-    s: {size: "50 g", "add-price": "0.00"},
-    m: {size: "100 g", "add-price": "0.50"},
-    l: {size: "200 g", "add-price": "1.00"},
-};
-
 export const getSelectedItems = (): CartItemType[] => {
     try {
         const raw = localStorage.getItem("selectedItems");

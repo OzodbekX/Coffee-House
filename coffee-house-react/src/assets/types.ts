@@ -8,7 +8,7 @@ export interface ProductType {
 }
 
 export interface ProductSizeInfo {
-    size: string;              // e.g., "200 ml"
+    size: "s" | "m" | "l";              // e.g., "200 ml"
     price: string;             // e.g., "7.00"
     discountPrice?: string;    // optional, since not all sizes have it
 }
@@ -37,6 +37,7 @@ export interface UserData {
 
 export type CartItemType = {
     id: number;
+    product: SelectedProductType;
     size?: { key: string, info: ProductSizeInfo };
     additives?: Array<ProductAdditiveInfo>
 };

@@ -1,14 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {CartItemType, ProductType, UserData} from "../assets/types";
 import {confirmOrder, fetchProducts} from "../assets/api";
-import {
-    calculatePrice,
-    getSelectedItems,
-    productSizes,
-    productSizesDesert,
-    renderPrice,
-    setShoppingItemCount
-} from "../assets/helpers";
+import {calculatePrice, getSelectedItems, renderPrice, setShoppingItemCount} from "../assets/helpers";
 import Loader from "../components/Loader";
 import {CartItem} from "../components/Cart/CartItem";
 import {Notification} from "../components/Cart/Notification";
@@ -23,25 +16,10 @@ const getUserData = (): UserData | null => {
 
 
 export const CartPage: React.FC = () => {
-    const [products, setProducts] = useState<ProductType[]>([]);
     const [cartItems, setCartItems] = useState<CartItemType[]>(getSelectedItems());
-    const [loading, setLoading] = useState(true);
     const [notify, setNotify] = useState<{ text: string; type: "success" | "error" } | null>(null);
     const [user] = useState<UserData | null>(getUserData());
-
-    useEffect(() => {
-        (async () => {
-            try {
-                const res = await fetchProducts();
-                setProducts(res.data);
-            } catch (err) {
-                console.error(err);
-                setNotify({text: "Failed to load products.", type: "error"});
-            } finally {
-                setLoading(false);
-            }
-        })();
-    }, []);
+    console.log({cartItems})
 
     const handleRemove = (index: number) => {
         const updated = [...cartItems];
@@ -57,31 +35,21 @@ export const CartPage: React.FC = () => {
             return;
         }
 
-        const rows = cartItems
-            .map((ci) => {
-                const product = products.find((p) => p.id === ci.id);
-                if (!product) return null;
-                return {ci, product};
-            })
-            .filter(Boolean) as { ci: CartItemType; product: ProductType }[];
 
-        const payloadItems = rows.map(({ci, product}) => {
-            const sizesMap = product.category === "dessert" ? productSizesDesert : productSizes;
-            const sizeEntry = Object.entries(sizesMap).find(([, s]) => Number(s["add-price"]) === (ci.size || 0));
-            const sizeKey = (sizeEntry ? sizeEntry[0] : "s") as "s" | "m" | "l";
-            const additives = (ci.additives || []).map((a) => a.name);
-            return {productId: product.id, size: sizeKey, additives, quantity: 1};
+        const payloadItems = cartItems.map(({id, product, size, additives}) => {
+            const sizeKey = size?.key as "s" | "m" | "l";
+            return {productId: product.id, size: sizeKey, additives: additives?.map(i=>i?.name) || [], quantity: 1};
         });
 
-        const totalPrice = rows.reduce((acc, {ci}) => {
+        const totalPrice = cartItems.reduce((acc, {id, product, size, additives}) => {
             const {total} = calculatePrice({
-                size: ci.size,
-                additives: ci.additives || [],
+                size: size,
+                additives: additives || [],
             });
             return acc + Number(total);
         }, 0);
 
-        const ok = window.confirm(`Confirm your order of ${rows.length} item(s)?`);
+        const ok = window.confirm(`Confirm your order of ${cartItems.length} item(s)?`);
         if (!ok) return;
 
         try {
@@ -95,20 +63,15 @@ export const CartPage: React.FC = () => {
         }
     };
 
-    if (loading) return <Loader/>;
-
     const renderedItems = cartItems
         .map((ci, index) => {
-            const product = products.find((p) => p.id === ci.id);
+            const product =ci?.product;
             if (!product) return null;
             const {total, discounted} = calculatePrice({
                 size: ci.size,
                 additives: ci.additives || [],
             });
-
-            const sizesMap = product.category === "dessert" ? productSizesDesert : productSizes;
-            const sizeEntry = Object.entries(sizesMap).find(([, s]) => Number(s["add-price"]) === (ci.size || 0));
-            const sizeLabel = sizeEntry ? sizeEntry[1].size : "";
+            const sizeLabel = ci?.size?.key || "s"
             const additivesLabel = ci.additives?.map((a) => a.name).join(", ") || "";
 
             return (

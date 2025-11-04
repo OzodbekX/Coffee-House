@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {Link, useLocation, useNavigate} from "react-router-dom";
-import "../styles/components/_header.scss";
 import {getSelectedItems} from "../assets/helpers";
+import "../styles/components/_header.scss";
 
 const Header: React.FC = () => {
 

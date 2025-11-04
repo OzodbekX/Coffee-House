@@ -102,9 +102,9 @@ export const ProductModal: React.FC<ProductModalProps> = ({product, onClose}) =>
         if (!productData) return;
         const raw = localStorage.getItem("selectedItems");
         const existing = raw ? JSON.parse(raw) : [];
-
         const entry = {
             id: productData.id,
+            product:productData,
             size: selectedSize,
             additives: selectedAdditives,
         };

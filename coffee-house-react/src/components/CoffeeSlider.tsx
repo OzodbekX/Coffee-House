@@ -1,6 +1,7 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import {fetchFavoriteProducts} from "../assets/api";
 import type {ProductType} from "../assets/types";
+import {useNavigate} from "react-router-dom";
 import "../styles/components/_coffee-slider.scss";
 
 
@@ -14,7 +15,9 @@ export const CoffeeSlider: React.FC = React.memo(() => {
     const autoScrollTimeout = useRef<number | undefined>(undefined);
     const lastStartTime = useRef<number>(Date.now());
     const remainingTime = useRef<number>(AUTO_SCROLL_DELAY);
+    const navigate = useNavigate()
     const GAP = 16;
+
 
     const loadProducts = async () => {
         try {
@@ -139,7 +142,7 @@ export const CoffeeSlider: React.FC = React.memo(() => {
                     onScroll={handleScroll}
                 >
                     {products.map((product, index) => (
-                        <div key={index} className="coffee-card">
+                        <div onClick={()=>navigate("menu")} key={index} className="coffee-card">
                             <img
                                 loading="lazy"
                                 src={`./images/${product.name}.png`}

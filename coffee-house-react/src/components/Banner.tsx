@@ -15,7 +15,7 @@ const Banner = () => {
                     destination for coffee lovers and those seeking a warm and inviting space to enjoy their favorite
                     beverage.
                 </p>
-                <a href="menu.html" className="button button--primary">
+                <a href="menu" className="button button--primary">
                     <span>Menu</span>
                     <img loading="lazy" src="./icons/coffee-cup.png" alt="menu"></img>
                 </a>
