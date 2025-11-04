@@ -3,7 +3,7 @@ import { CartItemType, UserData } from "../assets/types";
 import { confirmOrder } from "../assets/api";
 import {
     calculatePrice,
-    getSelectedItems,
+    getSelectedItems, getUserData,
     renderPrice,
     setShoppingItemCount,
 } from "../assets/helpers";
@@ -13,10 +13,7 @@ import { CartSummary } from "../components/Cart/CartSummary";
 import "../styles/components/_shopping-cart.scss";
 import { useTranslation } from "react-i18next";
 
-const getUserData = (): UserData | null => {
-    const data = localStorage.getItem("user");
-    return data ? JSON.parse(data) : null;
-};
+
 
 export const CartPage: React.FC = () => {
     const { t } = useTranslation();

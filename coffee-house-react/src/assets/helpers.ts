@@ -1,4 +1,4 @@
-import {CartItemType, ProductAdditiveInfo, ProductSizeInfo} from "./types";
+import {CartItemType, ProductAdditiveInfo, ProductSizeInfo, UserData} from "./types";
 
 export function renderPrice(
     price: string | number,
@@ -96,4 +96,8 @@ export const getSelectedItems = (): CartItemType[] => {
         localStorage.removeItem("selectedItems");
         return [];
     }
+};
+export const getUserData = (): UserData | null => {
+    const data = localStorage.getItem("user");
+    return data ? JSON.parse(data) : null;
 };

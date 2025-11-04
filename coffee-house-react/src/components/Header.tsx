@@ -3,6 +3,7 @@ import {Link, useLocation, useNavigate} from "react-router-dom";
 import {getSelectedItems} from "../assets/helpers";
 import "../styles/components/_header.scss";
 import {useTranslation} from "react-i18next";
+import {SettingsDropdown} from "./SettingsDropDown";
 
 const Header: React.FC = () => {
     const {t} = useTranslation();
@@ -68,7 +69,10 @@ const Header: React.FC = () => {
                 {/* Right-side buttons */}
                 <div
                     className={"right-side-buttons"}
+
                 >
+                    <SettingsDropdown/>
+
                     <Link to="/cart" className="shopping-cart-link">
                         <img
                             loading="lazy"
