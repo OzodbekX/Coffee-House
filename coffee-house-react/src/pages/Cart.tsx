@@ -16,7 +16,7 @@ export const CartPage: React.FC = () => {
     const {cartItems, removeFromCart, clearCart} = useCart()
     const [notify, setNotify] = useState<{ text: string; type: "success" | "error" } | null>(null);
     const [user] = useState<UserData | null>(getUserData());
-    const [showPaymentModal, setShowPaymentModal] = useState(false);
+    const [showPaymentModal, setShowPaymentModal] = useState(true);
 
     const handleRemove = (index: number) => {
         const removedProduct = cartItems[index]
