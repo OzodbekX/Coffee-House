@@ -13,13 +13,11 @@
   height: 644px;
   overflow: hidden;
 
-  // ✅ Background image (fallback)
   background-image: url("./images/img-hero.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 
-  // ✅ Video background
   .enjoy-bg-video {
     position: absolute;
     top: 0;
@@ -27,11 +25,10 @@
     width: 100%;
     height: 100%;
     object-fit: cover; // fills like a background
-    z-index: 0; // ✅ must be lower than overlay & content
+    z-index: 0;
     pointer-events: none; // non-interactive
   }
 
-  // ✅ Overlay for better text visibility
   &::before {
     content: "";
     position: absolute;
@@ -40,7 +37,6 @@
     z-index: 1; // overlay above video, below content
   }
 
-  // ✅ Content (always on top)
   &__content {
     position: relative;
     max-width: 530px;

@@ -9,12 +9,10 @@ export async function apiRequest<T>(
   endpoint: string,
   options: ApiOptions = {}
 ): Promise<T> {
-  // ✅ Normalize headers
   const customHeaders = new Headers(options.headers || {});
   customHeaders.set("Accept", "application/json");
   customHeaders.set("Content-Type", "application/json");
 
-  // ✅ Add token if auth=true and token exists
   if (options.auth) {
     const token = localStorage.getItem("token");
     if (token) customHeaders.set("Authorization", `Bearer ${token}`);
@@ -30,7 +28,6 @@ export async function apiRequest<T>(
       throw new Error(`HTTP error! Status: ${res.status}`);
     }
 
-    // ✅ Parse JSON if available
     const contentType = res.headers.get("content-type");
     if (contentType && contentType.includes("application/json")) {
       return (await res.json()) as T;

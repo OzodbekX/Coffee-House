@@ -44,7 +44,7 @@
       transition: border 0.2s;
 
       &:focus {
-        border-color: #665F55;
+        border-color: var(--color-bg-container);
       }
       &:active,
       &:focus {

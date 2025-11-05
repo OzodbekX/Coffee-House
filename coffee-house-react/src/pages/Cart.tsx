@@ -1,47 +1,27 @@
-import React, {useEffect, useState} from "react";
-import {CartItemType, ProductType, UserData} from "../assets/types";
-import {confirmOrder, fetchProducts} from "../assets/api";
+import React, { useMemo, useState } from "react";
+import { CartItemType, UserData } from "../assets/types";
+import { confirmOrder } from "../assets/api";
 import {
     calculatePrice,
-    getSelectedItems,
-    productSizes,
-    productSizesDesert,
+    getSelectedItems, getUserData,
     renderPrice,
-    setShoppingItemCount
+    setShoppingItemCount,
 } from "../assets/helpers";
-import Loader from "../components/Loader";
-import {CartItem} from "../components/Cart/CartItem";
-import {Notification} from "../components/Cart/Notification";
-import {CartSummary} from "../components/Cart/CartSummary";
+import { CartItem } from "../components/Cart/CartItem";
+import { Notification } from "../components/Cart/Notification";
+import { CartSummary } from "../components/Cart/CartSummary";
 import "../styles/components/_shopping-cart.scss";
+import { useTranslation } from "react-i18next";
+import { PaymentModal } from "../components/Cart/PaymentModal";
 
-
-const getUserData = (): UserData | null => {
-    const data = localStorage.getItem("user");
-    return data ? JSON.parse(data) : null;
-};
 
 
 export const CartPage: React.FC = () => {
-    const [products, setProducts] = useState<ProductType[]>([]);
+    const { t } = useTranslation();
     const [cartItems, setCartItems] = useState<CartItemType[]>(getSelectedItems());
-    const [loading, setLoading] = useState(true);
     const [notify, setNotify] = useState<{ text: string; type: "success" | "error" } | null>(null);
     const [user] = useState<UserData | null>(getUserData());
-
-    useEffect(() => {
-        (async () => {
-            try {
-                const res = await fetchProducts();
-                setProducts(res.data);
-            } catch (err) {
-                console.error(err);
-                setNotify({text: "Failed to load products.", type: "error"});
-            } finally {
-                setLoading(false);
-            }
-        })();
-    }, []);
+    const [showPaymentModal, setShowPaymentModal] = useState(false);
 
     const handleRemove = (index: number) => {
         const updated = [...cartItems];
@@ -51,64 +31,59 @@ export const CartPage: React.FC = () => {
         setShoppingItemCount();
     };
 
-    const handleConfirm = async () => {
-        if (!cartItems.length) {
-            setNotify({text: "Your cart is empty.", type: "error"});
-            return;
-        }
-
-        const rows = cartItems
-            .map((ci) => {
-                const product = products.find((p) => p.id === ci.id);
-                if (!product) return null;
-                return {ci, product};
-            })
-            .filter(Boolean) as { ci: CartItemType; product: ProductType }[];
-
-        const payloadItems = rows.map(({ci, product}) => {
-            const sizesMap = product.category === "dessert" ? productSizesDesert : productSizes;
-            const sizeEntry = Object.entries(sizesMap).find(([, s]) => Number(s["add-price"]) === (ci.size || 0));
-            const sizeKey = (sizeEntry ? sizeEntry[0] : "s") as "s" | "m" | "l";
-            const additives = (ci.additives || []).map((a) => a.name);
-            return {productId: product.id, size: sizeKey, additives, quantity: 1};
-        });
-
-        const totalPrice = rows.reduce((acc, {ci}) => {
-            const {total} = calculatePrice({
-                size: ci.size,
-                additives: ci.additives || [],
+    const totalPrice = useMemo(() => {
+        return cartItems.reduce((acc, { id, product, size, additives }) => {
+            const { total } = calculatePrice({
+                size: size,
+                additives: additives || [],
             });
             return acc + Number(total);
         }, 0);
+    }, [cartItems]);
 
-        const ok = window.confirm(`Confirm your order of ${rows.length} item(s)?`);
+    const handleConfirm = async () => {
+        if (!cartItems.length) {
+            setNotify({ text: t("cartPage.emptyCart"), type: "error" });
+            return;
+        }
+
+        const payloadItems = cartItems.map(({ id, product, size, additives }) => {
+            const sizeKey = size?.key as "s" | "m" | "l";
+            return {
+                productId: product.id,
+                size: sizeKey,
+                additives: additives?.map((i) => i?.name) || [],
+                quantity: 1,
+            };
+        });
+
+
+
+        const ok = window.confirm(
+            t("cartPage.confirmPrompt", { count: cartItems.length })
+        );
         if (!ok) return;
 
         try {
-            await confirmOrder({items: payloadItems, totalPrice});
+            await confirmOrder({ items: payloadItems, totalPrice });
             localStorage.setItem("selectedItems", JSON.stringify([]));
             setCartItems([]);
             setShoppingItemCount();
-            setNotify({text: "Thank you! Your order is placed.", type: "success"});
+            setNotify({ text: t("cartPage.success"), type: "success" });
         } catch {
-            setNotify({text: "Something went wrong. Please try again.", type: "error"});
+            setNotify({ text: t("cartPage.error"), type: "error" });
         }
     };
 
-    if (loading) return <Loader/>;
-
     const renderedItems = cartItems
         .map((ci, index) => {
-            const product = products.find((p) => p.id === ci.id);
+            const product = ci?.product;
             if (!product) return null;
-            const {total, discounted} = calculatePrice({
+            const { total, discounted } = calculatePrice({
                 size: ci.size,
                 additives: ci.additives || [],
             });
-
-            const sizesMap = product.category === "dessert" ? productSizesDesert : productSizes;
-            const sizeEntry = Object.entries(sizesMap).find(([, s]) => Number(s["add-price"]) === (ci.size || 0));
-            const sizeLabel = sizeEntry ? sizeEntry[1].size : "";
+            const sizeLabel = ci?.size?.key || "s";
             const additivesLabel = ci.additives?.map((a) => a.name).join(", ") || "";
 
             return (
@@ -130,22 +105,84 @@ export const CartPage: React.FC = () => {
         renderedItems.reduce((sum, el) => sum + (el as any).props.discounted, 0)
     );
 
+    const handlePaymentConfirm = async () => {
+        try {
+            const payloadItems = cartItems.map(({ id, product, size, additives }) => {
+                const sizeKey = size?.key as "s" | "m" | "l";
+                return {
+                    productId: product.id,
+                    size: sizeKey,
+                    additives: additives?.map((i) => i?.name) || [],
+                    quantity: 1,
+                };
+            });
+            await confirmOrder({ items: payloadItems, totalPrice });
+
+            // Get previous orders
+            const prevOrders = JSON.parse(localStorage.getItem("orders") || "[]");
+            const newOrder = {
+                id: Date.now(),
+                items: cartItems,
+                totalPrice,
+                status: "Processing",
+                createdAt: new Date().toISOString(),
+            };
+            localStorage.setItem("orders", JSON.stringify([...prevOrders, newOrder]));
+
+            // Clear cart
+            localStorage.setItem("selectedItems", JSON.stringify([]));
+            setCartItems([]);
+            setShoppingItemCount();
+
+            setShowPaymentModal(false);
+            setNotify({ text: t("cartPage.success"), type: "success" });
+        } catch {
+            setNotify({ text: t("cartPage.error"), type: "error" });
+        }
+    };
+
     return (
         <div className="shopping-cart-container">
-            {notify && <Notification text={notify.text} type={notify.type} onClose={() => setNotify(null)}/>}
+            {notify && (
+                <Notification
+                    text={notify.text}
+                    type={notify.type}
+                    onClose={() => setNotify(null)}
+                />
+            )}
+            {showPaymentModal && (
+                <PaymentModal
+                    totalPrice={totalPrice}
+                    onConfirm={handlePaymentConfirm}
+                    onClose={() => setShowPaymentModal(false)}
+                />
+            )}
 
-            <h2 className="cart-title heading-2">Cart</h2>
+            <h2 className="cart-title heading-2">{t("cartPage.title")}</h2>
 
             <div id="cart-items">{renderedItems}</div>
 
-            <CartSummary user={user} totalHtml={totalHtml}/>
+            <CartSummary user={user} totalHtml={totalHtml} />
 
             <div className="cart-actions">
-                {user ? <button onClick={handleConfirm} disabled={cartItems?.length == 0}
-                                className={"button button--secondary"}>Confirm</button> : (
+                {user ? (
+                    <button
+                        onClick={() => setShowPaymentModal(true)}
+
+                        // onClick={handleConfirm}
+                        disabled={cartItems?.length == 0}
+                        className="button button--secondary"
+                    >
+                        {t("cartPage.confirm")}
+                    </button>
+                ) : (
                     <>
-                        <a href="/login" className="button button--secondary">Login</a>
-                        <a href="/register" className="button button--secondary">Register</a>
+                        <a href="/login" className="button button--secondary">
+                            {t("cartPage.login")}
+                        </a>
+                        <a href="/register" className="button button--secondary">
+                            {t("cartPage.register")}
+                        </a>
                     </>
                 )}
             </div>

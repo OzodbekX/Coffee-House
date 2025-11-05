@@ -3,6 +3,7 @@ import "../styles/components/_registration.scss";
 import { registerUser, type RegisterPayload } from "../assets/api";
 import type { UserData } from "../assets/types";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next"; // ⬅️ Import i18n
 
 // --- Dropdown data ---
 const cities = ["New York", "Los Angeles", "Chicago"];
@@ -22,6 +23,7 @@ const cityStreets: Record<string, string[]> = {
 };
 
 const Registration: React.FC = () => {
+    const { t } = useTranslation(); // ⬅️ i18n hook
     const navigate = useNavigate();
 
     // --- Form state ---
@@ -42,33 +44,32 @@ const Registration: React.FC = () => {
 
     // --- Validation functions ---
     const validateLogin = (v: string): string | null => {
-        if (v.length < 3) return "Login must be at least 3 characters long.";
-        if (!/^[A-Za-z]/.test(v)) return "Login must start with a letter.";
-        if (!/^[A-Za-z]+$/.test(v)) return "Only English letters are allowed.";
+        if (v.length < 3) return t("login.validation.loginTooShort");
+        if (!/^[A-Za-z]/.test(v)) return t("login.validation.loginStartLetter");
+        if (!/^[A-Za-z]+$/.test(v)) return t("registration.validation.loginEnglish");
         return null;
     };
 
     const validatePassword = (v: string): string | null => {
-        if (v.length < 6) return "Password must be at least 6 characters long.";
-        if (!/[^A-Za-z0-9]/.test(v)) return "Password must contain at least 1 special character.";
+        if (v.length < 6) return t("registration.validation.passwordTooShort");
+        if (!/[^A-Za-z0-9]/.test(v)) return t("registration.validation.passwordSpecial");
         return null;
     };
 
     const validateConfirmPassword = (pass: string, confirm: string): string | null => {
         const base = validatePassword(confirm);
         if (base) return base;
-        if (pass !== confirm) return "Passwords do not match.";
+        if (pass !== confirm) return t("registration.validation.passwordMismatch");
         return null;
     };
 
     const validateHouseNumber = (v: string): string | null => {
         const n = Number(v);
-        if (!Number.isFinite(n)) return "House number must be a number.";
-        if (n <= 1) return "House number must be greater than 1.";
+        if (!Number.isFinite(n)) return t("registration.validation.houseNumberNumeric");
+        if (n <= 1) return t("registration.validation.houseNumberPositive");
         return null;
     };
 
-    // --- Derived validity state ---
     const isFormValid =
         !validateLogin(login) &&
         !validatePassword(password) &&
@@ -77,7 +78,6 @@ const Registration: React.FC = () => {
         Boolean(city) &&
         Boolean(street);
 
-    // --- Auto-update street options when city changes ---
     useEffect(() => {
         const streets = cityStreets[city] || [];
         setStreet(streets[0]);
@@ -87,7 +87,6 @@ const Registration: React.FC = () => {
         setMessage({ text, type });
     };
 
-    // --- onBlur validation handler ---  // NEW
     const handleBlur = (field: string) => {
         let error = "";
         switch (field) {
@@ -109,11 +108,10 @@ const Registration: React.FC = () => {
         setErrors((prev) => ({ ...prev, [field]: error }));
     };
 
-    const handleFocus = (field: string) => {   // NEW
+    const handleFocus = (field: string) => {
         setErrors((prev) => ({ ...prev, [field]: "" }));
     };
 
-    // --- Submit handler ---
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -129,13 +127,12 @@ const Registration: React.FC = () => {
                 confirm: confirmErr || "",
                 houseNumber: houseErr || "",
             });
-            showMessage("Please fix the highlighted errors.", "error");
+            showMessage(t("registration.messages.fixErrors"), "error");
             return;
         }
 
         try {
             setLoading(true);
-
             const payload: RegisterPayload = {
                 login,
                 password,
@@ -146,8 +143,7 @@ const Registration: React.FC = () => {
                 paymentMethod,
             };
 
-            const res: { data: { access_token: string; user: UserData } } =
-                await registerUser(payload);
+            const res: { data: { access_token: string; user: UserData } } = await registerUser(payload);
 
             const token = res?.data?.access_token || "";
             if (token) localStorage.setItem("token", token);
@@ -162,11 +158,11 @@ const Registration: React.FC = () => {
             };
 
             localStorage.setItem("user", JSON.stringify(newUser));
-            showMessage("Registration successful!", "success");
+            showMessage(t("registration.messages.success"), "success");
             setTimeout(() => navigate("/menu"), 1200);
         } catch (err) {
             console.error(err);
-            showMessage("Registration failed. Please try again.", "error");
+            showMessage(t("registration.messages.error"), "error");
         } finally {
             setLoading(false);
         }
@@ -178,99 +174,130 @@ const Registration: React.FC = () => {
             <div id="mobile-navbar-placeholder"></div>
 
             <div className="registration-container">
-                <h2 className="heading-2 registration-title">Registration</h2>
+                <h2 className="heading-2 registration-title">{t("registration.title")}</h2>
 
                 <form onSubmit={handleSubmit} className="register-form">
                     <div className="form-row">
+                        {/* Login */}
                         <div className="form-field">
-                            <label htmlFor="login-register" className="text-medium">Login</label>
+                            <label htmlFor="login-register" className="text-medium">
+                                {t("registration.labels.login")}
+                            </label>
                             <input
                                 id="login-register"
                                 value={login}
-                                placeholder="Placeholder"
+                                placeholder={t("registration.placeholder")}
                                 onChange={(e) => setLogin(e.target.value)}
-                                onBlur={() => handleBlur("login")}     // NEW
-                                onFocus={() => handleFocus("login")}   // NEW
+                                onBlur={() => handleBlur("login")}
+                                onFocus={() => handleFocus("login")}
                                 required
-                                style={{
-                                    border: errors.login ? "1px solid #b00020" : undefined,
-                                }}
+                                style={{ border: errors.login ? "1px solid #b00020" : undefined }}
                             />
-                            {errors.login && <div className="text-caption" style={{ color: "#b00020" }}>❗ {errors.login}</div>}
+                            {errors.login && (
+                                <div className="text-caption" style={{ color: "#b00020" }}>
+                                    ❗ {errors.login}
+                                </div>
+                            )}
                         </div>
 
+                        {/* Password */}
                         <div className="form-field">
-                            <label htmlFor="password-register" className="text-medium">Password</label>
+                            <label htmlFor="password-register" className="text-medium">
+                                {t("registration.labels.password")}
+                            </label>
                             <input
                                 id="password-register"
                                 type="password"
                                 value={password}
-                                placeholder="Placeholder"
+                                placeholder={t("registration.placeholder")}
                                 onChange={(e) => setPassword(e.target.value)}
-                                onBlur={() => handleBlur("password")}   // NEW
-                                onFocus={() => handleFocus("password")} // NEW
+                                onBlur={() => handleBlur("password")}
+                                onFocus={() => handleFocus("password")}
                                 required
-                                style={{
-                                    border: errors.password ? "1px solid #b00020" : undefined,
-                                }}
+                                style={{ border: errors.password ? "1px solid #b00020" : undefined }}
                             />
-                            {errors.password && <div className="text-caption" style={{ color: "#b00020" }}>❗ {errors.password}</div>}
+                            {errors.password && (
+                                <div className="text-caption" style={{ color: "#b00020" }}>
+                                    ❗ {errors.password}
+                                </div>
+                            )}
                         </div>
 
+                        {/* Confirm Password */}
                         <div className="form-field">
-                            <label htmlFor="confirm" className="text-medium">Confirm Password</label>
+                            <label htmlFor="confirm" className="text-medium">
+                                {t("registration.labels.confirmPassword")}
+                            </label>
                             <input
                                 id="confirm"
                                 type="password"
                                 value={confirm}
-                                placeholder="Placeholder"
+                                placeholder={t("registration.placeholder")}
                                 onChange={(e) => setConfirm(e.target.value)}
-                                onBlur={() => handleBlur("confirm")}   // NEW
-                                onFocus={() => handleFocus("confirm")} // NEW
+                                onBlur={() => handleBlur("confirm")}
+                                onFocus={() => handleFocus("confirm")}
                                 required
-                                style={{
-                                    border: errors.confirm ? "1px solid #b00020" : undefined,
-                                }}
+                                style={{ border: errors.confirm ? "1px solid #b00020" : undefined }}
                             />
-                            {errors.confirm && <div className="text-caption" style={{ color: "#b00020" }}>❗ {errors.confirm}</div>}
+                            {errors.confirm && (
+                                <div className="text-caption" style={{ color: "#b00020" }}>
+                                    ❗ {errors.confirm}
+                                </div>
+                            )}
                         </div>
                     </div>
 
                     <div className="form-row">
+                        {/* City */}
                         <div className="form-field">
-                            <label htmlFor="city" className="text-medium">City</label>
+                            <label htmlFor="city" className="text-medium">
+                                {t("registration.labels.city")}
+                            </label>
                             <select id="city" value={city} onChange={(e) => setCity(e.target.value)} required>
-                                {cities.map((c) => <option key={c}>{c}</option>)}
+                                {cities.map((c) => (
+                                    <option key={c}>{c}</option>
+                                ))}
                             </select>
                         </div>
 
+                        {/* Street */}
                         <div className="form-field">
-                            <label htmlFor="street" className="text-medium">Street</label>
+                            <label htmlFor="street" className="text-medium">
+                                {t("registration.labels.street")}
+                            </label>
                             <select id="street" value={street} onChange={(e) => setStreet(e.target.value)} required>
-                                {(cityStreets[city] || []).map((s) => <option key={s}>{s}</option>)}
+                                {(cityStreets[city] || []).map((s) => (
+                                    <option key={s}>{s}</option>
+                                ))}
                             </select>
                         </div>
 
+                        {/* House Number */}
                         <div className="form-field">
-                            <label htmlFor="houseNumber" className="text-medium">House number</label>
+                            <label htmlFor="houseNumber" className="text-medium">
+                                {t("registration.labels.houseNumber")}
+                            </label>
                             <input
                                 id="houseNumber"
                                 type="number"
                                 value={houseNumber}
-                                placeholder="Placeholder"
+                                placeholder={t("registration.placeholder")}
                                 onChange={(e) => setHouseNumber(e.target.value)}
-                                onBlur={() => handleBlur("houseNumber")}  // NEW
-                                onFocus={() => handleFocus("houseNumber")} // NEW
+                                onBlur={() => handleBlur("houseNumber")}
+                                onFocus={() => handleFocus("houseNumber")}
                                 required
-                                style={{
-                                    border: errors.houseNumber ? "1px solid #b00020" : undefined,
-                                }}
+                                style={{ border: errors.houseNumber ? "1px solid #b00020" : undefined }}
                             />
-                            {errors.houseNumber && <div className="text-caption" style={{ color: "#b00020" }}>❗ {errors.houseNumber}</div>}
+                            {errors.houseNumber && (
+                                <div className="text-caption" style={{ color: "#b00020" }}>
+                                    ❗ {errors.houseNumber}
+                                </div>
+                            )}
                         </div>
 
+                        {/* Payment method */}
                         <div className="form-field payby-field">
-                            <label className="text-medium">Pay by</label>
+                            <label className="text-medium">{t("registration.labels.payBy")}</label>
                             <div className="radio-group">
                                 <label>
                                     <input
@@ -279,7 +306,8 @@ const Registration: React.FC = () => {
                                         value="cash"
                                         checked={paymentMethod === "cash"}
                                         onChange={() => setPaymentMethod("cash")}
-                                    /> Cash
+                                    />{" "}
+                                    {t("registration.labels.cash")}
                                 </label>
                                 <label>
                                     <input
@@ -288,7 +316,8 @@ const Registration: React.FC = () => {
                                         value="card"
                                         checked={paymentMethod === "card"}
                                         onChange={() => setPaymentMethod("card")}
-                                    /> Card
+                                    />{" "}
+                                    {t("registration.labels.card")}
                                 </label>
                             </div>
                         </div>
@@ -300,7 +329,7 @@ const Registration: React.FC = () => {
                             className="button button--secondary"
                             disabled={loading || !isFormValid}
                         >
-                            {loading ? "Loading..." : "Registration"}
+                            {loading ? t("registration.button.loading") : t("registration.button.register")}
                         </button>
                     </div>
                 </form>
