@@ -26,8 +26,8 @@ export const SettingsDropdown: React.FC = () => {
     }, []);
 
     const handleModeChange = (newMode: "light" | "dark") => {
-        setMode(newMode);
         document.documentElement.classList.toggle("dark", newMode === "dark");
+        setMode(newMode);
     };
 
     const goToOrders = () => {

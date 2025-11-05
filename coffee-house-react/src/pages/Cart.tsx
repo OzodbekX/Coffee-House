@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { CartItemType, UserData } from "../assets/types";
 import { confirmOrder } from "../assets/api";
 import {
@@ -12,6 +12,7 @@ import { Notification } from "../components/Cart/Notification";
 import { CartSummary } from "../components/Cart/CartSummary";
 import "../styles/components/_shopping-cart.scss";
 import { useTranslation } from "react-i18next";
+import { PaymentModal } from "../components/Cart/PaymentModal";
 
 
 
@@ -20,6 +21,7 @@ export const CartPage: React.FC = () => {
     const [cartItems, setCartItems] = useState<CartItemType[]>(getSelectedItems());
     const [notify, setNotify] = useState<{ text: string; type: "success" | "error" } | null>(null);
     const [user] = useState<UserData | null>(getUserData());
+    const [showPaymentModal, setShowPaymentModal] = useState(false);
 
     const handleRemove = (index: number) => {
         const updated = [...cartItems];
@@ -28,6 +30,16 @@ export const CartPage: React.FC = () => {
         setCartItems(updated);
         setShoppingItemCount();
     };
+
+    const totalPrice = useMemo(() => {
+        return cartItems.reduce((acc, { id, product, size, additives }) => {
+            const { total } = calculatePrice({
+                size: size,
+                additives: additives || [],
+            });
+            return acc + Number(total);
+        }, 0);
+    }, [cartItems]);
 
     const handleConfirm = async () => {
         if (!cartItems.length) {
@@ -45,13 +57,7 @@ export const CartPage: React.FC = () => {
             };
         });
 
-        const totalPrice = cartItems.reduce((acc, { id, product, size, additives }) => {
-            const { total } = calculatePrice({
-                size: size,
-                additives: additives || [],
-            });
-            return acc + Number(total);
-        }, 0);
+
 
         const ok = window.confirm(
             t("cartPage.confirmPrompt", { count: cartItems.length })
@@ -99,6 +105,42 @@ export const CartPage: React.FC = () => {
         renderedItems.reduce((sum, el) => sum + (el as any).props.discounted, 0)
     );
 
+    const handlePaymentConfirm = async () => {
+        try {
+            const payloadItems = cartItems.map(({ id, product, size, additives }) => {
+                const sizeKey = size?.key as "s" | "m" | "l";
+                return {
+                    productId: product.id,
+                    size: sizeKey,
+                    additives: additives?.map((i) => i?.name) || [],
+                    quantity: 1,
+                };
+            });
+            await confirmOrder({ items: payloadItems, totalPrice });
+
+            // Get previous orders
+            const prevOrders = JSON.parse(localStorage.getItem("orders") || "[]");
+            const newOrder = {
+                id: Date.now(),
+                items: cartItems,
+                totalPrice,
+                status: "Processing",
+                createdAt: new Date().toISOString(),
+            };
+            localStorage.setItem("orders", JSON.stringify([...prevOrders, newOrder]));
+
+            // Clear cart
+            localStorage.setItem("selectedItems", JSON.stringify([]));
+            setCartItems([]);
+            setShoppingItemCount();
+
+            setShowPaymentModal(false);
+            setNotify({ text: t("cartPage.success"), type: "success" });
+        } catch {
+            setNotify({ text: t("cartPage.error"), type: "error" });
+        }
+    };
+
     return (
         <div className="shopping-cart-container">
             {notify && (
@@ -106,6 +148,13 @@ export const CartPage: React.FC = () => {
                     text={notify.text}
                     type={notify.type}
                     onClose={() => setNotify(null)}
+                />
+            )}
+            {showPaymentModal && (
+                <PaymentModal
+                    totalPrice={totalPrice}
+                    onConfirm={handlePaymentConfirm}
+                    onClose={() => setShowPaymentModal(false)}
                 />
             )}
 
@@ -118,7 +167,9 @@ export const CartPage: React.FC = () => {
             <div className="cart-actions">
                 {user ? (
                     <button
-                        onClick={handleConfirm}
+                        onClick={() => setShowPaymentModal(true)}
+
+                        // onClick={handleConfirm}
                         disabled={cartItems?.length == 0}
                         className="button button--secondary"
                     >

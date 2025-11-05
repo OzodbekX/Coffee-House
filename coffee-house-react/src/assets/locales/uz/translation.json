@@ -121,5 +121,6 @@
       "houseNumberNumeric": "Uy raqami raqam bo‘lishi kerak.",
       "houseNumberPositive": "Uy raqami 1 dan katta bo‘lishi kerak."
     }
-  }
+  },
+  "address": "Address"
 }

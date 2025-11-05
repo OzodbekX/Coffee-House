@@ -9,9 +9,9 @@ interface SocialIcon {
 }
 
 const socialIcons: SocialIcon[] = [
-    { name: "twitter", path: "../../public/icons/twitter.svg", link: "#" },
-    { name: "instagram", path: "../../public/icons/instagram.svg", link: "#" },
-    { name: "facebook", path: "../../public/icons/facebook.svg", link: "#" },
+    { name: "twitter", path: "/icons/twitter.svg", link: "#" },
+    { name: "instagram", path: "/icons/instagram.svg", link: "#" },
+    { name: "facebook", path: "/icons/facebook.svg", link: "#" },
 ];
 
 export const Footer: React.FC = () => {

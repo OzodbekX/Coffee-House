@@ -19,4 +19,15 @@
   --color-border-light: #C1B6AD; /* Light */
   --color-border-dark: #665F55;  /* Dark */
 }
+.dark {
+  --color-text-dark: #E1D4C9;
+  --color-text-light: #403F3D;
+  --color-text-accent: #D4B08A;
 
+  --color-bg-body: #403F3D;
+  --color-bg-container: #665F55;
+  --color-bg-backdrop: #E1D4C9;
+
+  --color-border-light: #665F55;
+  --color-border-dark: #E1D4C9;
+}

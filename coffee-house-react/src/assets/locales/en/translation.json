@@ -125,7 +125,8 @@
       "houseNumberNumeric": "House number must be a number.",
       "houseNumberPositive": "House number must be greater than 1."
     }
-  }
+  },
+  "address":"Address"
 
 
 }
