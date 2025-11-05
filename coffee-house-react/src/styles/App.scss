@@ -8,6 +8,9 @@
   font-family: 'Inter', sans-serif;
   color: var(--color-text-dark);
 }
+.dark{
+  color: var(--color-text-light);
+}
 html, body, #root {
   width: 100%;
   min-height: 100%;

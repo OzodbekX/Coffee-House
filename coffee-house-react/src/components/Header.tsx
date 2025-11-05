@@ -1,14 +1,16 @@
 import React, {useState} from "react";
 import {Link, useLocation, useNavigate} from "react-router-dom";
-import {getSelectedItems} from "../assets/helpers";
-import "../styles/components/_header.scss";
 import {useTranslation} from "react-i18next";
 import {SettingsDropdown} from "./SettingsDropDown";
+import {useCart} from "../../context/CartContext";
+import "../styles/components/_header.scss";
 
 const Header: React.FC = () => {
     const {t} = useTranslation();
     const navigate = useNavigate();
     const location = useLocation();
+    const {totalCount} = useCart();
+
 
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -37,10 +39,9 @@ const Header: React.FC = () => {
     const navLinks: NavLinkItem[] = [
         {id: "coffee-slider-container", label: t('header.navLinks.favoriteCoffee')},
         {id: "about-section", label: t('header.navLinks.about')},
-        {id: "download-app-section", label: t('header.navLinks.downloadApp') },
-        {id: "contacts-section", label:t('header.navLinks.contacts') },
+        {id: "download-app-section", label: t('header.navLinks.downloadApp')},
+        {id: "contacts-section", label: t('header.navLinks.contacts')},
     ];
-    const cartItemCount = getSelectedItems()?.length > 0 ? getSelectedItems()?.length : null
 
     return (
         <header className="header">
@@ -73,7 +74,7 @@ const Header: React.FC = () => {
                 >
                     <SettingsDropdown/>
 
-                    <Link to="/cart" className="shopping-cart-link">
+                    {totalCount > 0 ? <Link to="/cart" className="shopping-cart-link">
                         <img
                             loading="lazy"
                             height={20}
@@ -82,8 +83,8 @@ const Header: React.FC = () => {
                             alt="Shopping Cart"
                         />
                         <span className="text-link-button"
-                              id="shopping-item-count">{cartItemCount}</span>
-                    </Link>
+                              id="shopping-item-count">{totalCount}</span>
+                    </Link> : null}
 
                     <Link to="/menu" className="menu-toggle">
                         <span className="text-link-button">{t("header.menu")}</span>

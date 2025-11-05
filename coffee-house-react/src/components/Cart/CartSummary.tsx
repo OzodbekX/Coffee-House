@@ -1,6 +1,7 @@
 import React from "react";
-import type { UserData } from "../../assets/types";
-import { useTranslation } from "react-i18next";
+import type {UserData} from "../../assets/types";
+import {useTranslation} from "react-i18next";
+import {useCart} from "../../../context/CartContext";
 
 interface CartSummaryProps {
     user: UserData | null;
@@ -9,6 +10,7 @@ interface CartSummaryProps {
 
 export const CartSummary: React.FC<CartSummaryProps> = ({ user, totalHtml }) => {
     const { t } = useTranslation();
+
 
     return <div className="cart-summary" id="cart-summary">
         <p>
