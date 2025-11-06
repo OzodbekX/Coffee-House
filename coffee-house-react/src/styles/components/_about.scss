@@ -41,7 +41,7 @@
     .column:nth-child(1) .grid-item:nth-child(2) {
       aspect-ratio: 660/430;
 
-      @media (max-width:768px) {
+      @media (max-width: 768px) {
         display: none;
       }
     }
@@ -50,7 +50,7 @@
     .column:nth-child(2) .grid-item:nth-child(1) {
       aspect-ratio: 660/430;
 
-      @media (max-width:768px) {
+      @media (max-width: 768px) {
         display: none;
       }
 
@@ -60,11 +60,11 @@
       aspect-ratio: 660/590;
     }
 
-    @media (max-width:768px) {
+    @media (max-width: 768px) {
       flex-direction: column;
     }
 
-    @media (max-width:380px) {
+    @media (max-width: 380px) {
       .column .grid-item {
         width: 100%;
         aspect-ratio: 348/590 !important;

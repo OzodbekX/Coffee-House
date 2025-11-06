@@ -1,25 +1,29 @@
 // favorites.ts
 import { apiRequest } from "./request";
-import {ProductType, SelectedProductType, UserData} from "./types";
+import { ProductType, SelectedProductType, UserData } from "./types";
 
-export async function fetchFavoriteProducts(): Promise<{ data: ProductType[] }> {
+export async function fetchFavoriteProducts(): Promise<{
+  data: ProductType[];
+}> {
   return await apiRequest<{ data: ProductType[] }>("/products/favorites", {
     method: "GET",
-    auth: true
+    auth: true,
   });
 }
 
 export async function fetchProducts(): Promise<{ data: ProductType[] }> {
   return await apiRequest<{ data: ProductType[] }>("/products", {
     method: "GET",
-    auth: true
+    auth: true,
   });
 }
 
-export async function fetchProductById(id: number): Promise<{ data: SelectedProductType }> {
+export async function fetchProductById(
+  id: number,
+): Promise<{ data: SelectedProductType }> {
   return await apiRequest<{ data: SelectedProductType }>("/products/" + id, {
     method: "GET",
-    auth: true
+    auth: true,
   });
 }
 
@@ -34,11 +38,16 @@ export interface RegisterPayload {
   paymentMethod: "cash" | "card";
 }
 
-export async function registerUser(payload: RegisterPayload): Promise<{ data: { access_token: string, user: UserData } }> {
-  return await apiRequest<{ data: { access_token: string, user: UserData } }>("/auth/register", {
-    method: "POST",
-    body: JSON.stringify(payload)
-  });
+export async function registerUser(
+  payload: RegisterPayload,
+): Promise<{ data: { access_token: string; user: UserData } }> {
+  return await apiRequest<{ data: { access_token: string; user: UserData } }>(
+    "/auth/register",
+    {
+      method: "POST",
+      body: JSON.stringify(payload),
+    },
+  );
 }
 
 // Login
@@ -47,11 +56,16 @@ export interface LoginPayload {
   password: string;
 }
 
-export async function loginUser(payload: LoginPayload): Promise<{ data: { access_token: string, user: UserData } }> {
-  return await apiRequest<{ data: { access_token: string, user: UserData } }>("/auth/login", {
-    method: "POST",
-    body: JSON.stringify(payload)
-  });
+export async function loginUser(
+  payload: LoginPayload,
+): Promise<{ data: { access_token: string; user: UserData } }> {
+  return await apiRequest<{ data: { access_token: string; user: UserData } }>(
+    "/auth/login",
+    {
+      method: "POST",
+      body: JSON.stringify(payload),
+    },
+  );
 }
 
 // Orders
@@ -68,17 +82,17 @@ export interface ConfirmOrderPayload {
 }
 
 export async function confirmOrder(payload: ConfirmOrderPayload): Promise<{
-  data: ConfirmOrderPayload,
-  message: string,
-  error: string
+  data: ConfirmOrderPayload;
+  message: string;
+  error: string;
 }> {
   return await apiRequest<{
-    data: ConfirmOrderPayload,
-    message: string,
-    error: string
+    data: ConfirmOrderPayload;
+    message: string;
+    error: string;
   }>("/orders/confirm", {
     method: "POST",
     auth: true,
-    body: JSON.stringify(payload)
+    body: JSON.stringify(payload),
   });
 }

@@ -1,160 +1,157 @@
-import React, {useState} from "react";
-import {Link, useLocation, useNavigate} from "react-router-dom";
-import {useTranslation} from "react-i18next";
-import {SettingsDropdown} from "./SettingsDropDown";
-import {useCart} from "../../context/CartContext";
+import React, { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { SettingsDropdown } from "./SettingsDropDown";
+import { useManagerState } from "../../context/CartContext";
 import "../styles/components/_header.scss";
 
 const Header: React.FC = () => {
-    const {t} = useTranslation();
-    const navigate = useNavigate();
-    const location = useLocation();
-    const {totalCount} = useCart();
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { totalCount } = useManagerState();
 
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen((prev) => !prev);
+  };
 
-    const toggleMobileMenu = () => {
-        setMobileMenuOpen((prev) => !prev);
-    };
+  const handleScrollTo = (id: string) => {
+    setMobileMenuOpen(false);
 
-    const handleScrollTo = (id: string) => {
-        setMobileMenuOpen(false);
-
-        if (location.pathname !== "/") {
-            // If on a different page, navigate to home with hash
-            navigate(`/#${id}`);
-        } else {
-            // Already on home, update hash manually
-            window.location.hash = id;
-        }
-    };
-
-
-    interface NavLinkItem {
-        id: string;
-        label: string;
+    if (location.pathname !== "/") {
+      // If on a different page, navigate to home with hash
+      navigate(`/#${id}`);
+    } else {
+      // Already on home, update hash manually
+      window.location.hash = id;
     }
+  };
 
-    const navLinks: NavLinkItem[] = [
-        {id: "coffee-slider-container", label: t('header.navLinks.favoriteCoffee')},
-        {id: "about-section", label: t('header.navLinks.about')},
-        {id: "download-app-section", label: t('header.navLinks.downloadApp')},
-        {id: "contacts-section", label: t('header.navLinks.contacts')},
-    ];
+  interface NavLinkItem {
+    id: string;
+    label: string;
+  }
 
-    return (
-        <header className="header">
-            <div className="container">
-                {/* Logo */}
-                <Link to="/" className="logo">
-                    <img
-                        loading="lazy"
-                        src="./logos/logo.png"
-                        alt="Coffee House"
-                    />
-                </Link>
+  const navLinks: NavLinkItem[] = [
+    {
+      id: "coffee-slider-container",
+      label: t("header.navLinks.favoriteCoffee"),
+    },
+    { id: "about-section", label: t("header.navLinks.about") },
+    { id: "download-app-section", label: t("header.navLinks.downloadApp") },
+    { id: "contacts-section", label: t("header.navLinks.contacts") },
+  ];
 
-                {/* Navigation */}
-                <nav className={`nav ${mobileMenuOpen ? "open" : ""}`}>
-                    <ul className="nav-links">
-                        {navLinks.map((link) => <li key={link.id}>
-                            <span className="text-link-button pointer"
-                                  onClick={() => handleScrollTo(link.id)}>
-                                {link.label}
-                            </span>
-                        </li>)}
-                    </ul>
-                </nav>
+  return (
+    <header className="header">
+      <div className="container">
+        {/* Logo */}
+        <Link to="/" className="logo">
+          <img loading="lazy" src="./logos/logo.png" alt="Coffee House" />
+        </Link>
 
-                {/* Right-side buttons */}
-                <div
-                    className={"right-side-buttons"}
-
+        {/* Navigation */}
+        <nav className={`nav ${mobileMenuOpen ? "open" : ""}`}>
+          <ul className="nav-links">
+            {navLinks.map((link) => (
+              <li key={link.id}>
+                <span
+                  className="text-link-button pointer"
+                  onClick={() => handleScrollTo(link.id)}
                 >
-                    <SettingsDropdown/>
+                  {link.label}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </nav>
 
-                    {totalCount > 0 ? <Link to="/cart" className="shopping-cart-link">
-                        <img
-                            loading="lazy"
-                            height={20}
-                            width={20}
-                            src="./icons/shopping-bag.png"
-                            alt="Shopping Cart"
-                        />
-                        <span className="text-link-button"
-                              id="shopping-item-count">{totalCount}</span>
-                    </Link> : null}
+        {/* Right-side buttons */}
+        <div className={"right-side-buttons"}>
+          <SettingsDropdown />
 
-                    <Link to="/menu" className="menu-toggle">
-                        <span className="text-link-button">{t("header.menu")}</span>
-                        <img
-                            loading="lazy"
-                            src="./icons/coffee-cup.png"
-                            alt="menu"
-                        />
-                    </Link>
-                </div>
+          {totalCount > 0 ? (
+            <Link to="/cart" className="shopping-cart-link">
+              <img
+                loading="lazy"
+                height={20}
+                width={20}
+                src="./icons/shopping-bag.png"
+                alt="Shopping Cart"
+              />
+              <span className="text-link-button" id="shopping-item-count">
+                {totalCount}
+              </span>
+            </Link>
+          ) : null}
 
-                {/* Mobile navbar button */}
-                <button
-                    className={`mobile-navbar-button ${mobileMenuOpen ? "active" : ""}`}
-                    onClick={toggleMobileMenu}
-                    aria-label="Toggle menu"
-                >
-                    {/* Closed (hamburger) icon */}
-                    <svg
-                        className="close"
-                        width="18"
-                        height="10"
-                        viewBox="0 0 18 10"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path
-                            d="M1 1H17"
-                            stroke="#403F3D"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                        />
-                        <path
-                            d="M1 9H17"
-                            stroke="#403F3D"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                        />
-                    </svg>
+          <Link to="/menu" className="menu-toggle">
+            <span className="text-link-button">{t("header.menu")}</span>
+            <img loading="lazy" src="./icons/coffee-cup.png" alt="menu" />
+          </Link>
+        </div>
 
-                    {/* Open (X) icon */}
-                    <svg
-                        className="open"
-                        width="14"
-                        height="14"
-                        viewBox="0 0 14 14"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path
-                            d="M1.34375 1.34314L12.6575 12.6568"
-                            stroke="#403F3D"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                        />
-                        <path
-                            d="M1.34375 12.6568L12.6575 1.34314"
-                            stroke="#403F3D"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                        />
-                    </svg>
-                </button>
-            </div>
-        </header>
-    );
+        {/* Mobile navbar button */}
+        <button
+          className={`mobile-navbar-button ${mobileMenuOpen ? "active" : ""}`}
+          onClick={toggleMobileMenu}
+          aria-label="Toggle menu"
+        >
+          {/* Closed (hamburger) icon */}
+          <svg
+            className="close"
+            width="18"
+            height="10"
+            viewBox="0 0 18 10"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M1 1H17"
+              stroke="#403F3D"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M1 9H17"
+              stroke="#403F3D"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+
+          {/* Open (X) icon */}
+          <svg
+            className="open"
+            width="14"
+            height="14"
+            viewBox="0 0 14 14"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M1.34375 1.34314L12.6575 12.6568"
+              stroke="#403F3D"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M1.34375 12.6568L12.6575 1.34314"
+              stroke="#403F3D"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+      </div>
+    </header>
+  );
 };
 
 export default Header;

@@ -43,11 +43,13 @@
       &:focus {
         border-color: var(--color-border-dark);
       }
-      &:active, &:focus  {
+
+      &:active, &:focus {
         background-color: transparent;
       }
-      &.error{
-        border:1px solid #b00020
+
+      &.error {
+        border: 1px solid #b00020
       }
     }
   }
@@ -79,7 +81,7 @@
       transition: background 0.3s;
       width: 200px;
 
-    
+
     }
   }
 
@@ -87,12 +89,15 @@
     text-align: center;
     font-weight: 600;
     margin-top: 20px;
+
     &.success {
       color: green;
     }
+
     &.error {
       color: red;
     }
+
     &.hidden {
       display: none;
     }

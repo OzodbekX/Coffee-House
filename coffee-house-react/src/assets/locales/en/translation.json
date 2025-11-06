@@ -20,7 +20,6 @@
     "android": {
       "smallText": "Available on the",
       "bigText": "Google Play"
-
     }
   },
   "banner": {
@@ -52,7 +51,6 @@
     "alertError": "Something went wrong. Please, try again."
   },
   "alertError": "Something went wrong. Please, try again.",
-
   "cartPage": {
     "title": "Cart",
     "emptyCart": "Your cart is empty.",
@@ -80,7 +78,6 @@
       "passwordSpecial": "Password must contain at least 1 special character."
     }
   },
-
   "menu": {
     "heading": "Behind each of our cups hides an <i class='accent'>amazing surprise</i>",
     "categories": {
@@ -91,7 +88,6 @@
     "loading": "Loading...",
     "error": "Error loading products."
   },
-
   "registration": {
     "title": "Registration",
     "labels": {
@@ -126,7 +122,5 @@
       "houseNumberPositive": "House number must be greater than 1."
     }
   },
-  "address":"Address"
-
-
+  "address": "Address"
 }

@@ -1,6 +1,9 @@
-@use "./_typography.scss" as *; // makes all variables available globally
-@use "./components/_button.scss" as *; // makes all variables available globally
+@use "./_typography.scss" as *;
+// makes all variables available globally
+@use "./components/_button.scss" as *;
+// makes all variables available globally
 @use "./utils.scss" as *;
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -8,9 +11,11 @@
   font-family: 'Inter', sans-serif;
   color: var(--color-text-dark);
 }
-.dark{
+
+.dark {
   color: var(--color-text-light);
 }
+
 html, body, #root {
   width: 100%;
   min-height: 100%;
@@ -45,7 +50,8 @@ body {
   &::-webkit-scrollbar {
     display: none; // Chrome, Safari
   }
-  @media (max-width:380px) {
+
+  @media (max-width: 380px) {
     padding: 0 16px;
 
   }

@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from "react";
-import {CartItem} from "../components/Cart/CartItem";
-import {renderPrice} from "../assets/helpers";
-import {useTranslation} from "react-i18next";
-import {ProductAdditiveInfo} from "../assets/types";
+import React, { useEffect, useState } from "react";
+import { CartItem } from "../components/Cart/CartItem";
+import { renderPrice } from "../assets/helpers";
+import { useTranslation } from "react-i18next";
+import { ProductAdditiveInfo } from "../assets/types";
 import "../styles/components/_shopping-cart.scss";
-import "../styles/pages/orders.scss"
+import "../styles/pages/orders.scss";
+
 interface Order {
   id: number;
   items: any[];
@@ -35,7 +36,10 @@ export const OrdersPage: React.FC = () => {
           <div className="order-items">
             {order.items.map((ci, idx) => {
               const sizeLabel = ci?.size?.key || "s";
-              const additivesLabel = ci.additives?.map((a:ProductAdditiveInfo) => a.name).join(", ") || "";
+              const additivesLabel =
+                ci.additives
+                  ?.map((a: ProductAdditiveInfo) => a.name)
+                  .join(", ") || "";
               // const { total, discounted } = renderPrice(ci.total, ci.discounted);
               return (
                 <CartItem
@@ -50,18 +54,19 @@ export const OrdersPage: React.FC = () => {
               );
             })}
           </div>
-            <div className="order-header">
-                <p>
-                    <strong>Order ID:</strong> #{order.id}
-                </p>
-                <p>
-                    <strong>Status:</strong> {order.status}
-                </p>
-                <p>
-                    <strong>Date:</strong> {new Date(order.createdAt).toLocaleString()}
-                </p>
-            </div>
-            <div
+          <div className="order-header">
+            <p>
+              <strong>Order ID:</strong> #{order.id}
+            </p>
+            <p>
+              <strong>Status:</strong> {order.status}
+            </p>
+            <p>
+              <strong>Date:</strong>{" "}
+              {new Date(order.createdAt).toLocaleString()}
+            </p>
+          </div>
+          <div
             className="order-total"
             dangerouslySetInnerHTML={{ __html: renderPrice(order.totalPrice) }}
           />

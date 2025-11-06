@@ -35,7 +35,7 @@
     .modal-close-btn {
       position: absolute;
       top: -44px;
-      right:0;
+      right: 0;
       background: transparent;
       height: 44px;
       width: 44px;
@@ -47,12 +47,13 @@
       align-items: center;
 
     }
+
     .loader-overlay {
       top: 10%
     }
 
-    &.hidden>.modal-image,
-    &.hidden>.modal-details {
+    &.hidden > .modal-image,
+    &.hidden > .modal-details {
       opacity: 0;
       pointer-events: none;
     }
@@ -166,19 +167,17 @@
       }
     }
 
-    &.loading>.modal-image,
-    &.loading>.modal-details {
+    &.loading > .modal-image,
+    &.loading > .modal-details {
       opacity: 0;
       pointer-events: none;
     }
 
 
-
   }
 
 
-
-  @media (max-width:768px) {
+  @media (max-width: 768px) {
     .modal-content {
       max-width: 668px;
       max-height: 100vh;
@@ -187,7 +186,7 @@
     }
   }
 
-  @media (max-width:380px) {
+  @media (max-width: 380px) {
     .modal-image {
       display: none;
     }

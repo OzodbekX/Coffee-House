@@ -36,7 +36,8 @@
     overflow: hidden;
     padding: 8px 0;
     animation: fadeIn 0.2s ease;
-    p{
+
+    p {
       color: var(--color-text-light);
     }
   }
@@ -86,7 +87,8 @@
     cursor: pointer;
     font-size: 0.9rem;
     color: var(--color-text-accent);
-    span{
+
+    span {
       color: var(--color-text-accent);
 
     }
@@ -122,7 +124,8 @@
       background: var(--color-bg-backdrop);
     }
   }
-  .user-data{
+
+  .user-data {
     padding: 10px 16px;
     text-align: left;
 

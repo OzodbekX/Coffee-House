@@ -101,7 +101,8 @@
           a {
             text-decoration: none;
             color: var(--color-text-light);
-            img{
+
+            img {
               margin-right: 8px;
             }
 
@@ -114,7 +115,7 @@
   }
 
 
-  @media (max-width:768px) {
+  @media (max-width: 768px) {
     padding: 100px 60px;
 
     .footer-content {
@@ -124,7 +125,7 @@
 
   }
 
-  @media (max-width:768px) {
+  @media (max-width: 768px) {
     padding: 60px 16px;
 
     .footer-content {

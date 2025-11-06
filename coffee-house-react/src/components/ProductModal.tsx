@@ -1,223 +1,268 @@
-import React, {useEffect, useRef, useState} from "react";
-import {calculatePrice, renderPrice, writePriceWithDiscount,} from "../assets/helpers";
-import {fetchProductById} from "../assets/api";
-import {ProductAdditiveInfo, ProductSizeInfo, ProductType, SelectedProductType} from "../assets/types";
-import {useTranslation} from "react-i18next";
-import {useCart} from "../../context/CartContext";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  calculatePrice,
+  renderPrice,
+  writePriceWithDiscount,
+} from "../assets/helpers";
+import { fetchProductById } from "../assets/api";
+import {
+  ProductAdditiveInfo,
+  ProductSizeInfo,
+  ProductType,
+  SelectedProductType,
+} from "../assets/types";
+import { useTranslation } from "react-i18next";
+import { useManagerState } from "../../context/CartContext";
 import "../styles/components/_product-modal.scss";
 
 interface ProductModalProps {
-    product: ProductType;
-    onClose: () => void;
+  product: ProductType;
+  onClose: () => void;
 }
 
-export const ProductModal: React.FC<ProductModalProps> = ({product, onClose}) => {
-    const [loading, setLoading] = useState(true);
-    const [productData, setProductData] = useState<SelectedProductType | null>(null);
-    const [selectedSize, setSelectedSize] = useState<{ key: string, info: ProductSizeInfo }>();
-    const [selectedAdditives, setSelectedAdditives] = useState<ProductAdditiveInfo[]>([]);
-    const tooltipRef = useRef<HTMLDivElement | null>(null);
-    const {t} = useTranslation()
-    const {addToCart} = useCart()
+export const ProductModal: React.FC<ProductModalProps> = ({
+  product,
+  onClose,
+}) => {
+  const [loading, setLoading] = useState(true);
+  const [productData, setProductData] = useState<SelectedProductType | null>(
+    null,
+  );
+  const [selectedSize, setSelectedSize] = useState<{
+    key: string;
+    info: ProductSizeInfo;
+  }>();
+  const [selectedAdditives, setSelectedAdditives] = useState<
+    ProductAdditiveInfo[]
+  >([]);
+  const tooltipRef = useRef<HTMLDivElement | null>(null);
+  const { t } = useTranslation();
+  const { addToCart } = useManagerState();
 
-    // --- Fetch product data when modal opens
-    useEffect(() => {
-        (async () => {
-            try {
-                const res = await fetchProductById(product.id);
-                setProductData(res.data);
-            } catch (err) {
-                alert(t("alertError"));
+  // --- Fetch product data when modal opens
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetchProductById(product.id);
+        setProductData(res.data);
+      } catch (err) {
+        alert(t("alertError"));
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [product.id]);
 
-            } finally {
-                setLoading(false);
-            }
-        })();
-    }, [product.id]);
-
-    useEffect(() => {
-        if (productData?.sizes) {
-            setSelectedSize({
-                key: "s",
-                info: productData?.sizes?.s
-            });
-        }
-
-    }, [productData]);
-
-    const handleAdditiveToggle = (add: ProductAdditiveInfo) => {
-        setSelectedAdditives((prev) =>
-            prev.includes(add) ? prev.filter((a) => a.name !== add.name) : [...prev, add]
-        );
-    };
-
-    // --- Compute total + discounted price
-    const {total, discounted} = calculatePrice({
-        size: selectedSize,
-        additives: selectedAdditives,
-    });
-    console.log({selectedSize, selectedAdditives})
-
-    // --- Tooltip handlers ---
-    const showToolSizeTip = (
-        e: React.MouseEvent,
-        sizeInfo: ProductSizeInfo,
-    ) => {
-        if (!tooltipRef.current || !productData) return;
-        const discounted = Boolean(localStorage.getItem("user")) ? Number(sizeInfo?.discountPrice) : null
-        const html = writePriceWithDiscount(Number(sizeInfo?.price).toFixed(2), discounted ? discounted?.toFixed(2) : undefined);
-        tooltipRef.current.innerHTML = html;
-        tooltipRef.current.style.left = `${e.pageX + 15}px`;
-        tooltipRef.current.style.top = `${e.pageY + 15}px`;
-        tooltipRef.current.classList.remove("hidden");
-    };
-
-    const showToolAdditivesToolTip = (
-        e: React.MouseEvent,
-        addPrice?: ProductAdditiveInfo
-    ) => {
-        if (!tooltipRef.current || !productData) return;
-        const discounted = Boolean(localStorage.getItem("user")) ? Number(addPrice?.discountPrice) : null
-        const html = writePriceWithDiscount(Number(addPrice?.price).toFixed(2), discounted ? discounted?.toFixed(2) : undefined);
-        tooltipRef.current.innerHTML = html;
-        tooltipRef.current.style.left = `${e.pageX + 15}px`;
-        tooltipRef.current.style.top = `${e.pageY + 15}px`;
-        tooltipRef.current.classList.remove("hidden");
-    };
-
-    const hideTooltip = () => tooltipRef.current?.classList.add("hidden");
-
-    // --- Add product to cart
-    const handleAddToCart = () => {
-        if (!productData) return;
-        const entry = {
-            id: productData.id,
-            product: productData,
-            size: selectedSize,
-            additives: selectedAdditives,
-        };
-        addToCart(entry);
-        onClose();
-    };
-
-    // --- ESC key to close
-    useEffect(() => {
-        const handleEsc = (e: KeyboardEvent) => e.key === "Escape" && onClose();
-        document.addEventListener("keydown", handleEsc);
-        return () => document.removeEventListener("keydown", handleEsc);
-    }, [onClose]);
-
-    if (!productData) {
-        return (
-            <div className="modal-overlay">
-                <div className="modal-content">
-                    {loading ? <div className="loader">{t('productModal.loading')}</div> :
-                        <p>{t('productModal.error')}</p>}
-                </div>
-            </div>
-        );
+  useEffect(() => {
+    if (productData?.sizes) {
+      setSelectedSize({
+        key: "s",
+        info: productData?.sizes?.s,
+      });
     }
+  }, [productData]);
 
-    return (
-        <div
-            id="product-modal"
-            className="modal"
-            onClick={(e) => e.target === e.currentTarget && onClose()}
-        >
-            <div id="modal-content" className="modal-content">
-                <button className="modal-close-btn" onClick={onClose}>
-                    <img src="./icons/close.png" alt="close" height={16} width={16}/>
-                </button>
-                {loading ? (
-                    <div id="loader-placeholder" className="loader">
-                        {t('productModal.loading')}
-                    </div>
-                ) : (
-                    <>
-                        <img
-                            loading="lazy"
-                            className="modal-image"
-                            src={`./images/${productData.name}.png`}
-                            alt={productData.name}
-                        />
-
-                        <div className="modal-details">
-                            <h3 className="modal-title heading-3">{productData.name}</h3>
-                            <p className="modal-description text-medium">{productData.description}</p>
-
-                            {/* Sizes */}
-                            <div className="option-group">
-                                <p className="text-medium">Size</p>
-                                <div className="sizes">
-                                    {Object.entries(productData.sizes).map(([key, size]) => (
-                                        <button
-                                            key={key}
-                                            className={selectedSize?.info.size === size.size ? "active" : ""}
-                                            onMouseEnter={(e) => showToolSizeTip(e, size)}
-                                            onMouseLeave={hideTooltip}
-                                            onClick={() => setSelectedSize({key: key, info: size})}
-                                        >
-                                            <div className="size-key text-link-button">{key.toUpperCase()}</div>
-                                            <div className="text-link-button">{size.size}</div>
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Additives */}
-                            <div className="option-group">
-                                <p className="text-medium">{t('productModal.additives')}</p>
-                                <div className="additives">
-                                    {productData.additives.map((add, index) => (
-                                        <button
-                                            key={add.name}
-                                            className={selectedAdditives.includes(add) ? "active" : ""}
-                                            onMouseEnter={(e) => showToolAdditivesToolTip(e, add)}
-                                            onMouseLeave={hideTooltip}
-                                            onClick={() => handleAdditiveToggle(add)}
-                                        >
-                                            <div className="size-key text-link-button">{index + 1}</div>
-                                            <div className="text-link-button">{add.name}</div>
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Total */}
-                            <div className="total">
-                                <strong className="heading-3">{t('productModal.total')}:</strong>
-                                <span
-                                    className="price heading-3"
-                                    dangerouslySetInnerHTML={{
-                                        __html: renderPrice(total, discounted > 0 ? discounted : undefined),
-                                    }}
-                                />
-                            </div>
-
-                            {/* Note */}
-                            <div className="note">
-                                <img
-                                    loading="lazy"
-                                    height={16}
-                                    width={16}
-                                    src="./icons/info-empty.png"
-                                    alt="info"
-                                />
-                                <div className="text-caption">
-                                    {t('productModal.note')}
-                                </div>
-                            </div>
-
-                            <button className="close-btn text-link-button" onClick={handleAddToCart}>
-                                {t('productModal.addToCart')}
-                            </button>
-                        </div>
-                    </>
-                )}
-            </div>
-
-            {/* Tooltip */}
-            <div ref={tooltipRef} className="price-tooltip hidden"/>
-        </div>
+  const handleAdditiveToggle = (add: ProductAdditiveInfo) => {
+    setSelectedAdditives((prev) =>
+      prev.includes(add)
+        ? prev.filter((a) => a.name !== add.name)
+        : [...prev, add],
     );
+  };
+
+  // --- Compute total + discounted price
+  const { total, discounted } = calculatePrice({
+    size: selectedSize,
+    additives: selectedAdditives,
+  });
+  console.log({ selectedSize, selectedAdditives });
+
+  // --- Tooltip handlers ---
+  const showToolSizeTip = (e: React.MouseEvent, sizeInfo: ProductSizeInfo) => {
+    if (!tooltipRef.current || !productData) return;
+    const discounted = Boolean(localStorage.getItem("user"))
+      ? Number(sizeInfo?.discountPrice)
+      : null;
+    const html = writePriceWithDiscount(
+      Number(sizeInfo?.price).toFixed(2),
+      discounted ? discounted?.toFixed(2) : undefined,
+    );
+    tooltipRef.current.innerHTML = html;
+    tooltipRef.current.style.left = `${e.pageX + 15}px`;
+    tooltipRef.current.style.top = `${e.pageY + 15}px`;
+    tooltipRef.current.classList.remove("hidden");
+  };
+
+  const showToolAdditivesToolTip = (
+    e: React.MouseEvent,
+    addPrice?: ProductAdditiveInfo,
+  ) => {
+    if (!tooltipRef.current || !productData) return;
+    const discounted = Boolean(localStorage.getItem("user"))
+      ? Number(addPrice?.discountPrice)
+      : null;
+    const html = writePriceWithDiscount(
+      Number(addPrice?.price).toFixed(2),
+      discounted ? discounted?.toFixed(2) : undefined,
+    );
+    tooltipRef.current.innerHTML = html;
+    tooltipRef.current.style.left = `${e.pageX + 15}px`;
+    tooltipRef.current.style.top = `${e.pageY + 15}px`;
+    tooltipRef.current.classList.remove("hidden");
+  };
+
+  const hideTooltip = () => tooltipRef.current?.classList.add("hidden");
+
+  // --- Add product to cart
+  const handleAddToCart = () => {
+    if (!productData) return;
+    const entry = {
+      id: productData.id,
+      product: productData,
+      size: selectedSize,
+      additives: selectedAdditives,
+    };
+    addToCart(entry);
+    onClose();
+  };
+
+  // --- ESC key to close
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    document.addEventListener("keydown", handleEsc);
+    return () => document.removeEventListener("keydown", handleEsc);
+  }, [onClose]);
+
+  if (!productData) {
+    return (
+      <div className="modal-overlay">
+        <div className="modal-content">
+          {loading ? (
+            <div className="loader">{t("productModal.loading")}</div>
+          ) : (
+            <p>{t("productModal.error")}</p>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      id="product-modal"
+      className="modal"
+      onClick={(e) => e.target === e.currentTarget && onClose()}
+    >
+      <div id="modal-content" className="modal-content">
+        <button className="modal-close-btn" onClick={onClose}>
+          <img src="./icons/close.png" alt="close" height={16} width={16} />
+        </button>
+        {loading ? (
+          <div id="loader-placeholder" className="loader">
+            {t("productModal.loading")}
+          </div>
+        ) : (
+          <>
+            <img
+              loading="lazy"
+              className="modal-image"
+              src={`./images/${productData.name}.png`}
+              alt={productData.name}
+            />
+
+            <div className="modal-details">
+              <h3 className="modal-title heading-3">{productData.name}</h3>
+              <p className="modal-description text-medium">
+                {productData.description}
+              </p>
+
+              {/* Sizes */}
+              <div className="option-group">
+                <p className="text-medium">Size</p>
+                <div className="sizes">
+                  {Object.entries(productData.sizes).map(([key, size]) => (
+                    <button
+                      key={key}
+                      className={
+                        selectedSize?.info.size === size.size ? "active" : ""
+                      }
+                      onMouseEnter={(e) => showToolSizeTip(e, size)}
+                      onMouseLeave={hideTooltip}
+                      onClick={() => setSelectedSize({ key: key, info: size })}
+                    >
+                      <div className="size-key text-link-button">
+                        {key.toUpperCase()}
+                      </div>
+                      <div className="text-link-button">{size.size}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Additives */}
+              <div className="option-group">
+                <p className="text-medium">{t("productModal.additives")}</p>
+                <div className="additives">
+                  {productData.additives.map((add, index) => (
+                    <button
+                      key={add.name}
+                      className={
+                        selectedAdditives.includes(add) ? "active" : ""
+                      }
+                      onMouseEnter={(e) => showToolAdditivesToolTip(e, add)}
+                      onMouseLeave={hideTooltip}
+                      onClick={() => handleAdditiveToggle(add)}
+                    >
+                      <div className="size-key text-link-button">
+                        {index + 1}
+                      </div>
+                      <div className="text-link-button">{add.name}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Total */}
+              <div className="total">
+                <strong className="heading-3">
+                  {t("productModal.total")}:
+                </strong>
+                <span
+                  className="price heading-3"
+                  dangerouslySetInnerHTML={{
+                    __html: renderPrice(
+                      total,
+                      discounted > 0 ? discounted : undefined,
+                    ),
+                  }}
+                />
+              </div>
+
+              {/* Note */}
+              <div className="note">
+                <img
+                  loading="lazy"
+                  height={16}
+                  width={16}
+                  src="./icons/info-empty.png"
+                  alt="info"
+                />
+                <div className="text-caption">{t("productModal.note")}</div>
+              </div>
+
+              <button
+                className="close-btn text-link-button"
+                onClick={handleAddToCart}
+              >
+                {t("productModal.addToCart")}
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* Tooltip */}
+      <div ref={tooltipRef} className="price-tooltip hidden" />
+    </div>
+  );
 };

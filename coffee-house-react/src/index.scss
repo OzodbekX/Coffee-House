@@ -1,24 +1,24 @@
 
-
 :root {
   /* ======================
      🎨 Color Variables
      ====================== */
 
   /* Text */
-  --color-text-dark: #403F3D;    /* Dark */
-  --color-text-light: #E1D4C9;   /* Light */
-  --color-text-accent: #B0907A;  /* Accent */
+  --color-text-dark: #403F3D; /* Dark */
+  --color-text-light: #E1D4C9; /* Light */
+  --color-text-accent: #B0907A; /* Accent */
 
   /* Background */
-  --color-bg-body: #E1D4C9;      /* Body */
+  --color-bg-body: #E1D4C9; /* Body */
   --color-bg-container: #665F55; /* Container */
-  --color-bg-backdrop: #403F3D;  /* Backdrop */
+  --color-bg-backdrop: #403F3D; /* Backdrop */
 
   /* Border */
   --color-border-light: #C1B6AD; /* Light */
-  --color-border-dark: #665F55;  /* Dark */
+  --color-border-dark: #665F55; /* Dark */
 }
+
 .dark {
   --color-text-dark: #E1D4C9;
   --color-text-light: #403F3D;

@@ -7,7 +7,7 @@ const API_BASE = "https://6kt29kkeub.execute-api.eu-central-1.amazonaws.com";
 
 export async function apiRequest<T>(
   endpoint: string,
-  options: ApiOptions = {}
+  options: ApiOptions = {},
 ): Promise<T> {
   const customHeaders = new Headers(options.headers || {});
   customHeaders.set("Accept", "application/json");
@@ -21,7 +21,7 @@ export async function apiRequest<T>(
   try {
     const res = await fetch(`${API_BASE}${endpoint}`, {
       ...options,
-      headers: customHeaders
+      headers: customHeaders,
     });
 
     if (!res.ok) {

@@ -8,8 +8,10 @@ interface CartContextType {
     addToCart: (item: CartItemType) => void;
     removeFromCart: (id: number) => void;
     deleteFromCart: (id: number) => void;
+    updateMode: (mode: "light" | "dark") => void;
     clearCart: () => void;
     totalCount: number;
+    mode: "light" | "dark";
 }
 
 /* ------------------ 🧠 Create Context ------------------ */
@@ -28,7 +30,18 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
             return [];
         }
     });
-
+    // Initialize mode from localStorage
+    const [mode, setModeState] = useState<"light" | "dark">(() => {
+        try {
+            return localStorage.getItem("mode") as "light"; // default mode
+        } catch {
+            return "light";
+        }
+    });
+    const updateMode = (newMode: "light" | "dark") => {
+        setModeState(newMode);
+        localStorage.setItem("mode", newMode);
+    };
     /* ------------------ 🔁 Helper: Update both State + localStorage ------------------ */
     const updateLocalStorage = (items: CartItemType[]) => {
         setCartItems(items);
@@ -72,6 +85,8 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
 
     /* ------------------ 📦 Context Value ------------------ */
     const value: CartContextType = {
+        mode,
+        updateMode,
         cartItems,
         addToCart,
         removeFromCart,
@@ -85,10 +100,10 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
 
 /* ------------------ 🪄 Hook ------------------ */
 
-export const useCart = (): CartContextType => {
+export const useManagerState = (): CartContextType => {
     const context = useContext(CartContext);
     if (!context) {
-        throw new Error("useCart must be used within a CartProvider");
+        throw new Error("useManagerState must be used within a CartProvider");
     }
     return context;
 };

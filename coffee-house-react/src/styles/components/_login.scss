@@ -46,6 +46,7 @@
       &:focus {
         border-color: var(--color-bg-container);
       }
+
       &:active,
       &:focus {
         background-color: transparent;
@@ -68,12 +69,15 @@
     text-align: center;
     font-weight: 600;
     margin-top: 20px;
+
     &.success {
       color: green;
     }
+
     &.error {
       color: red;
     }
+
     &.hidden {
       display: none;
     }
