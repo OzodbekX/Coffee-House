@@ -23,7 +23,7 @@
     }
   },
   "banner": {
-    "heading": "<i class='accent'>Zavq bilan</i> bizning chiroyli kafemizda premium qahvadan bahramand bo‘ling",
+    "heading": "<i class='accent'>Zavq bilan</i> premium qahvadan tatib ko'ring",
     "text": "Yoqumli muhit va mazali qahva turlari bilan Coffee House Resource qahvani sevuvchilar va qulay joy izlayotganlar uchun mashhur maskan hisoblanadi.",
     "button": "Menyu",
     "resource": "Resource — bu <i class='accent'>mukammal va qulay joy</i>, bu yerda siz issiq ichimliklardan bahramand bo‘lib, dam olishingiz, do‘stlaringiz bilan uchrashishingiz yoki ishlashingiz mumkin."
@@ -128,5 +128,44 @@
   "language": "Til",
   "orders": "Buyurtmalar ro‘yxati",
   "settings": "Sozlamalar",
-  "user": "Foydalanuvchi"
+  "user": "Foydalanuvchi",
+  "cardholderName": "Karta egasining ismi",
+  "paymentModal": {
+    "title": "To‘lov",
+    "total": "Jami summa",
+    "cardholderName": "Karta egasi",
+    "cardNumber": "Karta raqami",
+    "expiry": "Amal qilish muddati (OY/YIL)",
+    "cvv": "CVV",
+    "payNow": "To‘lovni amalga oshirish",
+    "processing": "Jarayonda...",
+    "cancel": "Bekor qilish",
+    "placeholders": {
+      "name": "Ismingizni kiriting",
+      "cardNumber": "1234 5678 9012 3456"
+    },
+    "errors": {
+      "nameShort": "Ism kamida 2 ta belgidan iborat bo‘lishi kerak.",
+      "nameInvalid": "Ism faqat harflar va bo‘sh joylardan iborat bo‘lishi kerak.",
+      "cardNumberInvalid": "Karta raqami 16 ta raqamdan iborat bo‘lishi kerak.",
+      "expiryFormat": "Amal muddati MM/YY formatida bo‘lishi kerak.",
+      "monthInvalid": "Noto‘g‘ri oy kiritildi.",
+      "expired": "Karta muddati tugagan.",
+      "cvvInvalid": "CVV 3 yoki 4 raqamdan iborat bo‘lishi kerak."
+    },
+    "messages": {
+      "fixErrors": "Davom etishdan oldin xatolarni to‘g‘rilang.",
+      "success": "To‘lov muvaffaqiyatli amalga oshirildi!",
+      "failure": "To‘lov amalga oshmadi. Qayta urinib ko‘ring."
+    }
+  },
+  "ordersPage": {
+    "title": "Buyurtmalarim",
+    "noOrders": "Sizda hali hech qanday buyurtma yo‘q.",
+    "id": "Buyurtma raqami",
+    "status": "Holati",
+    "date": "Buyurtma sanasi",
+    "arrivalDate": "Yetib kelish vaqti",
+    "total": "Jami summa"
+  }
 }

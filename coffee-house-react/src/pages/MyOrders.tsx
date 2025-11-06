@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { CartItem } from "../components/Cart/CartItem";
-import { renderPrice } from "../assets/helpers";
 import { useTranslation } from "react-i18next";
 import { ProductAdditiveInfo } from "../assets/types";
 import "../styles/components/_shopping-cart.scss";
@@ -15,7 +14,7 @@ interface Order {
 }
 
 export const OrdersPage: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [orders, setOrders] = useState<Order[]>([]);
 
   useEffect(() => {
@@ -40,36 +39,43 @@ export const OrdersPage: React.FC = () => {
                 ci.additives
                   ?.map((a: ProductAdditiveInfo) => a.name)
                   .join(", ") || "";
-              // const { total, discounted } = renderPrice(ci.total, ci.discounted);
+
               return (
                 <CartItem
                   key={idx}
                   product={ci.product}
                   sizeLabel={sizeLabel}
                   additivesLabel={additivesLabel}
-                  total={ci.total}
+                  total={order.totalPrice}
                   discounted={ci.discounted}
                   onRemove={() => {}}
                 />
               );
             })}
           </div>
+
           <div className="order-header">
             <p>
-              <strong>Order ID:</strong> #{order.id}
+              <strong>{t("ordersPage.id")}:</strong> #{order.id}
             </p>
             <p>
-              <strong>Status:</strong> {order.status}
+              <strong>{t("ordersPage.status")}:</strong> {order.status}
             </p>
             <p>
-              <strong>Date:</strong>{" "}
-              {new Date(order.createdAt).toLocaleString()}
+              <strong>{t("ordersPage.date")}:</strong>{" "}
+              {new Date(order.createdAt).toLocaleString(i18n.language)}
+            </p>
+            <p>
+              <strong>{t("ordersPage.arrivalDate")}:</strong>{" "}
+              {new Date(
+                new Date(order.createdAt).getTime() + 20 * 60 * 1000,
+              ).toLocaleString(i18n.language)}
+            </p>
+            <p>
+              <strong>{t("ordersPage.total")}:</strong> $
+              {order.totalPrice.toFixed(2)}
             </p>
           </div>
-          <div
-            className="order-total"
-            dangerouslySetInnerHTML={{ __html: renderPrice(order.totalPrice) }}
-          />
         </div>
       ))}
     </div>

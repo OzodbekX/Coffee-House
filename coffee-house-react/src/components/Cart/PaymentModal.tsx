@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../../styles/components/_payment-modal.scss";
 import "../../styles/components/_registration.scss";
+import { useTranslation } from "react-i18next";
 
 interface PaymentModalProps {
   totalPrice: number;
@@ -26,34 +27,35 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
     text: "",
     type: "",
   });
+  const { t } = useTranslation();
 
   // --- Validation functions (mirroring Registration style) ---
   const validateName = (v: string): string | null => {
-    if (v.trim().length < 2) return "Name must be at least 2 characters long.";
-    if (!/^[A-Za-z\s]+$/.test(v))
-      return "Name can only contain letters and spaces.";
+    if (v.trim().length < 2) return t("paymentModal.errors.nameShort");
+    if (!/^[A-Za-z\s]+$/.test(v)) return t("paymentModal.errors.nameInvalid");
     return null;
   };
 
   const validateCardNumber = (v: string): string | null => {
     const cleaned = v.replace(/\s+/g, "");
-    if (!/^\d{16}$/.test(cleaned)) return "Card number must be 16 digits.";
+    if (!/^\d{16}$/.test(cleaned))
+      return t("paymentModal.errors.cardNumberInvalid");
     return null;
   };
 
   const validateExpiry = (v: string): string | null => {
-    if (!/^\d{2}\/\d{2}$/.test(v)) return "Expiry must be in MM/YY format.";
+    if (!/^\d{2}\/\d{2}$/.test(v)) return t("paymentModal.errors.expiryFormat");
     const [month, year] = v.split("/").map(Number);
-    if (month < 1 || month > 12) return "Invalid month.";
+    if (month < 1 || month > 12) return t("paymentModal.errors.monthInvalid");
     const now = new Date();
     const expiryDate = new Date(2000 + year, month - 1);
     if (expiryDate < new Date(now.getFullYear(), now.getMonth()))
-      return "Card is expired.";
+      return t("paymentModal.errors.expired");
     return null;
   };
 
   const validateCVV = (v: string): string | null => {
-    if (!/^\d{3,4}$/.test(v)) return "CVV must be 3 or 4 digits.";
+    if (!/^\d{3,4}$/.test(v)) return t("paymentModal.errors.cvvInvalid");
     return null;
   };
 
@@ -101,7 +103,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
         cvv: cvvErr || "",
       });
       setMessage({
-        text: "Please fix the errors before proceeding.",
+        text: t("paymentModal.messages.fixErrors"),
         type: "error",
       });
       return;
@@ -111,9 +113,9 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
       setIsProcessing(true);
       await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate delay
       await onConfirm();
-      setMessage({ text: "Payment successful!", type: "success" });
+      setMessage({ text: t("paymentModal.messages.success"), type: "success" });
     } catch {
-      setMessage({ text: "Payment failed. Please try again.", type: "error" });
+      setMessage({ text: t("paymentModal.messages.failure"), type: "error" });
     } finally {
       setIsProcessing(false);
     }
@@ -122,19 +124,21 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
   return (
     <div className="payment-modal-overlay">
       <div className="payment-modal">
-        <h3 className="heading-2">Payment</h3>
-        <p className="text-medium">Total: ${totalPrice.toFixed(2)}</p>
+        <h3 className="heading-2">{t("paymentModal.title")}</h3>
+        <p className="text-medium">
+          {t("productModal.total")}: ${totalPrice.toFixed(2)}
+        </p>
 
         {/* Cardholder Name */}
         <div className="form-field">
           <label htmlFor="card-name" className="text-medium">
-            Cardholder Name
+            {t("cardholderName")}
           </label>
           <input
             id="card-name"
             type="text"
             value={name}
-            placeholder="Enter name"
+            placeholder={t("paymentModal.placeholders.name")}
             onChange={(e) => setName(e.target.value)}
             onBlur={() => handleBlur("name")}
             onFocus={() => handleFocus("name")}
@@ -150,7 +154,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
         {/* Card Number */}
         <div className="form-field">
           <label htmlFor="card-number" className="text-medium">
-            Card Number
+            {t("paymentModal.cardNumber")}
           </label>
           <input
             id="card-number"
@@ -182,7 +186,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
         <div className="payment-row">
           <div className="form-field">
             <label htmlFor="expiry" className="text-medium">
-              Expiry (MM/YY)
+              {t("paymentModal.expiry")}
             </label>
             <input
               id="expiry"
@@ -239,10 +243,12 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
             disabled={isProcessing || !isFormValid}
             className="button button--secondary"
           >
-            {isProcessing ? "Processing..." : "Pay Now"}
+            {isProcessing
+              ? t("paymentModal.processing")
+              : t("paymentModal.payNow")}
           </button>
           <button onClick={onClose} className="button button--outline">
-            Cancel
+            {t("paymentModal.cancel")}
           </button>
         </div>
 

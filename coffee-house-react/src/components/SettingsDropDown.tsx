@@ -8,14 +8,13 @@ import { useTranslation } from "react-i18next";
 
 export const SettingsDropdown: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [language, setLanguage] = useState("EN");
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const [user] = useState<UserData | null>(getUserData());
-  const { mode, updateMode } = useManagerState();
+  const { mode, updateMode, language, updateLanguage } = useManagerState();
   const { t } = useTranslation();
 
-  const languages = ["EN", "UZ"];
+  const languages = ["en", "uz"];
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -56,11 +55,8 @@ export const SettingsDropdown: React.FC = () => {
           alt="settigns"
         />
       </button>
-
-      {/* Dropdown */}
       {isOpen && (
         <div className="dropdown-content">
-          {/* Theme */}
           <div className="dropdown-section">
             <p className="dropdown-title">{t("theme")}</p>
             <div className="radio-group">
@@ -77,7 +73,6 @@ export const SettingsDropdown: React.FC = () => {
               ))}
             </div>
           </div>
-
           <hr />
 
           {/* Language */}
@@ -90,7 +85,7 @@ export const SettingsDropdown: React.FC = () => {
                     type="radio"
                     name="language"
                     checked={language === lang}
-                    onChange={() => setLanguage(lang)}
+                    onChange={() => updateLanguage(lang)}
                   />
                   <span>{lang}</span>
                 </label>

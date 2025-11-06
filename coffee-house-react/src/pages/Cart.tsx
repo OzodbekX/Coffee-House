@@ -8,6 +8,7 @@ import { CartSummary } from "../components/Cart/CartSummary";
 import { useTranslation } from "react-i18next";
 import { PaymentModal } from "../components/Cart/PaymentModal";
 import { useManagerState } from "../../context/CartContext";
+import { useNavigate } from "react-router-dom";
 import "../styles/components/_shopping-cart.scss";
 
 export const CartPage: React.FC = () => {
@@ -19,7 +20,7 @@ export const CartPage: React.FC = () => {
   } | null>(null);
   const [user] = useState<UserData | null>(getUserData());
   const [showPaymentModal, setShowPaymentModal] = useState(true);
-
+  const navigate = useNavigate();
   const handleRemove = (index: number) => {
     const removedProduct = cartItems[index];
     removeFromCart(removedProduct?.id);
@@ -123,6 +124,7 @@ export const CartPage: React.FC = () => {
       clearCart();
       setShowPaymentModal(false);
       setNotify({ text: t("cartPage.success"), type: "success" });
+      navigate("/orders");
     } catch {
       setNotify({ text: t("cartPage.error"), type: "error" });
     }

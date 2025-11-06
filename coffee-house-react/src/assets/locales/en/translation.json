@@ -129,5 +129,45 @@
   "language": "Language",
   "orders": "Orders List",
   "settings": "Settings",
-  "user": "User"
+  "user": "User",
+  "cardholderName": "Cardholder Name",
+  "paymentModal": {
+    "title": "Payment",
+    "total": "Total amount",
+    "cardholderName": "Cardholder",
+    "cardNumber": "Card number",
+    "expiry": "Expiry period (MM/YY)",
+    "cvv": "CVV",
+    "payNow": "Make payment",
+    "processing": "Processing...",
+    "cancel": "Cancel",
+    "placeholders": {
+      "name": "Enter your name",
+      "cardNumber": "1234 5678 9012 3456"
+    },
+    "errors": {
+      "nameShort": "Name must be at least 2 characters long.",
+      "nameInvalid": "Name must contain only letters and spaces.",
+      "cardNumberInvalid": "Card number must be 16 digits.",
+      "expiryFormat": "Expiration period must be in MM/YY format required.",
+      "monthInvalid": "Invalid month entered.",
+      "expired": "Card expired.",
+      "cvvInvalid": "CVV must be 3 or 4 digits."
+    },
+    "messages": {
+      "fixErrors": "Please correct the errors before continuing.",
+      "success": "Payment successful!",
+      "failure": "Payment failed. Please try again."
+    }
+  },
+  "ordersPage": {
+    "title": "My Orders",
+    "noOrders": "You don't have any orders yet.",
+    "id": "Order ID",
+    "status": "Status",
+    "date": "Order Date",
+    "arrivalDate": "Arrival Date",
+    "total": "Total"
+  }
+
 }

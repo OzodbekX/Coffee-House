@@ -1,8 +1,10 @@
 .shopping-cart-container {
+  gap: 1rem;
   .order-block {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    margin-bottom: 16px;
 
     .order-header {
       display: flex;
