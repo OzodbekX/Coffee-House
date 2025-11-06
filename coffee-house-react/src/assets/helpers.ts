@@ -1,4 +1,4 @@
-import {CartItemType, ProductAdditiveInfo, ProductSizeInfo, UserData} from "./types";
+import {ProductAdditiveInfo, ProductSizeInfo, UserData} from "./types";
 
 export function renderPrice(
     price: string | number,
@@ -55,48 +55,6 @@ export function calculatePrice({size, additives = []}: CalcPriceArgs): CalcPrice
     return {total, discounted};
 }
 
-// ---- Header cart count helper ----
-export function setShoppingItemCount(): void {
-    const raw = localStorage.getItem("selectedItems");
-    let parsed: number[] = [];
-    try {
-        parsed = raw ? JSON.parse(raw) : [];
-
-    } catch {
-        parsed = [];
-    }
-    const count = parsed.length;
-    const el = document.getElementById("shopping-item-count");
-    const isAuthed = Boolean(localStorage.getItem("user"));
-    if (!el) {
-        return;
-    }
-    if (count > 0) {
-        el?.parentElement?.classList.remove("hidden")
-
-        el.textContent = String(count);
-        (el as HTMLElement).style.display = "";
-    } else {
-        if (!isAuthed) {
-            el?.parentElement?.classList.add("hidden")
-        } else {
-            el?.parentElement?.classList.remove("hidden")
-        }
-        el.textContent = "";
-        (el as HTMLElement).style.display = "";
-    }
-}
-
-export const getSelectedItems = (): CartItemType[] => {
-    try {
-        const raw = localStorage.getItem("selectedItems");
-        const parsed = raw ? JSON.parse(raw) : [];
-        return Array.isArray(parsed) ? parsed : [];
-    } catch {
-        localStorage.removeItem("selectedItems");
-        return [];
-    }
-};
 export const getUserData = (): UserData | null => {
     const data = localStorage.getItem("user");
     return data ? JSON.parse(data) : null;

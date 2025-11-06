@@ -5,11 +5,14 @@ import {ProductModal} from "../components/ProductModal";
 import {renderPrice} from "../assets/helpers";
 import "../styles/pages/menu.scss"
 import Loader from "../components/Loader";
+import {useTranslation} from "react-i18next";
 
 const Menu: React.FC = () => {
+    const {t}=useTranslation();
     const [products, setProducts] = useState<ProductType[]>([]);
     const [activeCategory, setActiveCategory] = useState<"coffee" | "tea" | "dessert">("coffee");
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState<ProductType | null>(null);
 
     useEffect(() => {
@@ -18,6 +21,7 @@ const Menu: React.FC = () => {
                 const res = await fetchProducts();
                 setProducts(res.data);
             } catch (err) {
+                setError(true);
                 console.error("Error loading products:", err);
             } finally {
                 setLoading(false);
@@ -53,7 +57,7 @@ const Menu: React.FC = () => {
                 </div>
                 {loading ? (
                     <Loader/>
-                ) : (
+                ) : error ? <p className="error">{t('alertError')}</p> : (
                     <div id="menu-products" className="menu-grid">
                         {filteredProducts.map((product) => (
                             <div

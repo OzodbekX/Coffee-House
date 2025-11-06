@@ -1,9 +1,10 @@
 import React, {useEffect, useRef, useState} from "react";
-import {calculatePrice, renderPrice, setShoppingItemCount, writePriceWithDiscount,} from "../assets/helpers";
+import {calculatePrice, renderPrice, writePriceWithDiscount,} from "../assets/helpers";
 import {fetchProductById} from "../assets/api";
 import {ProductAdditiveInfo, ProductSizeInfo, ProductType, SelectedProductType} from "../assets/types";
-import "../styles/components/_product-modal.scss";
 import {useTranslation} from "react-i18next";
+import {useCart} from "../../context/CartContext";
+import "../styles/components/_product-modal.scss";
 
 interface ProductModalProps {
     product: ProductType;
@@ -17,18 +18,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({product, onClose}) =>
     const [selectedAdditives, setSelectedAdditives] = useState<ProductAdditiveInfo[]>([]);
     const tooltipRef = useRef<HTMLDivElement | null>(null);
     const {t} = useTranslation()
-    // function parseSize(size: string): number {
-    //     const match = size.toLowerCase().match(/([\d.]+)\s*(ml|l)/);
-    //     if (!match) return Infinity; // fallback if unrecognized format
-    //
-    //     const value = parseFloat(match[1]);
-    //     const unit = match[2];
-    //
-    //     if (unit === "l") {
-    //         return value * 1000; // convert liters to milliliters
-    //     }
-    //     return value; // already in ml
-    // }
+    const {addToCart} = useCart()
 
     // --- Fetch product data when modal opens
     useEffect(() => {
@@ -100,16 +90,13 @@ export const ProductModal: React.FC<ProductModalProps> = ({product, onClose}) =>
     // --- Add product to cart
     const handleAddToCart = () => {
         if (!productData) return;
-        const raw = localStorage.getItem("selectedItems");
-        const existing = raw ? JSON.parse(raw) : [];
         const entry = {
             id: productData.id,
             product: productData,
             size: selectedSize,
             additives: selectedAdditives,
         };
-        localStorage.setItem("selectedItems", JSON.stringify([...existing, entry]));
-        setShoppingItemCount();
+        addToCart(entry);
         onClose();
     };
 
@@ -124,7 +111,8 @@ export const ProductModal: React.FC<ProductModalProps> = ({product, onClose}) =>
         return (
             <div className="modal-overlay">
                 <div className="modal-content">
-                    {loading ? <div className="loader">{t('productModal.loading')}</div> : <p>{t('productModal.error')}</p>}
+                    {loading ? <div className="loader">{t('productModal.loading')}</div> :
+                        <p>{t('productModal.error')}</p>}
                 </div>
             </div>
         );

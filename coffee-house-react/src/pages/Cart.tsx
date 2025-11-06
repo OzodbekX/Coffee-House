@@ -1,39 +1,31 @@
-import React, { useMemo, useState } from "react";
-import { CartItemType, UserData } from "../assets/types";
-import { confirmOrder } from "../assets/api";
-import {
-    calculatePrice,
-    getSelectedItems, getUserData,
-    renderPrice,
-    setShoppingItemCount,
-} from "../assets/helpers";
-import { CartItem } from "../components/Cart/CartItem";
-import { Notification } from "../components/Cart/Notification";
-import { CartSummary } from "../components/Cart/CartSummary";
+import React, {useMemo, useState} from "react";
+import {UserData} from "../assets/types";
+import {confirmOrder} from "../assets/api";
+import {calculatePrice, getUserData, renderPrice} from "../assets/helpers";
+import {CartItem} from "../components/Cart/CartItem";
+import {Notification} from "../components/Cart/Notification";
+import {CartSummary} from "../components/Cart/CartSummary";
+import {useTranslation} from "react-i18next";
+import {PaymentModal} from "../components/Cart/PaymentModal";
+import {useCart} from "../../context/CartContext";
 import "../styles/components/_shopping-cart.scss";
-import { useTranslation } from "react-i18next";
-import { PaymentModal } from "../components/Cart/PaymentModal";
-
 
 
 export const CartPage: React.FC = () => {
-    const { t } = useTranslation();
-    const [cartItems, setCartItems] = useState<CartItemType[]>(getSelectedItems());
+    const {t} = useTranslation();
+    const {cartItems, removeFromCart, clearCart} = useCart()
     const [notify, setNotify] = useState<{ text: string; type: "success" | "error" } | null>(null);
     const [user] = useState<UserData | null>(getUserData());
-    const [showPaymentModal, setShowPaymentModal] = useState(false);
+    const [showPaymentModal, setShowPaymentModal] = useState(true);
 
     const handleRemove = (index: number) => {
-        const updated = [...cartItems];
-        updated.splice(index, 1);
-        localStorage.setItem("selectedItems", JSON.stringify(updated));
-        setCartItems(updated);
-        setShoppingItemCount();
+        const removedProduct = cartItems[index]
+        removeFromCart(removedProduct?.id)
     };
 
     const totalPrice = useMemo(() => {
-        return cartItems.reduce((acc, { id, product, size, additives }) => {
-            const { total } = calculatePrice({
+        return cartItems.reduce((acc, {id, product, size, additives}) => {
+            const {total} = calculatePrice({
                 size: size,
                 additives: additives || [],
             });
@@ -43,11 +35,11 @@ export const CartPage: React.FC = () => {
 
     const handleConfirm = async () => {
         if (!cartItems.length) {
-            setNotify({ text: t("cartPage.emptyCart"), type: "error" });
+            setNotify({text: t("cartPage.emptyCart"), type: "error"});
             return;
         }
 
-        const payloadItems = cartItems.map(({ id, product, size, additives }) => {
+        const payloadItems = cartItems.map(({id, product, size, additives}) => {
             const sizeKey = size?.key as "s" | "m" | "l";
             return {
                 productId: product.id,
@@ -58,20 +50,17 @@ export const CartPage: React.FC = () => {
         });
 
 
-
         const ok = window.confirm(
-            t("cartPage.confirmPrompt", { count: cartItems.length })
+            t("cartPage.confirmPrompt", {count: cartItems.length})
         );
         if (!ok) return;
 
         try {
-            await confirmOrder({ items: payloadItems, totalPrice });
-            localStorage.setItem("selectedItems", JSON.stringify([]));
-            setCartItems([]);
-            setShoppingItemCount();
-            setNotify({ text: t("cartPage.success"), type: "success" });
+            await confirmOrder({items: payloadItems, totalPrice});
+            clearCart()
+            setNotify({text: t("cartPage.success"), type: "success"});
         } catch {
-            setNotify({ text: t("cartPage.error"), type: "error" });
+            setNotify({text: t("cartPage.error"), type: "error"});
         }
     };
 
@@ -79,7 +68,7 @@ export const CartPage: React.FC = () => {
         .map((ci, index) => {
             const product = ci?.product;
             if (!product) return null;
-            const { total, discounted } = calculatePrice({
+            const {total, discounted} = calculatePrice({
                 size: ci.size,
                 additives: ci.additives || [],
             });
@@ -107,7 +96,7 @@ export const CartPage: React.FC = () => {
 
     const handlePaymentConfirm = async () => {
         try {
-            const payloadItems = cartItems.map(({ id, product, size, additives }) => {
+            const payloadItems = cartItems.map(({id, product, size, additives}) => {
                 const sizeKey = size?.key as "s" | "m" | "l";
                 return {
                     productId: product.id,
@@ -116,7 +105,7 @@ export const CartPage: React.FC = () => {
                     quantity: 1,
                 };
             });
-            await confirmOrder({ items: payloadItems, totalPrice });
+            await confirmOrder({items: payloadItems, totalPrice});
 
             // Get previous orders
             const prevOrders = JSON.parse(localStorage.getItem("orders") || "[]");
@@ -130,14 +119,11 @@ export const CartPage: React.FC = () => {
             localStorage.setItem("orders", JSON.stringify([...prevOrders, newOrder]));
 
             // Clear cart
-            localStorage.setItem("selectedItems", JSON.stringify([]));
-            setCartItems([]);
-            setShoppingItemCount();
-
+            clearCart()
             setShowPaymentModal(false);
-            setNotify({ text: t("cartPage.success"), type: "success" });
+            setNotify({text: t("cartPage.success"), type: "success"});
         } catch {
-            setNotify({ text: t("cartPage.error"), type: "error" });
+            setNotify({text: t("cartPage.error"), type: "error"});
         }
     };
 
@@ -162,7 +148,7 @@ export const CartPage: React.FC = () => {
 
             <div id="cart-items">{renderedItems}</div>
 
-            <CartSummary user={user} totalHtml={totalHtml} />
+            <CartSummary user={user} totalHtml={totalHtml}/>
 
             <div className="cart-actions">
                 {user ? (
