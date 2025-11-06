@@ -4,6 +4,7 @@ import { UserData } from "../assets/types";
 import { getUserData } from "../assets/helpers";
 import { useManagerState } from "../../context/CartContext";
 import "../styles/components/_settings_dropdown.scss";
+import { useTranslation } from "react-i18next";
 
 export const SettingsDropdown: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,8 +13,9 @@ export const SettingsDropdown: React.FC = () => {
   const navigate = useNavigate();
   const [user] = useState<UserData | null>(getUserData());
   const { mode, updateMode } = useManagerState();
+  const { t } = useTranslation();
 
-  const languages = ["EN", "ES", "DE", "UZ"];
+  const languages = ["EN", "UZ"];
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -60,7 +62,7 @@ export const SettingsDropdown: React.FC = () => {
         <div className="dropdown-content">
           {/* Theme */}
           <div className="dropdown-section">
-            <p className="dropdown-title">Theme</p>
+            <p className="dropdown-title">{t("theme")}</p>
             <div className="radio-group">
               {["light", "dark"].map((m) => (
                 <label key={m} className="radio-option">
@@ -70,7 +72,7 @@ export const SettingsDropdown: React.FC = () => {
                     checked={mode === m}
                     onChange={() => updateMode(m as "light" | "dark")}
                   />
-                  <span>{m === "light" ? "Light" : "Dark"}</span>
+                  <span>{m === "light" ? t("light") : t("dark")}</span>
                 </label>
               ))}
             </div>
@@ -80,7 +82,7 @@ export const SettingsDropdown: React.FC = () => {
 
           {/* Language */}
           <div className="dropdown-section">
-            <p className="dropdown-title">Language</p>
+            <p className="dropdown-title">{t("language")}</p>
             <div className="radio-grid">
               {languages.map((lang) => (
                 <label key={lang} className="radio-option">
@@ -100,7 +102,7 @@ export const SettingsDropdown: React.FC = () => {
 
           {/* Orders */}
           <button className="dropdown-btn" onClick={goToOrders}>
-            🧾 Orders List
+            {t("orders")}
           </button>
 
           {/* Login */}
@@ -108,7 +110,7 @@ export const SettingsDropdown: React.FC = () => {
             <p className={"user-data"}>{user?.login}</p>
           ) : (
             <button className="dropdown-btn" onClick={handleLogin}>
-              🔑 Login
+              Login
             </button>
           )}
         </div>

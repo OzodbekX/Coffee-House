@@ -122,5 +122,12 @@
       "houseNumberPositive": "House number must be greater than 1."
     }
   },
-  "address": "Address"
+  "address": "Address",
+  "theme": "Theme",
+  "light": "Light",
+  "dark": "Dark",
+  "language": "Language",
+  "orders": "Orders List",
+  "settings": "Settings",
+  "user": "User"
 }

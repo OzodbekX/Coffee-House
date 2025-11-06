@@ -122,5 +122,11 @@
       "houseNumberPositive": "Uy raqami 1 dan katta bo‘lishi kerak."
     }
   },
-  "address": "Address"
+  "theme": "Mavzu",
+  "light": "Yorug‘",
+  "dark": "Qorong‘i",
+  "language": "Til",
+  "orders": "Buyurtmalar ro‘yxati",
+  "settings": "Sozlamalar",
+  "user": "Foydalanuvchi"
 }
