@@ -3,7 +3,9 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { SettingsDropdown } from "./SettingsDropDown";
 import { useManagerState } from "../../context/CartContext";
+import BurgerButton from "./BurgerButton";
 import "../styles/components/_header.scss";
+import { MobileMenu } from "./MobileMenu";
 
 const Header: React.FC = () => {
   const { t } = useTranslation();
@@ -67,11 +69,16 @@ const Header: React.FC = () => {
             ))}
           </ul>
         </nav>
+        <MobileMenu
+          navLinks={navLinks}
+          isOpen={mobileMenuOpen}
+          handleScrollTo={handleScrollTo}
+          toggleMobileMenu={toggleMobileMenu}
+        />
 
         {/* Right-side buttons */}
         <div className={"right-side-buttons"}>
-          <SettingsDropdown />
-
+          <SettingsDropdown setMobileMenuOpen={setMobileMenuOpen} />
           {totalCount > 0 ? (
             <Link to="/cart" className="shopping-cart-link">
               <img
@@ -92,63 +99,10 @@ const Header: React.FC = () => {
             <img loading="lazy" src="./icons/coffee-cup.png" alt="menu" />
           </Link>
         </div>
-
-        {/* Mobile navbar button */}
-        <button
-          className={`mobile-navbar-button ${mobileMenuOpen ? "active" : ""}`}
-          onClick={toggleMobileMenu}
-          aria-label="Toggle menu"
-        >
-          {/* Closed (hamburger) icon */}
-          <svg
-            className="close"
-            width="18"
-            height="10"
-            viewBox="0 0 18 10"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M1 1H17"
-              stroke="#403F3D"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M1 9H17"
-              stroke="#403F3D"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-
-          {/* Open (X) icon */}
-          <svg
-            className="open"
-            width="14"
-            height="14"
-            viewBox="0 0 14 14"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M1.34375 1.34314L12.6575 12.6568"
-              stroke="#403F3D"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M1.34375 12.6568L12.6575 1.34314"
-              stroke="#403F3D"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>
+        <BurgerButton
+          toggleMobileMenu={toggleMobileMenu}
+          isOpen={mobileMenuOpen}
+        />
       </div>
     </header>
   );

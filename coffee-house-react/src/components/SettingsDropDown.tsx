@@ -6,7 +6,9 @@ import { useManagerState } from "../../context/CartContext";
 import "../styles/components/_settings_dropdown.scss";
 import { useTranslation } from "react-i18next";
 
-export const SettingsDropdown: React.FC = () => {
+export const SettingsDropdown: React.FC<{
+  setMobileMenuOpen: (b: boolean) => void;
+}> = ({ setMobileMenuOpen }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -46,7 +48,10 @@ export const SettingsDropdown: React.FC = () => {
       <button
         className="settings-icon"
         aria-label="Settings"
-        onClick={() => setIsOpen((prev) => !prev)}
+        onClick={() => {
+          setMobileMenuOpen(false);
+          setIsOpen((prev) => !prev);
+        }}
       >
         <img
           height={20}

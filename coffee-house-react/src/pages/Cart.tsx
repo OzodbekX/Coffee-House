@@ -19,7 +19,7 @@ export const CartPage: React.FC = () => {
     type: "success" | "error";
   } | null>(null);
   const [user] = useState<UserData | null>(getUserData());
-  const [showPaymentModal, setShowPaymentModal] = useState(true);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
   const navigate = useNavigate();
   const handleRemove = (index: number) => {
     const removedProduct = cartItems[index];
