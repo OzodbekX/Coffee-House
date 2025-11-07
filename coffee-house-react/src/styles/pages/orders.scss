@@ -1,5 +1,6 @@
 .shopping-cart-container {
   gap: 1rem;
+
   .order-block {
     display: flex;
     flex-direction: column;
@@ -9,6 +10,13 @@
     .order-header {
       display: flex;
       gap: 16px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .order-block, .order-header {
+      flex-direction: column;
+
     }
   }
 }
