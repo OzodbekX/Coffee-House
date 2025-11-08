@@ -19,6 +19,19 @@ const Menu: React.FC = () => {
     null,
   );
 
+  // new states for responsive and pagination
+  const [visibleCount, setVisibleCount] = useState(4);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  // Handle resize dynamically
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   useEffect(() => {
     const loadProducts = async () => {
       try {
@@ -31,13 +44,25 @@ const Menu: React.FC = () => {
         setLoading(false);
       }
     };
-
     loadProducts();
   }, []);
 
   const filteredProducts = products.filter(
     (p) => p.category.toLowerCase() === activeCategory.toLowerCase(),
   );
+
+  // products to display
+  const displayedProducts =
+    isMobile && filteredProducts.length > visibleCount
+      ? filteredProducts.slice(0, visibleCount)
+      : filteredProducts;
+
+  const handleLoadMore = () => {
+    setVisibleCount((prev) => prev + 4);
+  };
+
+  const showReloadButton =
+    isMobile && visibleCount < filteredProducts.length && !loading && !error;
 
   return (
     <div className={"menu"}>
@@ -52,7 +77,10 @@ const Menu: React.FC = () => {
               <button
                 key={cat}
                 className={`tab ${activeCategory === cat ? "active" : ""}`}
-                onClick={() => setActiveCategory(cat as any)}
+                onClick={() => {
+                  setActiveCategory(cat as any);
+                  setVisibleCount(4); // reset when changing category
+                }}
               >
                 <div className="menu-wrapper">
                   <img loading="lazy" src={`./icons/${cat}.png`} alt={cat} />
@@ -62,13 +90,14 @@ const Menu: React.FC = () => {
             ))}
           </div>
         </div>
+
         {loading ? (
           <Loader />
         ) : error ? (
           <p className="error">{t("alertError")}</p>
         ) : (
           <div id="menu-products" className="menu-grid">
-            {filteredProducts.map((product) => (
+            {displayedProducts.map((product) => (
               <div
                 key={product.id}
                 className="product-card"
@@ -95,6 +124,17 @@ const Menu: React.FC = () => {
                 </div>
               </div>
             ))}
+          </div>
+        )}
+
+        {showReloadButton && (
+          <div className="reload-button" onClick={handleLoadMore}>
+            <img
+              height={40}
+              width={40}
+              src="/images/refresh.png"
+              alt="load more"
+            />
           </div>
         )}
 
