@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import "../styles/components/_download-app.scss";
+import "@styles/components/_download-app.scss";
 
 interface AppButtonProps {
   type: "ios" | "android";

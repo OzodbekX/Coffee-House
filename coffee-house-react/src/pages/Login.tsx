@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import "../styles/components/_login.scss";
-import { LoginPayload, loginUser } from "../assets/api";
-import { UserData } from "../assets/types";
+import { LoginPayload, loginUser } from "@assets/api";
+import { UserData } from "@assets/types";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import "@styles/components/_login.scss";
 
 const Login: React.FC = () => {
   const { t } = useTranslation();

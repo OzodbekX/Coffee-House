@@ -1,6 +1,6 @@
 import React from "react";
-import type { ProductType } from "../../assets/types";
-import { renderPrice } from "../../assets/helpers";
+import type { ProductType } from "@assets/types";
+import { renderPrice } from "@assets/helpers";
 
 interface CartItemProps {
   product: ProductType;

@@ -1,6 +1,6 @@
 import React from "react";
-import "../styles/components/_banner.scss";
 import { useTranslation } from "react-i18next";
+import "@styles/components/_banner.scss";
 
 const Banner = () => {
   const { t } = useTranslation();

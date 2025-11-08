@@ -1,13 +1,13 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
-import { Footer } from "./components/Footer";
+import { Footer } from "@components/Footer";
 import Main from "./pages/Main";
 import Menu from "./pages/Menu";
 import Login from "./pages/Login";
 import Registration from "./pages/Registration";
-import { CartPage } from "./pages/Cart";
-import { OrdersPage } from "./pages/MyOrders";
+import { CartPage } from "@pages/Cart";
+import { OrdersPage } from "@pages/MyOrders";
 import "./styles/App.scss";
 
 const App: React.FC = () => {

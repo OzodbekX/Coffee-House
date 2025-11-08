@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../../context/CartContext";
 import { useTranslation } from "react-i18next";
-import { useManagerState } from "../../context/CartContext";
-import "../styles/components/_mobile-menu.scss";
+import "@styles/components/_mobile-menu.scss";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -17,7 +17,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
   handleScrollTo,
   toggleMobileMenu,
 }) => {
-  const { totalCount } = useManagerState();
+  const { totalCount } = useCart();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const changePage = (path: string) => {

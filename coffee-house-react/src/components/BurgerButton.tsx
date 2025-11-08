@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import "../styles/components/_burger-button.scss";
+import React from "react";
+import "@styles/components/_burger-button.scss";
 
 export default function BurgerButton({
   toggleMobileMenu,

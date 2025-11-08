@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { type RegisterPayload, registerUser } from "../assets/api";
-import type { UserData } from "../assets/types";
+import { type RegisterPayload, registerUser } from "@assets/api";
+import type { UserData } from "@assets/types";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next"; // ⬅️ Import i18n
-import "../styles/components/_registration.scss";
+import "@styles/components/_registration.scss";
 
 // --- Dropdown data ---
 const cities = ["New York", "Los Angeles", "Chicago"];

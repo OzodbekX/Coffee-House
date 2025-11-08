@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import "../styles/components/_contacts.scss";
 import { useTranslation } from "react-i18next";
+import "@styles/components/_contacts.scss";
 
 interface SocialIcon {
   name: string;

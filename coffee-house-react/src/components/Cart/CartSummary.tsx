@@ -1,5 +1,5 @@
 import React from "react";
-import type { UserData } from "../../assets/types";
+import type { UserData } from "@assets/types";
 import { useTranslation } from "react-i18next";
 
 interface CartSummaryProps {

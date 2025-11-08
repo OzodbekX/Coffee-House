@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import { fetchFavoriteProducts } from "../assets/api";
-import type { ProductType } from "../assets/types";
+import { fetchFavoriteProducts } from "@assets/api";
+import type { ProductType } from "@assets/types";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import "../styles/components/_coffee-slider.scss";
+import "@styles/components/_coffee-slider.scss";
 
 export const CoffeeSlider: React.FC = React.memo(() => {
   const AUTO_SCROLL_DELAY = 5000;

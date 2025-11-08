@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { ProductType } from "../assets/types";
-import { fetchProducts } from "../assets/api";
-import { ProductModal } from "../components/ProductModal";
-import { renderPrice } from "../assets/helpers";
-import "../styles/pages/menu.scss";
+import { ProductType } from "@assets/types";
+import { fetchProducts } from "@assets/api";
+import { ProductModal } from "@components/ProductModal";
+import { renderPrice } from "@assets/helpers";
 import Loader from "../components/Loader";
 import { useTranslation } from "react-i18next";
+import "@styles/pages/menu.scss";
 
 const Menu: React.FC = () => {
   const { t } = useTranslation();
@@ -41,10 +41,10 @@ const Menu: React.FC = () => {
 
   return (
     <div className={"menu"}>
-      <h2 className="heading-2">
-        Behind each of our cups hides an{" "}
-        <i className="accent">amazing surprise</i>
-      </h2>
+      <h2
+        className="heading-2"
+        dangerouslySetInnerHTML={{ __html: t("menu.heading") }}
+      ></h2>
       <section id="menu" className="menu-section">
         <div className="menu-header">
           <div className="menu-tabs">

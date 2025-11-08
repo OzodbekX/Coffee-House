@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { CartItem } from "../components/Cart/CartItem";
+import { CartItem } from "@components/Cart/CartItem";
 import { useTranslation } from "react-i18next";
-import { ProductAdditiveInfo } from "../assets/types";
-import "../styles/components/_shopping-cart.scss";
-import "../styles/pages/orders.scss";
+import { ProductAdditiveInfo } from "@assets/types";
+import "@styles/components/_shopping-cart.scss";
+import "@styles/pages/orders.scss";
 
 interface Order {
   id: number;

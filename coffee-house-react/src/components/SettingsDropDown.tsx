@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserData } from "../assets/types";
-import { getUserData } from "../assets/helpers";
-import { useManagerState } from "../../context/CartContext";
-import "../styles/components/_settings_dropdown.scss";
+import { UserData } from "@assets/types";
+import { getUserData } from "@assets/helpers";
 import { useTranslation } from "react-i18next";
+import { useLanguage } from "../../context/LanguageContext";
+import { useTheme } from "../../context/ThemeContext";
+import "@styles/components/_settings_dropdown.scss";
 
 export const SettingsDropdown: React.FC<{
   setMobileMenuOpen: (b: boolean) => void;
@@ -13,7 +14,8 @@ export const SettingsDropdown: React.FC<{
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const [user] = useState<UserData | null>(getUserData());
-  const { mode, updateMode, language, updateLanguage } = useManagerState();
+  const { mode, updateMode } = useTheme();
+  const { language, updateLanguage } = useLanguage();
   const { t } = useTranslation();
 
   const languages = ["en", "uz"];

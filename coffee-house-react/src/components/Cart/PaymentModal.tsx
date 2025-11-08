@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import "../../styles/components/_payment-modal.scss";
-import "../../styles/components/_registration.scss";
 import { useTranslation } from "react-i18next";
+import "@styles/components/_payment-modal.scss";
+import "@styles/components/_registration.scss";
 
 interface PaymentModalProps {
   totalPrice: number;

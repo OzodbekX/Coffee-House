@@ -3,17 +3,17 @@ import {
   calculatePrice,
   renderPrice,
   writePriceWithDiscount,
-} from "../assets/helpers";
-import { fetchProductById } from "../assets/api";
+} from "@assets/helpers";
+import { fetchProductById } from "@assets/api";
 import {
   ProductAdditiveInfo,
   ProductSizeInfo,
   ProductType,
   SelectedProductType,
-} from "../assets/types";
+} from "@assets/types";
 import { useTranslation } from "react-i18next";
-import { useManagerState } from "../../context/CartContext";
-import "../styles/components/_product-modal.scss";
+import { useCart } from "../../context/CartContext";
+import "@styles/components/_product-modal.scss";
 
 interface ProductModalProps {
   product: ProductType;
@@ -37,7 +37,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
   >([]);
   const tooltipRef = useRef<HTMLDivElement | null>(null);
   const { t } = useTranslation();
-  const { addToCart } = useManagerState();
+  const { addToCart } = useCart();
 
   // --- Fetch product data when modal opens
   useEffect(() => {

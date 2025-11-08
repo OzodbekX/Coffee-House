@@ -1,19 +1,19 @@
 import React, { useMemo, useState } from "react";
-import { UserData } from "../assets/types";
-import { confirmOrder } from "../assets/api";
-import { calculatePrice, getUserData, renderPrice } from "../assets/helpers";
-import { CartItem } from "../components/Cart/CartItem";
-import { Notification } from "../components/Cart/Notification";
-import { CartSummary } from "../components/Cart/CartSummary";
+import { UserData } from "@assets/types";
+import { confirmOrder } from "@assets/api";
+import { calculatePrice, getUserData, renderPrice } from "@assets/helpers";
+import { CartItem } from "@components/Cart/CartItem";
+import { Notification } from "@components/Cart/Notification";
+import { CartSummary } from "@components/Cart/CartSummary";
 import { useTranslation } from "react-i18next";
-import { PaymentModal } from "../components/Cart/PaymentModal";
-import { useManagerState } from "../../context/CartContext";
+import { PaymentModal } from "@components/Cart/PaymentModal";
 import { useNavigate } from "react-router-dom";
-import "../styles/components/_shopping-cart.scss";
+import { useCart } from "../../context/CartContext";
+import "@styles/components/_shopping-cart.scss";
 
 export const CartPage: React.FC = () => {
   const { t } = useTranslation();
-  const { cartItems, removeFromCart, clearCart } = useManagerState();
+  const { cartItems, removeFromCart, clearCart } = useCart();
   const [notify, setNotify] = useState<{
     text: string;
     type: "success" | "error";

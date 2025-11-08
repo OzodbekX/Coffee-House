@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { SettingsDropdown } from "./SettingsDropDown";
-import { useManagerState } from "../../context/CartContext";
+import { useCart } from "../../context/CartContext";
 import BurgerButton from "./BurgerButton";
-import "../styles/components/_header.scss";
 import { MobileMenu } from "./MobileMenu";
+import "@styles/components/_header.scss";
 
 const Header: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
-  const { totalCount } = useManagerState();
+  const { totalCount } = useCart();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 

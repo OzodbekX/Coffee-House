@@ -1,117 +1,61 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 import { CartItemType } from "../src/assets/types";
-import { useTranslation } from "react-i18next";
-import i18n from "../src/i18n";
 
 /* ------------------ 🧾 Types ------------------ */
-
 interface CartContextType {
   cartItems: CartItemType[];
   addToCart: (item: CartItemType) => void;
   removeFromCart: (id: number) => void;
   deleteFromCart: (id: number) => void;
-  updateMode: (mode: "light" | "dark") => void;
   clearCart: () => void;
   totalCount: number;
-  mode: "light" | "dark";
-  language: string;
-  updateLanguage: (lang: string) => void;
 }
 
 /* ------------------ 🧠 Create Context ------------------ */
-
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 /* ------------------ ⚙️ Provider ------------------ */
-
 export const CartProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  // Initialize from localStorage
   const [cartItems, setCartItems] = useState<CartItemType[]>(() => {
     try {
       const saved = localStorage.getItem("selectedItems");
-      return saved ? (JSON.parse(saved) as CartItemType[]) : [];
+      return saved ? JSON.parse(saved) : [];
     } catch {
       return [];
     }
   });
-  // Initialize mode from localStorage
-  const [mode, setModeState] = useState<"light" | "dark">(() => {
-    try {
-      return localStorage.getItem("mode") as "light"; // default mode
-    } catch {
-      return "light";
-    }
-  });
-  const [language, setLanguageState] = useState<string>(() => {
-    try {
-      const savedLang = localStorage.getItem("language");
-      const lang = savedLang || i18n.language || "en";
-      i18n.changeLanguage(lang);
-      return lang;
-    } catch {
-      return "en";
-    }
-  });
 
-  const updateLanguage = (lang: string) => {
-    setLanguageState(lang);
-    i18n.changeLanguage(lang);
-    localStorage.setItem("language", lang);
-  };
-  const updateMode = (newMode: "light" | "dark") => {
-    setModeState(newMode);
-    document.documentElement.classList.toggle("dark", newMode === "dark");
-    localStorage.setItem("mode", newMode);
-  };
-  /* ------------------ 🔁 Helper: Update both State + localStorage ------------------ */
   const updateLocalStorage = (items: CartItemType[]) => {
     setCartItems(items);
     localStorage.setItem("selectedItems", JSON.stringify(items));
   };
 
-  /* ------------------ 🛒 Actions ------------------ */
-
-  const addToCart = (entry: CartItemType) => {
+  const addToCart = (item: CartItemType) => {
     const existing = [...cartItems];
-
-    // Check if identical item (same id, size, additives)
     const duplicate = existing.find(
       (i) =>
-        i.id === entry.id &&
-        i.size?.key === entry.size?.key &&
-        JSON.stringify(i.additives) === JSON.stringify(entry.additives),
+        i.id === item.id &&
+        i.size?.key === item.size?.key &&
+        JSON.stringify(i.additives) === JSON.stringify(item.additives),
     );
-
-    if (!duplicate) {
-      const updated = [...existing, entry];
-      updateLocalStorage(updated);
-    }
+    if (!duplicate) updateLocalStorage([...existing, item]);
   };
 
   const removeFromCart = (id: number) => {
-    const updated = cartItems.filter((i) => i.id !== id);
-    updateLocalStorage(updated);
+    updateLocalStorage(cartItems.filter((i) => i.id !== id));
   };
 
   const deleteFromCart = (id: number) => {
-    const updated = cartItems.filter((i) => i.id !== id);
-    updateLocalStorage(updated);
+    updateLocalStorage(cartItems.filter((i) => i.id !== id));
   };
 
-  const clearCart = () => {
-    updateLocalStorage([]);
-  };
+  const clearCart = () => updateLocalStorage([]);
 
   const totalCount = cartItems.length;
 
-  /* ------------------ 📦 Context Value ------------------ */
   const value: CartContextType = {
-    mode,
-    updateMode,
-    language,
-    updateLanguage,
     cartItems,
     addToCart,
     removeFromCart,
@@ -124,11 +68,8 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({
 };
 
 /* ------------------ 🪄 Hook ------------------ */
-
-export const useManagerState = (): CartContextType => {
-  const context = useContext(CartContext);
-  if (!context) {
-    throw new Error("useManagerState must be used within a CartProvider");
-  }
-  return context;
+export const useCart = (): CartContextType => {
+  const ctx = useContext(CartContext);
+  if (!ctx) throw new Error("useCart must be used within a CartProvider");
+  return ctx;
 };
