@@ -69,12 +69,6 @@ const Header: React.FC = () => {
             ))}
           </ul>
         </nav>
-        <MobileMenu
-          navLinks={navLinks}
-          isOpen={mobileMenuOpen}
-          handleScrollTo={handleScrollTo}
-          toggleMobileMenu={toggleMobileMenu}
-        />
 
         {/* Right-side buttons */}
         <div className={"right-side-buttons"}>
@@ -98,12 +92,18 @@ const Header: React.FC = () => {
             <span className="text-link-button">{t("header.menu")}</span>
             <img loading="lazy" src="./icons/coffee-cup.png" alt="menu" />
           </Link>
+          <BurgerButton
+            toggleMobileMenu={toggleMobileMenu}
+            isOpen={mobileMenuOpen}
+          />
         </div>
-        <BurgerButton
-          toggleMobileMenu={toggleMobileMenu}
-          isOpen={mobileMenuOpen}
-        />
       </div>
+      <MobileMenu
+        navLinks={navLinks}
+        isOpen={mobileMenuOpen}
+        handleScrollTo={handleScrollTo}
+        toggleMobileMenu={toggleMobileMenu}
+      />
     </header>
   );
 };

@@ -392,7 +392,7 @@ const Registration: React.FC = () => {
           </div>
         </form>
 
-        {message.text && (
+        {message.text ? (
           <div
             className={`register-message ${message.type}`}
             style={{
@@ -402,7 +402,7 @@ const Registration: React.FC = () => {
           >
             {message.text}
           </div>
-        )}
+        ) : null}
       </div>
     </div>
   );
