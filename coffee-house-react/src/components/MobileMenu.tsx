@@ -1,9 +1,8 @@
 import React from "react";
-import BurgerButton from "./BurgerButton";
 import { useNavigate } from "react-router-dom";
-import "../styles/components/_mobile-menu.scss";
 import { useTranslation } from "react-i18next";
 import { useManagerState } from "../../context/CartContext";
+import "../styles/components/_mobile-menu.scss";
 
 interface MobileMenuProps {
   isOpen: boolean;

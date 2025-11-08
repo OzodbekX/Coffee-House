@@ -1,4 +1,7 @@
 .burger-container {
+  @media (min-width: 768px) {
+    display: none;
+  }
 
   .burger-button {
     position: relative;
