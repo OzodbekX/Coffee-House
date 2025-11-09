@@ -19,7 +19,7 @@ const Chat: React.FC = () => {
   const { user } = useUser();
 
   // use user.login if available, otherwise random id
-  const chatId = user?.login || Math.random().toString(36).substr(2);
+  const chatId = user?.login || "unknown";
 
   const loadMessages = async () => {
     try {
@@ -38,15 +38,11 @@ const Chat: React.FC = () => {
     }
   };
 
-  // ✅ Load messages every 5 seconds
   useEffect(() => {
-    // load immediately
     loadMessages();
 
-    // then every 5 seconds
     const interval = setInterval(loadMessages, 5000);
 
-    // cleanup when component unmounts or chatId changes
     return () => clearInterval(interval);
   }, [chatId]);
 
