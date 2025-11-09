@@ -55,7 +55,7 @@ const Chat: React.FC = () => {
     // add new message
     await addDoc(collection(db, `chats/${chatId}/messages`), {
       text,
-      sender: user?.login,
+      sender: chatId,
       createdAt: serverTimestamp(),
     });
 
