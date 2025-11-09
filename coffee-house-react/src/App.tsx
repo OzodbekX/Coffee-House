@@ -14,7 +14,7 @@ import Chat from "@pages/Chat";
 const App: React.FC = () => {
   return (
     <div className={"main-container"}>
-      <Router>
+      <Router basename="/">
         <Header />
         <main className="main-content">
           <Routes>
