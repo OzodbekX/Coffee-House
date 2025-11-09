@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import {
   addDoc,
   collection,
@@ -13,18 +13,15 @@ import { db } from "@/firebaseConfig";
 import { Message } from "@assets/types";
 import { useUser } from "../../context/UserContext";
 
-// ⏱ Configurable polling interval (ms)
-const POLL_INTERVAL = 5000; // fetch every 5 seconds
-
 const Chat: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [text, setText] = useState("");
   const { user } = useUser();
+
+  // use user.login if available, otherwise random id
   const chatId = user?.login || Math.random().toString(36).substr(2);
 
-  const pollingRef = useRef<NodeJS.Timeout | null>(null);
-
-  // ✅ Function to load messages periodically instead of real-time
+  // ✅ function to fetch messages manually
   const loadMessages = async () => {
     try {
       const q = query(
@@ -37,31 +34,30 @@ const Chat: React.FC = () => {
         ...doc.data(),
       })) as Message[];
       setMessages(msgs);
-    } catch (err) {
-      console.error("Failed to load messages:", err);
+    } catch (error) {
+      console.error("Error loading messages:", error);
     }
   };
 
+  // ✅ Load messages every 5 seconds
   useEffect(() => {
-    // Initial load
+    // load immediately
     loadMessages();
 
-    // Poll for new messages every few seconds
-    pollingRef.current = setInterval(loadMessages, POLL_INTERVAL);
+    // then every 5 seconds
+    const interval = setInterval(loadMessages, 5000);
 
-    // Cleanup interval on unmount or chat change
-    return () => {
-      if (pollingRef.current) clearInterval(pollingRef.current);
-    };
+    // cleanup when component unmounts or chatId changes
+    return () => clearInterval(interval);
   }, [chatId]);
 
-  // ✅ Send message
+  // ✅ send message
   const sendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!text.trim()) return;
 
     try {
-      // Ensure chat document exists
+      // ensure chat document exists
       await setDoc(
         doc(db, "chats", chatId),
         {
@@ -72,7 +68,7 @@ const Chat: React.FC = () => {
         { merge: true },
       );
 
-      // Add new message
+      // add message
       await addDoc(collection(db, `chats/${chatId}/messages`), {
         text,
         sender: chatId,
@@ -80,7 +76,7 @@ const Chat: React.FC = () => {
       });
 
       setText("");
-      await loadMessages(); // refresh immediately after sending
+      await loadMessages(); // instantly reload after sending
     } catch (err) {
       console.error("Error sending message:", err);
     }
