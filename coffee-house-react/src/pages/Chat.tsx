@@ -21,7 +21,6 @@ const Chat: React.FC = () => {
   // use user.login if available, otherwise random id
   const chatId = user?.login || Math.random().toString(36).substr(2);
 
-  // ✅ function to fetch messages manually
   const loadMessages = async () => {
     try {
       const q = query(
