@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserData } from "@assets/types";
-import { getUserData } from "@assets/helpers";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "../../context/LanguageContext";
 import { useTheme } from "../../context/ThemeContext";
@@ -35,16 +33,10 @@ export const SettingsDropdown: React.FC<{
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const goToOrders = () => {
-    navigate("/orders");
+  const changePage = (path: string) => {
+    navigate(path);
     setIsOpen(false);
   };
-
-  const handleLogin = () => {
-    navigate("/login");
-    setIsOpen(false);
-  };
-
   return (
     <div className="settings-dropdown" ref={dropdownRef}>
       {/* ⚙️ Settings Icon */}
@@ -104,15 +96,28 @@ export const SettingsDropdown: React.FC<{
           <hr />
 
           {/* Orders */}
-          <button className="dropdown-btn" onClick={goToOrders}>
+          <button
+            className="dropdown-btn"
+            onClick={() => changePage("/orders")}
+          >
             {t("orders")}
+          </button>
+          {/* Orders */}
+          <button
+            className="dropdown-btn"
+            onClick={() => changePage("/support")}
+          >
+            {t("support")}
           </button>
 
           {/* Login */}
           {user ? (
             <p className={"user-data"}>{user?.login}</p>
           ) : (
-            <button className="dropdown-btn" onClick={handleLogin}>
+            <button
+              className="dropdown-btn"
+              onClick={() => changePage("/login")}
+            >
               Login
             </button>
           )}

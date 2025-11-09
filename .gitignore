@@ -1,5 +1,6 @@
 coffee-house/node_modules
 coffee-house-react/node_modules
+admin/node_modules
 
 # build outputs
 coffee-house-react/build
@@ -20,8 +21,10 @@ coffee-house-react/yarn-error.log*
 # editor-specific
 coffee-house-react/.idea/
 coffee-house-react/.vscode/
+coffee-house-react/.env
 
 # macOS
 coffee-house-react/.DS_Store
 coffee-house/node_modules
 coffee-house/dist
+admin/*
