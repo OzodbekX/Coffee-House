@@ -27,4 +27,7 @@ coffee-house-react/.env/
 coffee-house-react/.DS_Store
 coffee-house/node_modules/
 coffee-house/dist
-admin/*
+admin/node_modules/
+admin/package-lock.json
+admin/dist
+admin/.env

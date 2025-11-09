@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Admin Panel (No Auth)</title>
+    <style>
+        :root { --bg:#f4f6f8; --card:#fff; --accent:#2b7cff; --muted:#6b7280; }
+        body { margin:0; font-family: Inter,system-ui, -apple-system, "Segoe UI", Roboto, Arial; background:var(--bg); color:#111; }
+        .app { display:flex; height:100vh; gap:18px; padding:18px; box-sizing:border-box; }
+        .sidebar { width:320px; background:var(--card); border-radius:12px; padding:12px; display:flex; flex-direction:column; box-shadow:0 6px 18px rgba(12,20,30,0.06); }
+        .header { margin-bottom:12px; }
+        .brand { font-weight:700; color:var(--accent); }
+        .chats { overflow:auto; flex:1; padding-right:6px; }
+        .chat-item { padding:10px; border-radius:8px; display:flex; justify-content:space-between; gap:12px; cursor:pointer; }
+        .chat-item:hover { background:#f3f6ff; }
+        .chat-meta { color:var(--muted); font-size:13px; }
+        .main { flex:1; display:flex; flex-direction:column; gap:12px; }
+        .panel { background:var(--card); border-radius:12px; padding:12px; box-shadow:0 6px 18px rgba(12,20,30,0.06); height:calc(100% - 96px); display:flex; flex-direction:column; }
+        .messages { flex:1; overflow:auto; padding:8px; display:flex; flex-direction:column; gap:8px; }
+        .msg { max-width:70%; padding:8px 12px; border-radius:12px; box-shadow:0 1px 3px rgba(0,0,0,0.04); }
+        .msg.user { align-self:flex-start; background:#fff; }
+        .msg.admin { align-self:flex-end; background:#dcf8c6; }
+        .msg .meta{ display:block; font-size:12px; color:var(--muted); margin-bottom:6px; }
+        .composer { display:flex; gap:8px; margin-top:8px; }
+        .composer input { flex:1; padding:10px; border-radius:10px; border:1px solid #e6e9ef; }
+        .small { font-size:13px; color:var(--muted); }
+        .center { display:flex; align-items:center; justify-content:center; height:100%; color:var(--muted); }
+        .admin-name { margin-bottom:8px; display:flex; gap:8px; align-items:center; }
+    </style>
+</head>
+<body>
+<div class="app">
+    <aside class="sidebar">
+        <div class="header">
+            <div class="brand">Support Admin (no-auth)</div>
+            <div class="small">Real-time multi-admin</div>
+        </div>
+
+        <div class="admin-name">
+            <input id="adminNameInput" placeholder="Your admin name (persisted)" style="flex:1;padding:8px;border-radius:8px;border:1px solid #e6e9ef" />
+            <button id="saveAdminBtn" style="padding:8px;border-radius:8px;background:var(--accent);color:#fff;border:none;cursor:pointer">Save</button>
+        </div>
+
+        <div style="margin-bottom:8px">
+            <input id="filterInput" placeholder="Filter by user id / last message..." style="width:100%; padding:8px; border-radius:8px; border:1px solid #e6e9ef;" />
+        </div>
+
+        <div class="chats" id="chatsList" aria-live="polite">
+            <!-- chat items -->
+        </div>
+    </aside>
+
+    <main class="main">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+                <h3 id="chatTitle" style="margin:0">Select a chat</h3>
+                <div id="chatSub" class="small">Open a conversation to see messages</div>
+            </div>
+            <div id="adminInfo" class="small"></div>
+        </div>
+
+        <div class="panel">
+            <div id="messagesPane" class="messages">
+                <div class="center" id="emptyHint">No chat selected — pick a chat on the left.</div>
+            </div>
+
+            <form id="composerForm" class="composer" style="display:none">
+                <input id="replyInput" placeholder="Write your reply..." autocomplete="off" />
+                <button style="padding:8px;border-radius:8px;background:var(--accent);color:#fff;border:none;cursor:pointer" type="submit">Send</button>
+            </form>
+        </div>
+    </main>
+</div>
+
+<script type="module">
+    // -------- CONFIG: put your Firebase config here ----------
+    const firebaseConfig = {
+        apiKey: "AIzaSyASx33z1ohnXKIw2b_z9wuHIPGDbLFigyw",
+        authDomain: "chat-demo-coffee-house.firebaseapp.com",
+        projectId: "chat-demo-coffee-house",
+        storageBucket: "chat-demo-coffee-house.firebasestorage.app",
+        messagingSenderId: "379711978796",
+        appId: "1:379711978796:web:97e632b66fc6bd883dc089",
+        measurementId: "G-7Y7CC9ZXW3",
+    };
+    // --------------------------------------------------------
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import {
+        getFirestore, collection, doc, query, orderBy, onSnapshot,
+        addDoc, serverTimestamp, setDoc, getDoc, updateDoc
+    } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // UI refs
+    const adminNameInput = document.getElementById('adminNameInput');
+    const saveAdminBtn = document.getElementById('saveAdminBtn');
+    const adminInfo = document.getElementById('adminInfo');
+    const chatsList = document.getElementById('chatsList');
+    const chatTitle = document.getElementById('chatTitle');
+    const chatSub = document.getElementById('chatSub');
+    const messagesPane = document.getElementById('messagesPane');
+    const composerForm = document.getElementById('composerForm');
+    const replyInput = document.getElementById('replyInput');
+    const filterInput = document.getElementById('filterInput');
+    const emptyHint = document.getElementById('emptyHint');
+
+    let adminName = localStorage.getItem('adminName') || '';
+    adminNameInput.value = adminName;
+    adminInfo.textContent = adminName ? `Admin: ${adminName}` : '';
+
+    saveAdminBtn.addEventListener('click', () => {
+        adminName = (adminNameInput.value || '').trim();
+        if (!adminName) return alert('Enter a name for this admin session');
+        localStorage.setItem('adminName', adminName);
+        adminInfo.textContent = `Admin: ${adminName}`;
+    });
+
+    // state & listeners
+    let activeChatId = null;
+    let messagesUnsub = null;
+    let chatsUnsub = null;
+
+    // helper: format timestamp
+    function fmtTime(ts) {
+        if (!ts) return '';
+        const d = ts.toDate ? ts.toDate() : new Date(ts);
+        return d.toLocaleString();
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    // Start listening to chats collection (all chats)
+    function startChatsListener() {
+        stopChatsListener();
+        const q = query(collection(db, 'chats'), orderBy('lastUpdated', 'desc'));
+        chatsUnsub = onSnapshot(q, (snap) => {
+            const arr = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+            renderChats(arr);
+        }, (err) => {
+            console.error('Chats listener error', err);
+            chatsList.innerHTML = '<div class="small" style="padding:8px;color:var(--muted)">Could not load chats.</div>';
+        });
+    }
+    function stopChatsListener(){ if (chatsUnsub){ chatsUnsub(); chatsUnsub = null; } }
+
+    function renderChats(chats) {
+        const filter = filterInput.value.trim().toLowerCase();
+        chatsList.innerHTML = '';
+        if (!chats.length) {
+            chatsList.innerHTML = '<div class="small" style="padding:8px;color:var(--muted)">No chats yet.</div>';
+            return;
+        }
+        chats.forEach(c => {
+            const userId = c.userId || c.id;
+            if (filter && !(String(userId).toLowerCase().includes(filter) || (c.lastMessage && c.lastMessage.toLowerCase().includes(filter)))) return;
+            const el = document.createElement('div');
+            el.className = 'chat-item';
+            el.dataset.chatId = c.id;
+            el.innerHTML = `
+          <div>
+            <div style="font-weight:600;">${escapeHtml(userId)}</div>
+            <div class="chat-meta">${c.lastMessage ? escapeHtml(String(c.lastMessage).slice(0,60)) : '<no messages>'}</div>
+          </div>
+          <div style="text-align:right">
+            <div class="chat-meta">${c.lastUpdated ? fmtTime(c.lastUpdated) : ''}</div>
+            <div style="font-size:12px;color:var(--muted)">${c.unreadCount ? c.unreadCount + ' new' : ''}</div>
+          </div>
+        `;
+            el.addEventListener('click', () => openChat(c.id, userId));
+            chatsList.appendChild(el);
+        });
+    }
+
+    filterInput.addEventListener('input', () => {
+        // The onSnapshot will re-render when DB changes; we rely on that.
+        // For immediate local filter we'd keep last snapshot, but this is enough.
+    });
+
+    function clearMessagesPanel() {
+        messagesPane.innerHTML = '';
+        emptyHint.style.display = 'block';
+        composerForm.style.display = 'none';
+        chatTitle.textContent = 'Select a chat';
+        chatSub.textContent = 'Open a conversation to see messages';
+    }
+
+    // Open chat and subscribe to messages
+    function openChat(chatId, userId) {
+        activeChatId = chatId;
+        chatTitle.textContent = `Chat: ${userId}`;
+        chatSub.textContent = `Chat ID: ${chatId}`;
+        emptyHint.style.display = 'none';
+        composerForm.style.display = 'flex';
+        // unsubscribe previous
+        if (messagesUnsub){ messagesUnsub(); messagesUnsub = null; }
+
+        const msgsRef = collection(db, `chats/${chatId}/messages`);
+        const q = query(msgsRef, orderBy('createdAt', 'asc'));
+        messagesUnsub = onSnapshot(q, (snap) => {
+            messagesPane.innerHTML = '';
+            snap.docs.forEach(docSnap => {
+                const m = docSnap.data();
+                const div = document.createElement('div');
+                div.className = 'msg ' + (m.sender === 'admin' ? 'admin' : 'user');
+                const meta = m.sender === 'admin'
+                    ? `${escapeHtml(m.adminName || m.adminEmail || 'admin')} • admin`
+                    : `user • ${fmtTime(m.createdAt)}`;
+                div.innerHTML = `<div class="meta">${meta}</div><div>${escapeHtml(m.text)}</div>`;
+                messagesPane.appendChild(div);
+            });
+            messagesPane.scrollTop = messagesPane.scrollHeight;
+            // mark chat as read by setting unreadCount to 0 (optional)
+            setChatReadZero(chatId).catch(()=>{});
+        }, (err) => {
+            console.error('Messages listener error:', err);
+            messagesPane.innerHTML = '<div class="small" style="padding:8px;color:var(--muted)">Unable to load messages.</div>';
+        });
+    }
+
+    // set unreadCount to 0 (best-effort)
+    async function setChatReadZero(chatId) {
+        try {
+            const chatDocRef = doc(db, 'chats', chatId);
+            await setDoc(chatDocRef, { unreadCount: 0 }, { merge: true });
+        } catch(e) { /* ignore */ }
+    }
+
+    // send admin reply
+    composerForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!activeChatId) return alert('Select a chat first');
+        const text = (replyInput.value || '').trim();
+        if (!text) return;
+        const payload = {
+            text,
+            sender: 'admin',
+            adminName: adminName || 'admin',
+            createdAt: serverTimestamp()
+        };
+        try {
+            await addDoc(collection(db, `chats/${activeChatId}/messages`), payload);
+            // update chat metadata
+            const chatDocRef = doc(db, 'chats', activeChatId);
+            await setDoc(chatDocRef, { lastMessage: text, lastUpdated: serverTimestamp() }, { merge: true });
+            replyInput.value = '';
+        } catch (err) {
+            console.error('Failed to send reply', err);
+            alert('Failed to send reply: ' + (err.message || err));
+        }
+    });
+
+    // start on load
+    clearMessagesPanel();
+    startChatsListener();
+
+    // Developer helper: function to create sample chat (you can remove)
+    window.createSampleChat = async function(uid, text) {
+        const chatId = uid;
+        await setDoc(doc(db, 'chats', chatId), { userId: uid, lastMessage: text, lastUpdated: serverTimestamp() }, { merge: true });
+        await addDoc(collection(db, `chats/${chatId}/messages`), { text, sender: 'user', createdAt: serverTimestamp() });
+    };
+
+</script>
+</body>
+</html>
