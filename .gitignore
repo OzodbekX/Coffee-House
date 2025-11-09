@@ -21,10 +21,10 @@ coffee-house-react/yarn-error.log*
 # editor-specific
 coffee-house-react/.idea/
 coffee-house-react/.vscode/
-coffee-house-react/.env
+coffee-house-react/.env/
 
 # macOS
 coffee-house-react/.DS_Store
-coffee-house/node_modules
+coffee-house/node_modules/
 coffee-house/dist
 admin/*
