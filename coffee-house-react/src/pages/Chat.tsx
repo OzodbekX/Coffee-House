@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   addDoc,
   collection,
   doc,
-  onSnapshot,
+  getDocs,
   orderBy,
   query,
   serverTimestamp,
@@ -13,53 +13,77 @@ import { db } from "@/firebaseConfig";
 import { Message } from "@assets/types";
 import { useUser } from "../../context/UserContext";
 
+// ⏱ Configurable polling interval (ms)
+const POLL_INTERVAL = 5000; // fetch every 5 seconds
+
 const Chat: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [text, setText] = useState("");
   const { user } = useUser();
-
-  // For now, simulate unique user ID (later you can use Firebase Auth or random localStorage ID)
   const chatId = user?.login || Math.random().toString(36).substr(2);
 
-  useEffect(() => {
-    const q = query(
-      collection(db, `chats/${chatId}/messages`),
-      orderBy("createdAt"),
-    );
-    const unsubscribe = onSnapshot(q, (snapshot) => {
+  const pollingRef = useRef<NodeJS.Timeout | null>(null);
+
+  // ✅ Function to load messages periodically instead of real-time
+  const loadMessages = async () => {
+    try {
+      const q = query(
+        collection(db, `chats/${chatId}/messages`),
+        orderBy("createdAt"),
+      );
+      const snapshot = await getDocs(q);
       const msgs = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       })) as Message[];
       setMessages(msgs);
-    });
+    } catch (err) {
+      console.error("Failed to load messages:", err);
+    }
+  };
 
-    return () => unsubscribe();
+  useEffect(() => {
+    // Initial load
+    loadMessages();
+
+    // Poll for new messages every few seconds
+    pollingRef.current = setInterval(loadMessages, POLL_INTERVAL);
+
+    // Cleanup interval on unmount or chat change
+    return () => {
+      if (pollingRef.current) clearInterval(pollingRef.current);
+    };
   }, [chatId]);
 
+  // ✅ Send message
   const sendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!text.trim()) return;
 
-    // ensure chat doc exists or update metadata
-    await setDoc(
-      doc(db, "chats", chatId),
-      {
-        userId: chatId,
-        lastMessage: text,
-        lastUpdated: serverTimestamp(),
-      },
-      { merge: true },
-    );
+    try {
+      // Ensure chat document exists
+      await setDoc(
+        doc(db, "chats", chatId),
+        {
+          userId: chatId,
+          lastMessage: text,
+          lastUpdated: serverTimestamp(),
+        },
+        { merge: true },
+      );
 
-    // add new message
-    await addDoc(collection(db, `chats/${chatId}/messages`), {
-      text,
-      sender: chatId,
-      createdAt: serverTimestamp(),
-    });
+      // Add new message
+      await addDoc(collection(db, `chats/${chatId}/messages`), {
+        text,
+        sender: chatId,
+        createdAt: serverTimestamp(),
+      });
 
-    setText("");
+      setText("");
+      await loadMessages(); // refresh immediately after sending
+    } catch (err) {
+      console.error("Error sending message:", err);
+    }
   };
 
   return (
@@ -76,7 +100,7 @@ const Chat: React.FC = () => {
           <p
             key={msg.id}
             style={{
-              textAlign: msg.sender === "admin" ? "left" : "right",
+              textAlign: msg.sender === chatId ? "right" : "left",
               margin: "5px 0",
             }}
           >
@@ -94,7 +118,7 @@ const Chat: React.FC = () => {
         />
         <button
           type="submit"
-          className={"button button--secondary"}
+          className="button button--secondary"
           style={{ marginLeft: 8 }}
         >
           Send
