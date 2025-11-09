@@ -75,7 +75,6 @@ export const ProductModal: React.FC<ProductModalProps> = ({
     size: selectedSize,
     additives: selectedAdditives,
   });
-  console.log({ selectedSize, selectedAdditives });
 
   // --- Tooltip handlers ---
   const showToolSizeTip = (e: React.MouseEvent, sizeInfo: ProductSizeInfo) => {
