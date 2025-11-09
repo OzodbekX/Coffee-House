@@ -27,7 +27,7 @@ export const CartItem: React.FC<CartItemProps> = ({
           width={24}
           height={24}
           src="./icons/trash.png"
-          alt="Remove"
+          alt="Remove icon"
         />
       </button>
 

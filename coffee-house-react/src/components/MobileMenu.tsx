@@ -45,7 +45,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
           ))}
           <li
             className={"mobile-menu-with-icon"}
-            key={"menu-mobile"}
+            key={"menu-mobile-icon"}
             onClick={() => changePage("/menu")}
           >
             <span className="text-link-button">{t("header.menu")}</span>

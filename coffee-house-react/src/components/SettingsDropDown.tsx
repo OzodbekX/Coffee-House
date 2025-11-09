@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserData } from "@assets/types";
-import { getUserData } from "@assets/helpers";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "../../context/LanguageContext";
 import { useTheme } from "../../context/ThemeContext";
 import "@styles/components/_settings_dropdown.scss";
+import { useUser } from "../../context/UserContext";
 
 export const SettingsDropdown: React.FC<{
   setMobileMenuOpen: (b: boolean) => void;
@@ -13,7 +12,7 @@ export const SettingsDropdown: React.FC<{
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
-  const [user] = useState<UserData | null>(getUserData());
+  const { user } = useUser();
   const { mode, updateMode } = useTheme();
   const { language, updateLanguage } = useLanguage();
   const { t } = useTranslation();
@@ -34,16 +33,10 @@ export const SettingsDropdown: React.FC<{
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const goToOrders = () => {
-    navigate("/orders");
+  const changePage = (path: string) => {
+    navigate(path);
     setIsOpen(false);
   };
-
-  const handleLogin = () => {
-    navigate("/login");
-    setIsOpen(false);
-  };
-
   return (
     <div className="settings-dropdown" ref={dropdownRef}>
       {/* ⚙️ Settings Icon */}
@@ -103,15 +96,28 @@ export const SettingsDropdown: React.FC<{
           <hr />
 
           {/* Orders */}
-          <button className="dropdown-btn" onClick={goToOrders}>
+          <button
+            className="dropdown-btn"
+            onClick={() => changePage("/orders")}
+          >
             {t("orders")}
+          </button>
+          {/* Orders */}
+          <button
+            className="dropdown-btn"
+            onClick={() => changePage("/support")}
+          >
+            {t("support")}
           </button>
 
           {/* Login */}
           {user ? (
             <p className={"user-data"}>{user?.login}</p>
           ) : (
-            <button className="dropdown-btn" onClick={handleLogin}>
+            <button
+              className="dropdown-btn"
+              onClick={() => changePage("/login")}
+            >
               Login
             </button>
           )}
