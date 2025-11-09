@@ -4,10 +4,11 @@ import { UserData } from "@assets/types";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import "@styles/components/_login.scss";
+import { useUser } from "../../context/UserContext";
 
 const Login: React.FC = () => {
   const { t } = useTranslation();
-
+  const { setUser } = useUser();
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState<{
@@ -84,8 +85,7 @@ const Login: React.FC = () => {
       }
 
       const newUser: UserData = { token, ...res.data.user };
-      localStorage.setItem("user", JSON.stringify(newUser));
-
+      setUser(newUser);
       showMessage(t("login.success"), "success");
       setTimeout(() => navigate("/menu"), 1000);
     } catch (err) {

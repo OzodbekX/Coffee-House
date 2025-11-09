@@ -1,3 +1,25 @@
 .pointer {
   cursor: pointer;
 }
+
+input, select {
+  padding: 12px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--color-border-light);
+  background: transparent !important;;
+  outline: none;
+  height: 56px;
+  transition: border 0.2s;
+
+  &:focus {
+    border-color: var(--color-border-dark);
+  }
+
+  &:active, &:focus {
+    background-color: transparent;
+  }
+
+  &.error {
+    border: 1px solid #b00020
+  }
+}

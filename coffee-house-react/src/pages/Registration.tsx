@@ -4,6 +4,7 @@ import type { UserData } from "@assets/types";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next"; // ⬅️ Import i18n
 import "@styles/components/_registration.scss";
+import { useUser } from "../../context/UserContext";
 
 // --- Dropdown data ---
 const cities = ["New York", "Los Angeles", "Chicago"];
@@ -49,7 +50,7 @@ const cityStreets: Record<string, string[]> = {
 const Registration: React.FC = () => {
   const { t } = useTranslation(); // ⬅️ i18n hook
   const navigate = useNavigate();
-
+  const { setUser } = useUser();
   // --- Form state ---
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
@@ -190,8 +191,7 @@ const Registration: React.FC = () => {
         houseNumber: Number(houseNumber),
         paymentMethod,
       };
-
-      localStorage.setItem("user", JSON.stringify(newUser));
+      setUser(newUser);
       showMessage(t("registration.messages.success"), "success");
       setTimeout(() => navigate("/menu"), 1200);
     } catch (err) {
@@ -372,7 +372,7 @@ const Registration: React.FC = () => {
                     value="card"
                     checked={paymentMethod === "card"}
                     onChange={() => setPaymentMethod("card")}
-                  />{" "}
+                  />
                   {t("registration.labels.card")}
                 </label>
               </div>

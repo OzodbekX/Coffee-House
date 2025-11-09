@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useLanguage } from "../../context/LanguageContext";
 import { useTheme } from "../../context/ThemeContext";
 import "@styles/components/_settings_dropdown.scss";
+import { useUser } from "../../context/UserContext";
 
 export const SettingsDropdown: React.FC<{
   setMobileMenuOpen: (b: boolean) => void;
@@ -13,7 +14,7 @@ export const SettingsDropdown: React.FC<{
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
-  const [user] = useState<UserData | null>(getUserData());
+  const { user } = useUser();
   const { mode, updateMode } = useTheme();
   const { language, updateLanguage } = useLanguage();
   const { t } = useTranslation();

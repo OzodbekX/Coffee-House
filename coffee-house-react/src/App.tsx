@@ -9,6 +9,7 @@ import Registration from "./pages/Registration";
 import { CartPage } from "@pages/Cart";
 import { OrdersPage } from "@pages/MyOrders";
 import "./styles/App.scss";
+import Chat from "@pages/Chat";
 
 const App: React.FC = () => {
   return (
@@ -23,6 +24,7 @@ const App: React.FC = () => {
             <Route path="/register" element={<Registration />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/orders" element={<OrdersPage />} />
+            <Route path="/support" element={<Chat />} />
           </Routes>
         </main>
         <Footer />

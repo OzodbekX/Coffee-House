@@ -41,3 +41,9 @@ export type CartItemType = {
   size?: { key: string; info: ProductSizeInfo };
   additives?: Array<ProductAdditiveInfo>;
 };
+export interface Message {
+  id?: string;
+  text: string;
+  sender: "user" | "admin";
+  createdAt?: any;
+}
