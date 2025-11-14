@@ -1,0 +1,45 @@
+@use "../_typography.scss" as *; // makes all variables available globally
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 32px;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 100px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+  text-decoration: none; // in case you use <a> as button
+  @extend .text-link-button;
+
+  &--primary {
+    background-color: var(--color-bg-body);
+    color: var(--color-text-dark);
+  }
+
+  &--secondary {
+    background-color: transparent;
+    border: 1px solid var(--color-border-dark);
+
+    &:hover {
+      background-color: var(--color-bg-container);
+      color: var(--color-text-light);
+    }
+
+    &[disabled] {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+  }
+
+  &[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+  

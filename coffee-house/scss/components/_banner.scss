@@ -1,0 +1,93 @@
+@use "@scss/_variables.scss" as *;
+@use "@scss/typography.scss" as *;
+
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 100px;
+  width: 100%;
+  margin: 0 0 100px;
+  color: $color-text-light;
+  border-radius: 40px;
+  height: 644px;
+  overflow: hidden;
+
+  // ✅ Background image (fallback)
+  background-image: url("/assets/images/img-hero.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  // ✅ Video background
+  .enjoy-bg-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; // fills like a background
+    z-index: 0; // ✅ must be lower than overlay & content
+    pointer-events: none; // non-interactive
+  }
+
+  // ✅ Overlay for better text visibility
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 1; // overlay above video, below content
+  }
+
+  // ✅ Content (always on top)
+  &__content {
+    position: relative;
+    max-width: 530px;
+    z-index: 2; // above both overlay and video
+
+    .heading-1 {
+      color: $color-text-light;
+      margin-bottom: 40px;
+    }
+
+    .text-medium {
+      color: $color-text-light;
+      margin-bottom: 40px;
+    }
+
+    .button {
+      display: flex;
+      gap: 8px;
+      width: 200px;
+
+      img {
+        display: none;
+        height: 20px;
+        width: 20px;
+      }
+
+      &:hover {
+        img {
+          display: flex;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 100px 60px;
+    justify-content: center;
+    max-height: fit-content;
+  }
+
+  @media (max-width: 380px) {
+    padding: 60px 16px;
+    justify-content: center;
+
+    &__content {
+      max-width: 100%;
+    }
+  }
+}

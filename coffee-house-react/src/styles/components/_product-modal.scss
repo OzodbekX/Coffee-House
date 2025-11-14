@@ -1,0 +1,243 @@
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: var(--color-bg-backdrop);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  transition: opacity 0.3s ease;
+
+  &.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .modal-content {
+    background: var(--color-bg-body);
+    border-radius: 40px;
+    display: flex;
+    flex-direction: row;
+    padding: 16px;
+    width: 800px;
+    align-items: start;
+    max-width: calc(100% - 40px);
+    animation: fadeIn 0.3s ease;
+    position: relative;
+
+
+    @media (max-width: 600px) {
+      flex-direction: column;
+      width: calc(100% - 40px);
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: -44px;
+      right: 0;
+      background: transparent;
+      height: 44px;
+      width: 44px;
+      cursor: pointer;
+      border: solid 1px var(--color-border-dark);
+      border-radius: 50%;
+      justify-content: center;
+      display: flex;
+      align-items: center;
+
+    }
+
+    .loader-overlay {
+      top: 10%
+    }
+
+    &.hidden > .modal-image,
+    &.hidden > .modal-details {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .modal-image {
+      width: 310px;
+      border-radius: 12px;
+      object-fit: contain;
+      aspect-ratio: 1/1;
+      max-width: max(40%, 310px);
+    }
+
+    .modal-details {
+      display: flex;
+      flex-direction: column;
+      padding-left: 20px;
+      flex: 1;
+
+      .modal-title {
+        margin-bottom: 12px;
+        color: var(--color-text-dark);
+      }
+
+      .modal-description {
+        color: var(--color-text-dark);
+        margin-bottom: 20px;
+      }
+
+      .option-group {
+        margin-bottom: 20px;
+
+        p {
+          margin-bottom: 8px;
+        }
+
+        .sizes,
+        .additives {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+
+          button {
+            border: 1px solid var(--color-border-light);
+            border-radius: 100px;
+            background-color: transparent;
+            padding: 8px 16px 8px 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+
+            .size-key {
+              height: 30px !important;
+              width: 30px !important;
+              background-color: var(--color-border-light);
+              border-radius: 100px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+
+            }
+
+            &.active {
+              background: var(--color-bg-container);
+              color: var(--color-border-light);
+
+              div:last-child {
+                color: var(--color-border-light);
+              }
+
+              .size-key {
+                background-color: var(--color-bg-body);
+              }
+
+            }
+          }
+        }
+      }
+
+      .total {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+
+      .note {
+        color: var(--color-text-dark);
+        margin-bottom: 20px;
+        gap: 12px;
+        display: flex;
+      }
+
+      .close-btn {
+        transition: all 0.3s ease;
+        padding: 10px;
+        width: 100%;
+        background-color: var(--color-bg-body);
+        border: 1px solid var(--color-border-dark);
+        border-radius: 100px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: var(--color-bg-container);
+          color: var(--color-text-light);
+        }
+
+      }
+    }
+
+    &.loading > .modal-image,
+    &.loading > .modal-details {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+
+  }
+
+
+  @media (max-width: 768px) {
+    .modal-content {
+      max-width: 668px;
+      max-height: 100vh;
+
+
+    }
+  }
+
+  @media (max-width: 380px) {
+    .modal-image {
+      display: none;
+    }
+
+    .modal-details {
+      padding: 0;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.price-tooltip {
+  position: absolute;
+  background: #fff;
+  color: #333;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  pointer-events: none;
+  z-index: 3000;
+  transition: opacity 0.2s ease;
+  white-space: nowrap;
+  opacity: 1;
+
+  div {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  strong {
+    color: #b08968; // Coffee accent
+  }
+
+  &.hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+}

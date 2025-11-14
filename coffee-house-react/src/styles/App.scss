@@ -1,0 +1,63 @@
+@use "./_typography.scss" as *;
+// makes all variables available globally
+@use "./components/_button.scss" as *;
+// makes all variables available globally
+@use "./utils.scss" as *;
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  color: var(--color-text-dark);
+}
+
+.dark {
+  color: var(--color-text-light);
+}
+
+html, body {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--color-bg-body);
+  max-height: 100vh;
+}
+
+#root{
+  height: 100%;
+  width: 100%;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+  overflow-y: auto;
+  scrollbar-width: none; // Firefox
+  -ms-overflow-style: none; // IE/Edge
+
+
+}
+
+.main-container {
+  margin: 0 auto;
+  padding: 0 40px;
+  width: 100%;
+  max-width: 1440px;
+  height: fit-content;
+  /* Hides the scrollbar */
+  &::-webkit-scrollbar {
+    display: none; // Chrome, Safari
+  }
+
+  @media (max-width: 380px) {
+    padding: 0 16px;
+  }
+}

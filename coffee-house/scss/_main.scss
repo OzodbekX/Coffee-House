@@ -1,0 +1,63 @@
+@use "@scss/_variables.scss" as *; // makes all variables available globally
+@use "@scss/_typography.scss" as *; // makes all variables available globally
+@use "@scss/components/_banner.scss";
+@use "@scss/components/_about.scss";
+@use "@scss/components/_header.scss";
+@use "@scss/components/_download-app.scss";
+@use "@scss/components/_coffee-slider.scss";
+@use "@scss/components/_button.scss";
+@use "@scss/components/_contacts.scss";
+@use "@scss/components/_product-modal.scss";
+@use "@scss/components/_mobile-navbar.scss";
+@use "@scss/pages/menu.scss";
+@use "@scss/components/_loader.scss";
+@use "@scss/components/_shopping-cart.scss";
+@use "@scss/components/_registration.scss";
+@use "@scss/components/_login.scss";
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  color: $color-text-dark;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: $color-bg-body;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
+
+
+
+.main-container {
+  margin: 0;
+  padding: 0 40px;
+  width: 100%;
+  height: 100%;
+  max-width: 1440px;
+  overflow-y: auto;
+  scrollbar-width: none; // Firefox
+  -ms-overflow-style: none; // IE/Edge
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+
+
+  /* Hides the scrollbar */
+  &::-webkit-scrollbar {
+    display: none; // Chrome, Safari
+  }
+  @media (max-width:380px) {
+    padding: 0 16px;
+    
+  }
+}

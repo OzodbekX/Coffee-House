@@ -1,0 +1,119 @@
+.payment-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  transition: background 0.3s ease;
+}
+
+.payment-modal {
+  background: var(--color-bg-body);
+  color: var(--color-text-dark);
+  border-radius: 16px;
+  padding: 2rem;
+  width: 380px;
+  max-width: 90%;
+  text-align: center;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--color-border-light);
+  animation: slideIn 0.3s ease;
+
+  h3 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    letter-spacing: 0.5px;
+  }
+
+  p {
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+  }
+
+  input {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+    border-radius: 8px;
+    border: 1px solid var(--color-border-light);
+    background: var(--color-bg-body);
+    transition: all 0.2s ease;
+
+    &::placeholder {
+      opacity: 0.7;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: var(--color-text-accent);
+      box-shadow: 0 0 0 3px rgba(176, 144, 122, 0.3);
+      background: var(--color-bg-body);
+    }
+  }
+
+  .payment-row {
+    display: flex;
+    gap: 10px;
+
+    input {
+      flex: 1;
+    }
+  }
+
+  .payment-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+    gap: 10px;
+
+    .button {
+      flex: 1;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+
+      &--secondary {
+        background: var(--color-text-accent);
+
+        &:hover {
+          background: var(--color-text-accent);
+          transform: translateY(-2px);
+        }
+
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+      }
+
+      &--outline {
+        background: transparent;
+        border: 1px solid var(--color-border-light);
+
+        &:hover {
+          background: var(--color-bg-container);
+        }
+      }
+    }
+  }
+}
+
+/* 🪄 Smooth entrance animation */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

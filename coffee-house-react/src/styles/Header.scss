@@ -1,0 +1,127 @@
+
+.header {
+  padding: 0;
+  margin: 20px 0;
+  width: 100%;
+
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo img {
+    aspect-ratio: 100/60;
+    max-width: 100px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+
+    li {
+      height: 26.6px;
+
+      a {
+        color: var(--color-text-dark);
+        text-decoration: none;
+      }
+
+      &:hover {
+        border-bottom: 2px solid var(--color-text-dark);
+      }
+    }
+  }
+
+  .menu-toggle {
+    background-color: transparent;
+    border: none;
+    align-items: center;
+    display: flex;
+    gap: 8px;
+    text-decoration: none;
+
+    &:hover,
+    &.active {
+      border-bottom: 2px solid var(--color-text-dark);
+    }
+
+    img {
+      height: 20px;
+      width: 20px;
+    }
+  }
+
+  .shopping-item-count {
+    &.hidden {
+      visibility: hidden;
+      opacity: 0;
+    }
+  }
+
+  .mobile-navbar-button {
+    display: none;
+  }
+
+  .shopping-cart-link {
+    background-color: transparent;
+    display: flex;
+    gap: 8px;
+    border: none;
+    align-items: center;
+    line-height: 100%;
+    margin-left: auto;
+    margin-right: 8px;
+    cursor: pointer;
+    text-decoration: none !important;
+    font-size: 24px;
+
+    &.hidden {
+      visibility: hidden;
+      opacity: 0;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .mobile-navbar-button {
+      background-color: transparent;
+      border: 1px solid var(--color-border-dark);
+      height: 44px;
+      width: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+
+      &:hover {
+        background-color: var(--color-bg-container);
+
+        svg path {
+          stroke: var(--color-border-light);
+        }
+      }
+
+      .open {
+        display: none;
+      }
+
+      &.active {
+        .open {
+          display: block;
+        }
+
+        .close {
+          display: none;
+        }
+      }
+    }
+
+    nav,
+    .menu-toggle {
+      display: none;
+    }
+  }
+}

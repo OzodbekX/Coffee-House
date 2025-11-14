@@ -1,0 +1,97 @@
+@use "@scss/_variables.scss" as *;
+@use "@scss/typography.scss" as *;
+
+.mobile-navbar-container {
+    position: relative;
+    z-index: 200;
+
+    /* --- Menu Panel --- */
+    .menu-panel {
+        position: fixed;
+        top: 84px;
+        left: 0;
+        width: 100%;
+        height: calc(100vh - 84px);
+        background: $color-bg-body;
+        display: flex;
+        justify-content: center;
+        transform: translateX(-100%);
+        transition: transform 0.6s ease;
+        z-index: 200;
+
+        ul {
+            display: flex;
+            list-style: none;
+            flex-direction: column;
+            padding-top: 40px;
+
+
+            li {
+                opacity: 0;
+                transform: translateY(-10px);
+                transition: all 0.4s ease;
+                margin-bottom: 60px;
+
+                a {
+                    text-decoration: none;
+                }
+                &:hover {
+                    border-bottom: 2px solid $color-text-dark;
+            
+                  }
+
+                // add stagger effect when menu opens
+                &:nth-child(1) {
+                    transition-delay: 0.15s;
+                }
+
+                &:nth-child(2) {
+                    transition-delay: 0.25s;
+                }
+
+                &:nth-child(3) {
+                    transition-delay: 0.35s;
+                }
+
+                &:nth-child(4) {
+                    transition-delay: 0.45s;
+                    margin-bottom: 100px;
+                }
+
+                &:nth-child(5) {
+                    transition-delay: 0.55s;
+                }
+
+                .mobile-menu-toggle {
+                    background-color: transparent;
+                    border: none;
+                    align-items: center;
+                    display: flex;
+                    gap: 8px;
+                    text-decoration: none;
+
+                    &:hover,
+                    &.active {
+                        border-bottom: 2px solid $color-text-dark;
+
+                    }
+
+                   
+                }
+            }
+        }
+
+    }
+
+    &.open {
+        .menu-panel {
+            transform: translateY(0);
+            li {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+    }
+
+}
