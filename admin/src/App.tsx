@@ -130,7 +130,7 @@ const App: React.FC = () => {
                         value={filter}
                         onChange={(e) => setFilter(e.target.value)}
                         placeholder="Filter by user id / last message..."
-                        style={{width: "100%", padding: 8, borderRadius: 8, border: "1px solid #e6e9ef"}}
+                        style={{width: "calc(100% - 20px)", padding: 8, borderRadius: 8, border: "1px solid #e6e9ef"}}
                     />
                 </div>
 

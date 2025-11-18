@@ -90,12 +90,21 @@ const Chat: React.FC = () => {
         {messages.map((msg) => (
           <p
             key={msg.id}
+            className="message"
             style={{
               textAlign: msg.sender === chatId ? "right" : "left",
               margin: "5px 0",
+              display: "flex",
+              flexDirection:"column",
+              backgroundColor: msg.sender === chatId ? "#dcf8c6" : "#fff",
+              padding: "8px",
+              borderRadius: "15px",
+              width: "fit-content",
+              maxWidth: "80%",
+              marginLeft: msg.sender === chatId ? "auto" : "0",
             }}
           >
-            <strong>{msg.sender}:</strong> {msg.text}
+            <strong>{msg.sender}</strong> <span>{msg.text}</span>
           </p>
         ))}
       </div>
